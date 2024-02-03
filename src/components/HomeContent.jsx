@@ -1,10 +1,12 @@
 "use client";
 import axios from "axios";
-import React, { useState } from "react";
+import React, {useRef, useState } from "react";
 
 const HomeContent = () => {
   const [token, setToken] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
+  const [topsongs, setTopSongs] = useState([])
+  const [topartists, setTopArtists] = useState([])
 
   const CLIENT_ID = "319f3f19b0794ac28b1df51ca946609c";
   const REDIRECT_URI = "http://localhost:3000";
@@ -54,6 +56,91 @@ const HomeContent = () => {
     }
   };
 
+  const getTopSongs = async () => {
+    if (!token) {
+      console.error("Token not available. Please log in.");
+      return;
+    }
+
+    try {
+
+      const {data} = await axios.get("https://api.spotify.com/v1/me/top/tracks?time_range=long_term&limit=5", {
+          headers: {
+              Authorization: `Bearer ${token}`
+          }
+      })
+      console.log("get top songs")
+      console.log(data)
+      setTopSongs(data.items)
+
+    } catch (error) {
+      console.error("Error fetching top songs:", error);
+    }
+  }
+
+  const getTopArtists = async () => {
+    if (!token) {
+      console.error("Token not available. Please log in.");
+      return;
+    }
+
+    try {
+
+      const {data} = await axios.get("https://api.spotify.com/v1/me/top/artists?time_range=long_term&limit=5", {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+      })
+      console.log("get top artists")
+      console.log(data)
+      setTopArtists(data.items)
+
+    } catch (error) {
+      console.error("Error fetching top songs:", error);
+    }
+  }
+
+  const SongPlayer = ({ song }) => {
+    const audioRef = useRef(null);
+    const [isPlaying, setIsPlaying] = useState(false);
+  
+    const togglePlay = () => {
+      const audioElement = audioRef.current;
+  
+      if (isPlaying) {
+        audioElement.pause();
+      } else {
+        audioElement.play();
+      }
+  
+      setIsPlaying(!isPlaying);
+    };
+  
+    return (
+      <div key={song.id} style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+        <div onClick={togglePlay} style={{ cursor: 'pointer', marginRight: '10px' }}>
+          {isPlaying ? '⏸' : '▶️'}
+        </div>
+        <div>{song.name}</div>
+        <audio ref={audioRef} src={song.preview_url} />
+      </div>
+    );
+  };
+
+  const RenderTopSongs = () => {
+    return topsongs.map(song => (
+      <SongPlayer key={song.id} song={song} />
+    ))
+  }
+
+  const RenderTopArtists = () => {
+    return topartists.map(artist => (
+        <div key={artist.id}>
+            {artist.name}
+        </div>
+    ))
+  }
+
   const RenderUserProfile = () => {
     if (!userProfile) {
       return <p>No user profile available.</p>;
@@ -95,13 +182,35 @@ const HomeContent = () => {
 
       {token && (
         <div className="mt-4">
+          <button className={`${buttonStyle}`} onClick={getTopSongs}>
+            Get Top Songs
+          </button>
+        </div>
+      )}
+
+      {token && (
+        <div className="mt-4">
+          <button className={`${buttonStyle}`} onClick={getTopArtists}>
+            Get Top Artists
+          </button>
+        </div>
+      )}
+
+
+      {token && (
+        <div className="mt-4">
           <button className={`${buttonStyle}`} onClick={logout}>
             Logout
           </button>
         </div>
       )}
 
-      {token && <div>{RenderUserProfile()}</div>}
+      {token && <div>User Profile:{RenderUserProfile()}</div>}
+
+      {token && <div>Your Top Songs:{RenderTopSongs()}</div>}
+
+      {token && <div>Your Top Artists:{RenderTopArtists()}</div>}
+
     </div>
   );
 };
