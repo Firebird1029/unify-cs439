@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-export function DisplayUserData() {
+export default function DisplayUserData() {
   return (
     <div className="App">
       <header className="App-header">
