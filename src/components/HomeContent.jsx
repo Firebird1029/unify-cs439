@@ -1,8 +1,9 @@
 "use client";
+
 import axios from "axios";
 import React, { useRef, useState } from "react";
 
-const HomeContent = () => {
+function HomeContent() {
   const [token, setToken] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
   const [topsongs, setTopSongs] = useState([]);
@@ -102,7 +103,7 @@ const HomeContent = () => {
     }
   };
 
-  const SongPlayer = ({ song }) => {
+  function SongPlayer({ song }) {
     const audioRef = useRef(null);
     const [isPlaying, setIsPlaying] = useState(false);
 
@@ -133,7 +134,7 @@ const HomeContent = () => {
         <audio ref={audioRef} src={song.preview_url} />
       </div>
     );
-  };
+  }
 
   const RenderTopSongs = () => {
     return topsongs.map((song) => <SongPlayer key={song.id} song={song} />);
@@ -143,20 +144,19 @@ const HomeContent = () => {
     return topartists.map((artist) => <div key={artist.id}>{artist.name}</div>);
   };
 
-  const RenderUserProfile = () => {
+  function RenderUserProfile() {
     if (!userProfile) {
       return <p>No user profile available.</p>;
-    } else {
-      return (
-        <div>
-          <p>Display Name: {userProfile.display_name}</p>
-          <p>User URL: {userProfile.external_urls.spotify}</p>
-          <p>URI: {userProfile.uri}</p>
-          <p>Total Followers: {userProfile.followers.total}</p>
-        </div>
-      );
     }
-  };
+    return (
+      <div>
+        <p>Display Name: {userProfile.display_name}</p>
+        <p>User URL: {userProfile.external_urls.spotify}</p>
+        <p>URI: {userProfile.uri}</p>
+        <p>Total Followers: {userProfile.followers.total}</p>
+      </div>
+    );
+  }
 
   // Check for token in the URL hash when component mounts
   React.useEffect(() => {
@@ -213,6 +213,6 @@ const HomeContent = () => {
       {token && <div>Your Top Artists:{RenderTopArtists()}</div>}
     </div>
   );
-};
+}
 
 export default HomeContent;
