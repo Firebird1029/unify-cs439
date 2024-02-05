@@ -1,8 +1,59 @@
 "use client";
+
 import axios from "axios";
 import React, { useRef, useState } from "react";
 
-const HomeContent = () => {
+function SongPlayer({ song }) {
+  const audioRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const togglePlay = () => {
+    const audioElement = audioRef.current;
+
+    if (isPlaying) {
+      audioElement.pause();
+    } else {
+      audioElement.play();
+    }
+
+    setIsPlaying(!isPlaying);
+  };
+
+  return (
+    <div
+      key={song.id}
+      style={{ marginBottom: "10px", display: "flex", alignItems: "center" }}
+    >
+      <button
+        type="button"
+        onClick={togglePlay}
+        style={{ cursor: "pointer", marginRight: "10px" }}
+      >
+        {isPlaying ? "⏸" : "▶️"}
+      </button>
+      <div>{song.name}</div>
+      <audio ref={audioRef} src={song.preview_url}>
+        <track kind="captions" />
+      </audio>
+    </div>
+  );
+}
+
+function RenderUserProfile({ userProfile }) {
+  if (!userProfile) {
+    return <p>No user profile available.</p>;
+  }
+  return (
+    <div>
+      <p>Display Name: {userProfile.display_name}</p>
+      <p>User URL: {userProfile.external_urls.spotify}</p>
+      <p>URI: {userProfile.uri}</p>
+      <p>Total Followers: {userProfile.followers.total}</p>
+    </div>
+  );
+}
+
+function HomeContent() {
   const [token, setToken] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
   const [topsongs, setTopSongs] = useState([]);
@@ -102,60 +153,12 @@ const HomeContent = () => {
     }
   };
 
-  const SongPlayer = ({ song }) => {
-    const audioRef = useRef(null);
-    const [isPlaying, setIsPlaying] = useState(false);
-
-    const togglePlay = () => {
-      const audioElement = audioRef.current;
-
-      if (isPlaying) {
-        audioElement.pause();
-      } else {
-        audioElement.play();
-      }
-
-      setIsPlaying(!isPlaying);
-    };
-
-    return (
-      <div
-        key={song.id}
-        style={{ marginBottom: "10px", display: "flex", alignItems: "center" }}
-      >
-        <div
-          onClick={togglePlay}
-          style={{ cursor: "pointer", marginRight: "10px" }}
-        >
-          {isPlaying ? "⏸" : "▶️"}
-        </div>
-        <div>{song.name}</div>
-        <audio ref={audioRef} src={song.preview_url} />
-      </div>
-    );
-  };
-
   const RenderTopSongs = () => {
     return topsongs.map((song) => <SongPlayer key={song.id} song={song} />);
   };
 
   const RenderTopArtists = () => {
     return topartists.map((artist) => <div key={artist.id}>{artist.name}</div>);
-  };
-
-  const RenderUserProfile = () => {
-    if (!userProfile) {
-      return <p>No user profile available.</p>;
-    } else {
-      return (
-        <div>
-          <p>Display Name: {userProfile.display_name}</p>
-          <p>User URL: {userProfile.external_urls.spotify}</p>
-          <p>URI: {userProfile.uri}</p>
-          <p>Total Followers: {userProfile.followers.total}</p>
-        </div>
-      );
-    }
   };
 
   // Check for token in the URL hash when component mounts
@@ -169,14 +172,22 @@ const HomeContent = () => {
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       {!token && (
-        <button className={`mt-4 ${buttonStyle}`} onClick={handleLogin}>
+        <button
+          type="button"
+          className={`mt-4 ${buttonStyle}`}
+          onClick={handleLogin}
+        >
           Login to Spotify
         </button>
       )}
 
       {token && (
         <div className="mt-4">
-          <button className={`${buttonStyle}`} onClick={getUserProfile}>
+          <button
+            type="button"
+            className={`${buttonStyle}`}
+            onClick={getUserProfile}
+          >
             Get User Profile
           </button>
         </div>
@@ -184,7 +195,11 @@ const HomeContent = () => {
 
       {token && (
         <div className="mt-4">
-          <button className={`${buttonStyle}`} onClick={getTopSongs}>
+          <button
+            type="button"
+            className={`${buttonStyle}`}
+            onClick={getTopSongs}
+          >
             Get Top Songs
           </button>
         </div>
@@ -192,7 +207,11 @@ const HomeContent = () => {
 
       {token && (
         <div className="mt-4">
-          <button className={`${buttonStyle}`} onClick={getTopArtists}>
+          <button
+            type="button"
+            className={`${buttonStyle}`}
+            onClick={getTopArtists}
+          >
             Get Top Artists
           </button>
         </div>
@@ -200,19 +219,19 @@ const HomeContent = () => {
 
       {token && (
         <div className="mt-4">
-          <button className={`${buttonStyle}`} onClick={logout}>
+          <button type="button" className={`${buttonStyle}`} onClick={logout}>
             Logout
           </button>
         </div>
       )}
 
-      {token && <div>User Profile:{RenderUserProfile()}</div>}
+      {token && <div>User Profile:{RenderUserProfile({ userProfile })}</div>}
 
       {token && <div>Your Top Songs:{RenderTopSongs()}</div>}
 
       {token && <div>Your Top Artists:{RenderTopArtists()}</div>}
     </div>
   );
-};
+}
 
 export default HomeContent;

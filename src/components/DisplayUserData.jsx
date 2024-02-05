@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-export const DisplayUserData = () => {
+export default function DisplayUserData() {
   return (
     <div className="App">
       <header className="App-header">
@@ -11,4 +11,4 @@ export const DisplayUserData = () => {
       </header>
     </div>
   );
-};
+}
