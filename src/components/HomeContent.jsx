@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable react/prop-types */
 
 "use client";
@@ -65,7 +66,16 @@ function HomeContent() {
   };
 
   const handleLogin = () => {
-    const url = `${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=user-read-email&scope=user-library-read&scope=user-follow-read&scope=user-top-read`;
+    const params = new URLSearchParams();
+    params.append("client_id", CLIENT_ID);
+    params.append("response_type", RESPONSE_TYPE);
+    params.append("redirect_uri", REDIRECT_URI);
+    params.append(
+      "scope",
+      "user-read-private user-read-email user-library-read user-follow-read user-top-read user-modify-playback-state",
+    );
+
+    const url = `${AUTH_ENDPOINT}?${params.toString()}`;
 
     // Open Spotify login in a new window or redirect to the login URL
     window.open(url, "_blank");
@@ -91,20 +101,19 @@ function HomeContent() {
       .pop();
   }
 
-  const RenderUserProfile = () => {
+  function RenderUserProfile() {
     if (!userProfile) {
       return <p>No user profile available.</p>;
-    } else {
-      return (
-        <div>
-          <p>Display Name: {userProfile.display_name}</p>
-          <p>User URL: {userProfile.external_urls.spotify}</p>
-          <p>URI: {userProfile.uri}</p>
-          <p>Total Followers: {userProfile.followers.total}</p>
-        </div>
-      );
     }
-  };
+    return (
+      <div>
+        <p>Display Name: {userProfile.display_name}</p>
+        <p>User URL: {userProfile.external_urls.spotify}</p>
+        <p>URI: {userProfile.uri}</p>
+        <p>Total Followers: {userProfile.followers.total}</p>
+      </div>
+    );
+  }
 
   const getUserProfile = async () => {
     if (!token) {
@@ -172,29 +181,35 @@ function HomeContent() {
     }
   };
 
-  const FetchTopItems = async (token, limit = 5, time_range = 'long_term', type = 'artists') => {
+  const FetchTopItems = async (
+    limit = 5,
+    TimeRange = "long_term",
+    type = "artists",
+  ) => {
     if (!token) {
-      console.error("Token not available. Please log in.");
-      return;
+      const errorMessage = "Token not available. Please log in.";
+      console.error(errorMessage);
+      return Promise.reject(new Error(errorMessage));
     }
     try {
       const { data } = await axios.get(
-        `https://api.spotify.com/v1/me/top/${type}?time_range=${time_range}&limit=${limit}`,
+        `https://api.spotify.com/v1/me/top/${type}?time_range=${TimeRange}&limit=${limit}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
       return data.items;
     } catch (error) {
       console.error(`Error fetching top ${type}:`, error);
+      return Promise.reject(error);
     }
   };
 
   const DisplayReccomendation = async () => {
     console.log("reccomendation");
-    const topItems = await FetchTopItems(token, 5, "short_term", "tracks");
+    const topItems = await FetchTopItems(5, "short_term", "tracks");
     console.log(topItems);
     console.log("flag");
     let ids = [];
@@ -205,7 +220,7 @@ function HomeContent() {
     console.log(ids);
     console.log(ids.join(", "));
     const { data } = await axios.get(
-      `https://api.spotify.com/v1/recommendations?limit=5&seed_tracks=${ids.join(',')}`,
+      `https://api.spotify.com/v1/recommendations?limit=5&seed_tracks=${ids.join(",")}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -217,6 +232,20 @@ function HomeContent() {
     setRecommendedSong(data.tracks);
     // console.log(SongPlayer(data.tracks[0]))
     // return (<SongPlayer key={data.tracks[0].id} song={data.tracks[0]} />)
+  };
+
+  const AddSongToQueue = async () => {
+    console.log(token);
+
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+
+    await axios.post(
+      "https://api.spotify.com/v1/me/player/queue?uri=spotify%3Atrack%3A4iV5W9uYEdYUVa79Axb7Rh",
+      {},
+      { headers },
+    );
   };
 
   function DisplayUniquenessScore() {
