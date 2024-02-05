@@ -172,7 +172,12 @@ function HomeContent() {
     }
   };
 
-  const FetchTopItems = async (token, limit = 5, time_range = 'long_term', type = 'artists') => {
+  const FetchTopItems = async (
+    token,
+    limit = 5,
+    time_range = "long_term",
+    type = "artists",
+  ) => {
     if (!token) {
       console.error("Token not available. Please log in.");
       return;
@@ -184,7 +189,7 @@ function HomeContent() {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
       return data.items;
     } catch (error) {
@@ -205,7 +210,7 @@ function HomeContent() {
     console.log(ids);
     console.log(ids.join(", "));
     const { data } = await axios.get(
-      `https://api.spotify.com/v1/recommendations?limit=5&seed_tracks=${ids.join(',')}`,
+      `https://api.spotify.com/v1/recommendations?limit=5&seed_tracks=${ids.join(",")}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
