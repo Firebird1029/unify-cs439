@@ -1,16 +1,16 @@
-import React from "react";
 import dynamic from "next/dynamic";
 
-const HomeContent = dynamic(() => import("../components/HomeContent"), {
+const HomeContent = dynamic(() => import("../components/HomePage"), {
   ssr: false,
 });
 
-function Home() {
+function App() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <div className="App">
+      Unify
       <HomeContent />
-    </main>
+    </div>
   );
 }
 
-export default Home;
+export default App;

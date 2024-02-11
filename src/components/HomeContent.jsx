@@ -12,7 +12,21 @@ function removeDuplicates(strings) {
   return uniqueStringsArray;
 }
 
-function SongPlayer({ song }) {
+function AddSongToQueue(uri, token) {
+  console.log(token);
+
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+
+  axios.post(
+    `https://api.spotify.com/v1/me/player/queue?uri=spotify%3Atrack%${uri}`,
+    {},
+    { headers },
+  );
+}
+
+function SongPlayer({ song, token }) {
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -44,6 +58,10 @@ function SongPlayer({ song }) {
       <audio ref={audioRef} src={song.preview_url}>
         <track kind="captions" />
       </audio>
+      <button type="button" onClick={AddSongToQueue(song.uri, token)}>
+        {" "}
+        +{" "}
+      </button>
     </div>
   );
 }
@@ -234,20 +252,6 @@ function HomeContent() {
     // return (<SongPlayer key={data.tracks[0].id} song={data.tracks[0]} />)
   };
 
-  const AddSongToQueue = async () => {
-    console.log(token);
-
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
-
-    await axios.post(
-      "https://api.spotify.com/v1/me/player/queue?uri=spotify%3Atrack%3A4iV5W9uYEdYUVa79Axb7Rh",
-      {},
-      { headers },
-    );
-  };
-
   function DisplayUniquenessScore() {
     let uniqueness = 0;
     for (let i = 0; i < topartists.length; i++) {
@@ -271,7 +275,9 @@ function HomeContent() {
   }
 
   const RenderTopSongs = () => {
-    return topsongs.map((song) => <SongPlayer key={song.id} song={song} />);
+    return topsongs.map((song) => (
+      <SongPlayer key={song.id} song={song} token={token} />
+    ));
   };
 
   const RenderTopArtists = () => {
@@ -283,7 +289,7 @@ function HomeContent() {
       <div>
         <h2>Recommended Songs:</h2>
         {recommendedSong.map((song) => (
-          <SongPlayer key={song.id} song={song} />
+          <SongPlayer key={song.id} song={song} token={token} />
         ))}
       </div>
     );
