@@ -9,6 +9,7 @@ import React, { useRef, useState, useEffect } from "react";
 function HomeContent() {
   const [token, setToken] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
+  const [topArtists, setTopArtists] = useState([]);
 
   const CLIENT_ID = "319f3f19b0794ac28b1df51ca946609c";
   const REDIRECT_URI = "http://localhost:3000";
@@ -61,6 +62,10 @@ function HomeContent() {
     );
   }
 
+  const RenderTopArtists = () => {
+    return topArtists.map((artist) => <div key={artist.id}>{artist.name}</div>);
+  };
+
   // Check for token in the URL hash when component mounts
   React.useEffect(() => {
     handleTokenFromCallback();
@@ -74,6 +79,19 @@ function HomeContent() {
         .then((res) => res.json())
         .then((data) => setUserProfile(data.profile))
         .then(console.log("got user profile"));
+    }
+  }, [token]);
+
+  React.useEffect(() => {
+    console.log("Token:", token);
+    if (token) {
+      fetch(`http://localhost:5000/getTopItems?token=${token}`)
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("top artists: ", data);
+          setTopArtists(data.topItems);
+        })
+        .catch((error) => console.error("Error fetching top items:", error));
     }
   }, [token]);
 
@@ -103,6 +121,7 @@ function HomeContent() {
       {token && userProfile != null && (
         <div>User Profile:{RenderUserProfile()}</div>
       )}
+      {token && <div>Your Top Artists:{RenderTopArtists()}</div>}
     </div>
   );
 }
