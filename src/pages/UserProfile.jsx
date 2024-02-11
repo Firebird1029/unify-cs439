@@ -5,9 +5,9 @@
 
 import React, { useRef, useState, useEffect } from "react";
 
-import SongPlayer from "./SongPlayer";
+import SongPlayer from "../components/SongPlayer";
 
-function HomeContent() {
+function UserProfile() {
   const [token, setToken] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
   const [topArtists, setTopArtists] = useState([]);
@@ -146,4 +146,4 @@ function HomeContent() {
   );
 }
 
-export default HomeContent;
+export default UserProfile;
