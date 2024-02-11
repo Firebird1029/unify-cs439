@@ -4,6 +4,7 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
+import NavbarComponent from "@/components/Navbar";
 
 import SongPlayer from "../components/SongPlayer";
 
@@ -100,23 +101,11 @@ function UserProfile() {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      {!token && (
-        <button
-          type="button"
-          className={`mt-4 ${buttonStyle}`}
-          onClick={handleLogin}
-        >
-          Login to Spotify
-        </button>
-      )}
-
-      {token && (
-        <div className="mt-4">
-          <button type="button" className={`${buttonStyle}`} onClick={logout}>
-            Logout
-          </button>
-        </div>
-      )}
+      <NavbarComponent
+        onLogin={handleLogin}
+        onLogout={logout}
+        isLoggedIn={Boolean(token)}
+      />
 
       {token && userProfile != null && (
         <div>
