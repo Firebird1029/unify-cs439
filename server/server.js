@@ -87,16 +87,17 @@ app.get("/getUserProfile", async (req, res) => {
 app.get("/getTopItems", async (req, res) => {
   console.log("get top items was called");
 
-  const { token } = req.query;
+  const { token, type } = req.query;
 
   console.log("Received token", token);
+  console.log("Received type", type);
 
   if (!token) {
     return res.status(400).send("Token not provided.");
   }
 
   try {
-    const topItems = await FetchTopItems(token);
+    const topItems = await FetchTopItems(token, 5, "short_term", type);
 
     console.log("Top Items: ", topItems);
 

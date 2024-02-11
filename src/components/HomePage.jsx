@@ -3,13 +3,15 @@
 
 "use client";
 
-import axios from "axios";
 import React, { useRef, useState, useEffect } from "react";
+
+import SongPlayer from "./SongPlayer";
 
 function HomeContent() {
   const [token, setToken] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
   const [topArtists, setTopArtists] = useState([]);
+  const [topSongs, setTopSongs] = useState([]);
 
   const CLIENT_ID = "319f3f19b0794ac28b1df51ca946609c";
   const REDIRECT_URI = "http://localhost:3000";
@@ -48,24 +50,6 @@ function HomeContent() {
     }
   };
 
-  function RenderUserProfile() {
-    if (!userProfile) {
-      return <p>No user profile available.</p>;
-    }
-    return (
-      <div>
-        <p>Display Name: {userProfile.display_name}</p>
-        <p>User URL: {userProfile.external_urls.spotify}</p>
-        <p>URI: {userProfile.uri}</p>
-        <p>Total Followers: {userProfile.followers.total}</p>
-      </div>
-    );
-  }
-
-  const RenderTopArtists = () => {
-    return topArtists.map((artist) => <div key={artist.id}>{artist.name}</div>);
-  };
-
   // Check for token in the URL hash when component mounts
   React.useEffect(() => {
     handleTokenFromCallback();
@@ -77,7 +61,10 @@ function HomeContent() {
     if (token) {
       fetch(`http://localhost:5000/getUserProfile?token=${token}`)
         .then((res) => res.json())
-        .then((data) => setUserProfile(data.profile))
+        .then((data) => {
+          console.log("user profile: ", data.profile);
+          setUserProfile(data.profile);
+        })
         .then(console.log("got user profile"));
     }
   }, [token]);
@@ -85,13 +72,26 @@ function HomeContent() {
   React.useEffect(() => {
     console.log("Token:", token);
     if (token) {
-      fetch(`http://localhost:5000/getTopItems?token=${token}`)
+      fetch(`http://localhost:5000/getTopItems?token=${token}&type=artists`)
         .then((res) => res.json())
         .then((data) => {
           console.log("top artists: ", data);
           setTopArtists(data.topItems);
         })
         .catch((error) => console.error("Error fetching top items:", error));
+    }
+  }, [token]);
+
+  React.useEffect(() => {
+    console.log("Token:", token);
+    if (token) {
+      fetch(`http://localhost:5000/getTopItems?token=${token}&type=tracks`)
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("top songs: ", data);
+          setTopSongs(data.topItems);
+        })
+        .catch((error) => console.error("Error fetching top songs:", error));
     }
   }, [token]);
 
@@ -119,9 +119,29 @@ function HomeContent() {
       )}
 
       {token && userProfile != null && (
-        <div>User Profile:{RenderUserProfile()}</div>
+        <div>
+          <p>Display Name: {userProfile?.display_name}</p>
+          <p>User URL: {userProfile?.external_urls?.spotify}</p>
+          <p>URI: {userProfile?.uri}</p>
+          <p>Total Followers: {userProfile?.followers?.total}</p>
+        </div>
       )}
-      {token && <div>Your Top Artists:{RenderTopArtists()}</div>}
+      {token && (
+        <div>
+          Your Top Artists:
+          {topArtists.map((artist) => (
+            <div key={artist.id}>{artist.name}</div>
+          ))}
+        </div>
+      )}
+      {token && (
+        <div>
+          Your Top Songs:
+          {topSongs.map((song) => (
+            <SongPlayer key={song.id} song={song} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
