@@ -1,0 +1,21 @@
+name: Lint
+on:
+  push:
+    branches-ignore:
+      - master
+jobs:
+  lint-code:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install modules
+        run: npm install
+      - name: Run Lint script
+        run: npm run lint
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "[Github Actions] lint files"
