@@ -4,7 +4,7 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
-import NavbarComponent from "@/components/Navbar";
+import NavbarComponent from "../components/Navbar";
 
 import SongPlayer from "../components/SongPlayer";
 

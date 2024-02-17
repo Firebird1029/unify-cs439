@@ -78,10 +78,10 @@ app.get("/getUserProfile", async (req, res) => {
   console.log("Profile: ", profile);
 
   if (profile) {
-    res.json({ profile });
-  } else {
-    res.status(500).send("Error fetching user profile.");
+    return res.json({ profile });
   }
+
+  return res.status(500).send("Error fetching user profile.");
 });
 
 app.get("/getTopItems", async (req, res) => {
@@ -101,10 +101,10 @@ app.get("/getTopItems", async (req, res) => {
 
     console.log("Top Items: ", topItems);
 
-    res.json({ topItems });
+    return res.json({ topItems });
   } catch (error) {
     console.error("Error fetching top items:", error);
-    res.status(500).send("Error fetching top items.");
+    return res.status(500).send("Error fetching top items.");
   }
 });
 
