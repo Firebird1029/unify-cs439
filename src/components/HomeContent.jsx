@@ -26,6 +26,68 @@ function AddSongToQueue(uri, token) {
   );
 }
 
+function RenderUserProfile(userProfile) {
+  const {
+    display_name: displayName,
+    external_urls: externalUrls,
+    uri,
+    followers,
+  } = userProfile;
+  if (!userProfile) {
+    return <p>No user profile available.</p>;
+  }
+  return (
+    <div>
+      <p>Display Name: {displayName}</p>
+      <p>User URL: {externalUrls.spotify}</p>
+      <p>URI: {uri}</p>
+      <p>Total Followers: {followers.total}</p>
+    </div>
+  );
+}
+
+function DisplayUniquenessScore({ topartists }) {
+  let uniqueness = 0;
+  for (let i = 0; i < topartists.length; i++) {
+    // console.log(topartists[i].popularity);
+    uniqueness += topartists[i].popularity;
+  }
+  return (
+    <div>
+      Your Uniqueness Score: {(100 - uniqueness / topartists.length).toFixed(0)}
+      %
+    </div>
+  );
+}
+
+function DisplayTopGenre({ topartists }) {
+  function mode(arr) {
+    return arr
+      .sort(
+        (a, b) =>
+          arr.filter((v) => v === a).length - arr.filter((v) => v === b).length,
+      )
+      .pop();
+  }
+
+  let genres = [];
+  for (let i = 0; i < topartists.length; i++) {
+    genres = genres.concat(removeDuplicates(topartists[i].genres));
+  }
+  return <div>Your Top Genre: {mode(genres)}</div>;
+}
+
+function RenderReccomendation({ recommendedSong, token }) {
+  return (
+    <div>
+      <h2>Recommended Songs:</h2>
+      {recommendedSong.map((song) => (
+        <SongPlayer key={song.id} song={song} token={token} />
+      ))}
+    </div>
+  );
+}
+
 function SongPlayer({ song, token }) {
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -109,29 +171,6 @@ function HomeContent() {
       window.localStorage.setItem("token", newToken);
     }
   };
-
-  function mode(arr) {
-    return arr
-      .sort(
-        (a, b) =>
-          arr.filter((v) => v === a).length - arr.filter((v) => v === b).length,
-      )
-      .pop();
-  }
-
-  function RenderUserProfile() {
-    if (!userProfile) {
-      return <p>No user profile available.</p>;
-    }
-    return (
-      <div>
-        <p>Display Name: {userProfile.display_name}</p>
-        <p>User URL: {userProfile.external_urls.spotify}</p>
-        <p>URI: {userProfile.uri}</p>
-        <p>Total Followers: {userProfile.followers.total}</p>
-      </div>
-    );
-  }
 
   const getUserProfile = async () => {
     if (!token) {
@@ -252,28 +291,6 @@ function HomeContent() {
     // return (<SongPlayer key={data.tracks[0].id} song={data.tracks[0]} />)
   };
 
-  function DisplayUniquenessScore() {
-    let uniqueness = 0;
-    for (let i = 0; i < topartists.length; i++) {
-      // console.log(topartists[i].popularity);
-      uniqueness += topartists[i].popularity;
-    }
-    return (
-      <div>
-        Your Uniqueness Score:{" "}
-        {(100 - uniqueness / topartists.length).toFixed(0)}%
-      </div>
-    );
-  }
-
-  function DisplayTopGenre() {
-    let genres = [];
-    for (let i = 0; i < topartists.length; i++) {
-      genres = genres.concat(removeDuplicates(topartists[i].genres));
-    }
-    return <div>Your Top Genre: {mode(genres)}</div>;
-  }
-
   const RenderTopSongs = () => {
     return topsongs.map((song) => (
       <SongPlayer key={song.id} song={song} token={token} />
@@ -283,17 +300,6 @@ function HomeContent() {
   const RenderTopArtists = () => {
     return topartists.map((artist) => <div key={artist.id}>{artist.name}</div>);
   };
-
-  function RenderReccomendation() {
-    return (
-      <div>
-        <h2>Recommended Songs:</h2>
-        {recommendedSong.map((song) => (
-          <SongPlayer key={song.id} song={song} token={token} />
-        ))}
-      </div>
-    );
-  }
 
   // Check for token in the URL hash when component mounts
   React.useEffect(() => {
@@ -336,12 +342,16 @@ function HomeContent() {
       )}
 
       {token && userProfile != null && (
-        <div>User Profile:{RenderUserProfile()}</div>
+        <div>User Profile:{RenderUserProfile(userProfile)}</div>
       )}
 
-      {token && userProfile != null && <div>{DisplayUniquenessScore()}</div>}
+      {token && userProfile != null && (
+        <div>{DisplayUniquenessScore({ topartists })}</div>
+      )}
 
-      {token && userProfile != null && <div>{DisplayTopGenre()}</div>}
+      {token && userProfile != null && (
+        <div>{DisplayTopGenre({ topartists })}</div>
+      )}
 
       {token && (
         <div className="mt-4">
@@ -388,7 +398,7 @@ function HomeContent() {
       )}
 
       {token && recommendedSong.length > 0 && (
-        <div>{RenderReccomendation()}</div>
+        <div>{RenderReccomendation({ recommendedSong, token })}</div>
       )}
     </div>
   );
