@@ -186,22 +186,26 @@ function HomeContent() {
     }
   }, [token, timeRangeTracks, timeRangeArtists]);
 
-  const timeRangeButtons = (type) => ["short_term", "medium_term", "long_term"].map((range) => (
-    <button
-      key={range}
-      type="button"
-      onClick={() => type === "tracks" ? setTimeRangeTracks(range) : setTimeRangeArtists(range)}
-      className={buttonStyle}
-    >
-      {range.replace('_', ' ').toUpperCase()}
-    </button>
-  ));
-
+  const timeRangeButtons = (type) =>
+    ["short_term", "medium_term", "long_term"].map((range) => (
+      <button
+        key={range}
+        type="button"
+        onClick={() =>
+          type === "tracks"
+            ? setTimeRangeTracks(range)
+            : setTimeRangeArtists(range)
+        }
+        className={buttonStyle}
+      >
+        {range.replace("_", " ").toUpperCase()}
+      </button>
+    ));
 
   const getGenresFromArtists = async (timeRange) => {
     try {
       const artists = await fetchTopItems("artists", timeRange);
-      return artists.flatMap(artist => artist.genres);
+      return artists.flatMap((artist) => artist.genres);
     } catch (error) {
       console.error(`Error fetching genres for ${timeRange}:`, error);
       return [];
@@ -224,7 +228,7 @@ function HomeContent() {
     return Object.entries(frequency)
       .sort((a, b) => b[1] - a[1])
       .slice(0, 3)
-      .map(entry => entry[0]);
+      .map((entry) => entry[0]);
   };
 
   const displayRecommendation = async () => {
@@ -238,11 +242,15 @@ function HomeContent() {
       const mediumTermGenres = await getGenresFromArtists("medium_term");
       const longTermGenres = await getGenresFromArtists("long_term");
 
-      const combinedGenres = [...shortTermGenres, ...mediumTermGenres, ...longTermGenres];
+      const combinedGenres = [
+        ...shortTermGenres,
+        ...mediumTermGenres,
+        ...longTermGenres,
+      ];
       const topGenres = getMostFrequentGenres(combinedGenres);
 
       const topLongTermTracks = await fetchTopItems("tracks", "long_term");
-      const seedTracks = topLongTermTracks.slice(0, 2).map(track => track.id);
+      const seedTracks = topLongTermTracks.slice(0, 2).map((track) => track.id);
 
       const { data } = await axios.get(
         `https://api.spotify.com/v1/recommendations?limit=10&seed_genres=${topGenres.join(",")}&seed_tracks=${seedTracks.join(",")}`,
