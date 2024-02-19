@@ -108,6 +108,6 @@ app.get("/getTopItems", async (req, res) => {
   }
 });
 
-app.listen(5000, () => {
-  console.log("app listening on port 5000");
+app.listen(process.env.PORT || 3001, () => {
+  console.log(`app listening on port ${process.env.PORT || 3001}`);
 });

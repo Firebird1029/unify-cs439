@@ -60,7 +60,9 @@ function UserProfile() {
     console.log("Token:", token);
 
     if (token) {
-      fetch(`http://localhost:5000/getUserProfile?token=${token}`)
+      fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/getUserProfile?token=${token}`,
+      )
         .then((res) => res.json())
         .then((data) => {
           console.log("user profile: ", data.profile);
@@ -73,7 +75,9 @@ function UserProfile() {
   React.useEffect(() => {
     console.log("Token:", token);
     if (token) {
-      fetch(`http://localhost:5000/getTopItems?token=${token}&type=artists`)
+      fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/getTopItems?token=${token}&type=artists`,
+      )
         .then((res) => res.json())
         .then((data) => {
           console.log("top artists: ", data);
@@ -86,7 +90,9 @@ function UserProfile() {
   React.useEffect(() => {
     console.log("Token:", token);
     if (token) {
-      fetch(`http://localhost:5000/getTopItems?token=${token}&type=tracks`)
+      fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/getTopItems?token=${token}&type=tracks`,
+      )
         .then((res) => res.json())
         .then((data) => {
           console.log("top songs: ", data);
