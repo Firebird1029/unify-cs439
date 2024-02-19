@@ -4,7 +4,7 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
-import NavbarComponent from "../components/Navbar";
+import NavbarComponent from "@/components/Navbar";
 
 import SongPlayer from "../components/SongPlayer";
 
@@ -36,8 +36,8 @@ function UserProfile() {
 
     const url = `${AUTH_ENDPOINT}?${params.toString()}`;
 
-    // Open Spotify login in a new window or redirect to the login URL
-    window.open(url, "_blank");
+    // Open Spotify login in same window, will redirect back
+    window.open(url, "_self");
   };
 
   const handleTokenFromCallback = () => {
