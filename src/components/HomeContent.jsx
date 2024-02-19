@@ -77,10 +77,10 @@ function HomeContent() {
   const [topTracks, setTopTracks] = useState([]);
   const [topArtists, setTopArtists] = useState([]);
 
-  const CLIENT_ID = "319f3f19b0794ac28b1df51ca946609c";
-  const REDIRECT_URI = "http://localhost:3000";
-  const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
-  const RESPONSE_TYPE = "token";
+  const CLIENT_ID = process.env.NEXT_PUBLIC_CLIENT_ID;
+  const REDIRECT_URI = process.env.NEXT_PUBLIC_REDIRECT_URI;
+  const AUTH_ENDPOINT = process.env.NEXT_PUBLIC_AUTH_ENDPOINT;
+  const RESPONSE_TYPE = process.env.NEXT_PUBLIC_RESPONSE_TYPE;
 
   const logout = () => {
     setToken(null);
