@@ -8,7 +8,8 @@
     "start": "next start",
     "server": "node -r dotenv/config server/index.js dotenv_config_path=server/.env",
     "lint-next": "next lint",
-    "lint": "eslint --fix --c .eslintrc.json --ext .js,.jsx .; prettier --write --config ./.prettierrc ."
+    "lint": "eslint --fix --c .eslintrc.json --ext .js,.jsx,.mjs .; prettier --write --config ./.prettierrc .",
+    "lint:prod": "eslint --c .eslintrc.json --ext .js,.jsx,.mjs --max-warnings 0 . && prettier --check --config ./.prettierrc ."
   },
   "dependencies": {
     "axios": "^1.6.7",
