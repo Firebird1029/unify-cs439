@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "server": "node server/server.js",
+    "server": "nodemon server/index.js",
     "lint-next": "next lint",
     "lint": "eslint --fix --c .eslintrc.json --ext .js,.jsx .; prettier --write --config ./.prettierrc ."
   },
