@@ -4,7 +4,8 @@
 "use client";
 
 import axios from "axios";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
+import NavbarComponent from "./Navbar";
 
 function removeDuplicates(strings) {
   const uniqueStringsSet = new Set(strings);
@@ -23,68 +24,6 @@ function AddSongToQueue(uri, token) {
     `https://api.spotify.com/v1/me/player/queue?uri=spotify%3Atrack%${uri}`,
     {},
     { headers },
-  );
-}
-
-function RenderUserProfile(userProfile) {
-  const {
-    display_name: displayName,
-    external_urls: externalUrls,
-    uri,
-    followers,
-  } = userProfile;
-  if (!userProfile) {
-    return <p>No user profile available.</p>;
-  }
-  return (
-    <div>
-      <p>Display Name: {displayName}</p>
-      <p>User URL: {externalUrls.spotify}</p>
-      <p>URI: {uri}</p>
-      <p>Total Followers: {followers.total}</p>
-    </div>
-  );
-}
-
-function DisplayUniquenessScore({ topartists }) {
-  let uniqueness = 0;
-  for (let i = 0; i < topartists.length; i++) {
-    // console.log(topartists[i].popularity);
-    uniqueness += topartists[i].popularity;
-  }
-  return (
-    <div>
-      Your Uniqueness Score: {(100 - uniqueness / topartists.length).toFixed(0)}
-      %
-    </div>
-  );
-}
-
-function DisplayTopGenre({ topartists }) {
-  function mode(arr) {
-    return arr
-      .sort(
-        (a, b) =>
-          arr.filter((v) => v === a).length - arr.filter((v) => v === b).length,
-      )
-      .pop();
-  }
-
-  let genres = [];
-  for (let i = 0; i < topartists.length; i++) {
-    genres = genres.concat(removeDuplicates(topartists[i].genres));
-  }
-  return <div>Your Top Genre: {mode(genres)}</div>;
-}
-
-function RenderReccomendation({ recommendedSong, token }) {
-  return (
-    <div>
-      <h2>Recommended Songs:</h2>
-      {recommendedSong.map((song) => (
-        <SongPlayer key={song.id} song={song} token={token} />
-      ))}
-    </div>
   );
 }
 
@@ -131,14 +70,17 @@ function SongPlayer({ song, token }) {
 function HomeContent() {
   const [token, setToken] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
-  const [topsongs, setTopSongs] = useState([]);
-  const [recommendedSong, setRecommendedSong] = useState([]);
-  const [topartists, setTopArtists] = useState([]);
+  const [recommendedSongs, setRecommendedSongs] = useState([]);
 
-  const CLIENT_ID = process.env.NEXT_PUBLIC_CLIENT_ID;
-  const REDIRECT_URI = process.env.NEXT_PUBLIC_REDIRECT_URI;
-  const AUTH_ENDPOINT = process.env.NEXT_PUBLIC_AUTH_ENDPOINT;
-  const RESPONSE_TYPE = process.env.NEXT_PUBLIC_RESPONSE_TYPE;
+  const [timeRangeTracks, setTimeRangeTracks] = useState("long_term");
+  const [timeRangeArtists, setTimeRangeArtists] = useState("long_term");
+  const [topTracks, setTopTracks] = useState([]);
+  const [topArtists, setTopArtists] = useState([]);
+
+  const CLIENT_ID = "319f3f19b0794ac28b1df51ca946609c";
+  const REDIRECT_URI = "http://localhost:3000";
+  const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
+  const RESPONSE_TYPE = "token";
 
   const logout = () => {
     setToken(null);
@@ -158,7 +100,7 @@ function HomeContent() {
     const url = `${AUTH_ENDPOINT}?${params.toString()}`;
 
     // Open Spotify login in a new window or redirect to the login URL
-    window.open(url, "_blank");
+    window.open(url, "_self");
   };
 
   const handleTokenFromCallback = () => {
@@ -171,6 +113,29 @@ function HomeContent() {
       window.localStorage.setItem("token", newToken);
     }
   };
+
+  function mode(arr) {
+    return arr
+      .sort(
+        (a, b) =>
+          arr.filter((v) => v === a).length - arr.filter((v) => v === b).length,
+      )
+      .pop();
+  }
+
+  function RenderUserProfile() {
+    if (!userProfile) {
+      return <p>No user profile available.</p>;
+    }
+    return (
+      <div>
+        <p>Display Name: {userProfile.display_name}</p>
+        <p>User URL: {userProfile.external_urls.spotify}</p>
+        <p>URI: {userProfile.uri}</p>
+        <p>Total Followers: {userProfile.followers.total}</p>
+      </div>
+    );
+  }
 
   const getUserProfile = async () => {
     if (!token) {
@@ -192,7 +157,7 @@ function HomeContent() {
     }
   };
 
-  const getTopSongs = async () => {
+  const fetchTopItems = async (type, timeRange) => {
     if (!token) {
       console.error("Token not available. Please log in.");
       return;
@@ -200,57 +165,7 @@ function HomeContent() {
 
     try {
       const { data } = await axios.get(
-        "https://api.spotify.com/v1/me/top/tracks?time_range=long_term&limit=5",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-      console.log("get top songs");
-      console.log(data);
-      setTopSongs(data.items);
-    } catch (error) {
-      console.error("Error fetching top songs:", error);
-    }
-  };
-
-  const getTopArtists = async () => {
-    if (!token) {
-      console.error("Token not available. Please log in.");
-      return;
-    }
-
-    try {
-      const { data } = await axios.get(
-        "https://api.spotify.com/v1/me/top/artists?time_range=long_term&limit=5",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-      console.log("get top artists");
-      console.log(data);
-      setTopArtists(data.items);
-    } catch (error) {
-      console.error("Error fetching top songs:", error);
-    }
-  };
-
-  const FetchTopItems = async (
-    limit = 5,
-    TimeRange = "long_term",
-    type = "artists",
-  ) => {
-    if (!token) {
-      const errorMessage = "Token not available. Please log in.";
-      console.error(errorMessage);
-      return Promise.reject(new Error(errorMessage));
-    }
-    try {
-      const { data } = await axios.get(
-        `https://api.spotify.com/v1/me/top/${type}?time_range=${TimeRange}&limit=${limit}`,
+        `https://api.spotify.com/v1/me/top/${type}?time_range=${timeRange}&limit=${type === "tracks" ? 25 : 20}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -264,42 +179,107 @@ function HomeContent() {
     }
   };
 
-  const DisplayReccomendation = async () => {
-    console.log("reccomendation");
-    const topItems = await FetchTopItems(5, "short_term", "tracks");
-    console.log(topItems);
-    console.log("flag");
-    let ids = [];
-    for (let i = 0; i < topItems.length; i += 1) {
-      console.log(topItems[i].id);
-      ids = ids.concat(topItems[i].id);
+  useEffect(() => {
+    if (token) {
+      fetchTopItems("tracks", timeRangeTracks).then(setTopTracks);
+      fetchTopItems("artists", timeRangeArtists).then(setTopArtists);
     }
-    console.log(ids);
-    console.log(ids.join(", "));
-    const { data } = await axios.get(
-      `https://api.spotify.com/v1/recommendations?limit=5&seed_tracks=${ids.join(",")}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
+  }, [token, timeRangeTracks, timeRangeArtists]);
+
+  const timeRangeButtons = (type) => ["short_term", "medium_term", "long_term"].map((range) => (
+    <button
+      key={range}
+      type="button"
+      onClick={() => type === "tracks" ? setTimeRangeTracks(range) : setTimeRangeArtists(range)}
+      className={buttonStyle}
+    >
+      {range.replace('_', ' ').toUpperCase()}
+    </button>
+  ));
+
+
+  const getGenresFromArtists = async (timeRange) => {
+    try {
+      const artists = await fetchTopItems("artists", timeRange);
+      return artists.flatMap(artist => artist.genres);
+    } catch (error) {
+      console.error(`Error fetching genres for ${timeRange}:`, error);
+      return [];
+    }
+  };
+
+  /* 
+  Recommender:
+  1) gets three most frequent genres of top artists (over all time ranges)
+  2) gets two most played tracks long_term
+  3) Uses those as seeds
+  */
+
+  const getMostFrequentGenres = (genres) => {
+    const frequency = genres.reduce((acc, genre) => {
+      acc[genre] = (acc[genre] || 0) + 1;
+      return acc;
+    }, {});
+
+    return Object.entries(frequency)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 3)
+      .map(entry => entry[0]);
+  };
+
+  const displayRecommendation = async () => {
+    if (!token) {
+      console.error("Token not available. Please log in.");
+      return;
+    }
+
+    try {
+      const shortTermGenres = await getGenresFromArtists("short_term");
+      const mediumTermGenres = await getGenresFromArtists("medium_term");
+      const longTermGenres = await getGenresFromArtists("long_term");
+
+      const combinedGenres = [...shortTermGenres, ...mediumTermGenres, ...longTermGenres];
+      const topGenres = getMostFrequentGenres(combinedGenres);
+
+      const topLongTermTracks = await fetchTopItems("tracks", "long_term");
+      const seedTracks = topLongTermTracks.slice(0, 2).map(track => track.id);
+
+      const { data } = await axios.get(
+        `https://api.spotify.com/v1/recommendations?limit=10&seed_genres=${topGenres.join(",")}&seed_tracks=${seedTracks.join(",")}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      },
+      );
+
+      setRecommendedSongs(data.tracks);
+    } catch (error) {
+      console.error("Error in recommendation process:", error);
+    }
+  };
+
+  function DisplayUniquenessScore() {
+    let uniqueness = 0;
+    for (let i = 0; i < topArtists.length; i++) {
+      // console.log(topartists[i].popularity);
+      uniqueness += topArtists[i].popularity;
+    }
+    return (
+      <div>
+        Your Uniqueness Score:{" "}
+        {(100 - uniqueness / topArtists.length).toFixed(0)}%
+      </div>
     );
-    console.log(data);
-    console.log(data.tracks[0]);
-    setRecommendedSong(data.tracks);
-    // console.log(SongPlayer(data.tracks[0]))
-    // return (<SongPlayer key={data.tracks[0].id} song={data.tracks[0]} />)
-  };
+  }
 
-  const RenderTopSongs = () => {
-    return topsongs.map((song) => (
-      <SongPlayer key={song.id} song={song} token={token} />
-    ));
-  };
-
-  const RenderTopArtists = () => {
-    return topartists.map((artist) => <div key={artist.id}>{artist.name}</div>);
-  };
+  function DisplayTopGenre() {
+    let genres = [];
+    for (let i = 0; i < topArtists.length; i++) {
+      genres = genres.concat(removeDuplicates(topArtists[i].genres));
+    }
+    return <div>Your Top Genre: {mode(genres)}</div>;
+  }
 
   // Check for token in the URL hash when component mounts
   React.useEffect(() => {
@@ -311,23 +291,11 @@ function HomeContent() {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      {!token && (
-        <button
-          type="button"
-          className={`mt-4 ${buttonStyle}`}
-          onClick={handleLogin}
-        >
-          Login to Spotify
-        </button>
-      )}
-
-      {token && (
-        <div className="mt-4">
-          <button type="button" className={`${buttonStyle}`} onClick={logout}>
-            Logout
-          </button>
-        </div>
-      )}
+      <NavbarComponent
+        onLogin={handleLogin}
+        onLogout={logout}
+        isLoggedIn={Boolean(token)}
+      />
 
       {token && (
         <div className="mt-4">
@@ -342,63 +310,52 @@ function HomeContent() {
       )}
 
       {token && userProfile != null && (
-        <div>User Profile:{RenderUserProfile(userProfile)}</div>
+        <div>User Profile:{RenderUserProfile()}</div>
       )}
 
-      {token && userProfile != null && (
-        <div>{DisplayUniquenessScore({ topartists })}</div>
-      )}
+      {token && userProfile != null && <div>{DisplayUniquenessScore()}</div>}
 
-      {token && userProfile != null && (
-        <div>{DisplayTopGenre({ topartists })}</div>
-      )}
+      {token && userProfile != null && <div>{DisplayTopGenre()}</div>}
 
-      {token && (
-        <div className="mt-4">
-          <button
-            type="button"
-            className={`${buttonStyle}`}
-            onClick={getTopSongs}
-          >
-            Get Top Songs
-          </button>
-        </div>
-      )}
+      <div>
+        <h2>Time Range for Tracks</h2>
+        {timeRangeButtons("tracks")}
+      </div>
+      <div>
+        {topTracks.map((track) => (
+          <SongPlayer key={track.id} song={track} token={token} />
+        ))}
+      </div>
 
-      {token && topsongs.length > 0 && (
-        <div>Your Top Songs:{RenderTopSongs()}</div>
-      )}
-
-      {token && (
-        <div className="mt-4">
-          <button
-            type="button"
-            className={`${buttonStyle}`}
-            onClick={getTopArtists}
-          >
-            Get Top Artists
-          </button>
-        </div>
-      )}
-
-      {token && topartists.length > 0 && (
-        <div>Your Top Artists:{RenderTopArtists()}</div>
-      )}
+      <div>
+        <h2>Time Range for Artists</h2>
+        {timeRangeButtons("artists")}
+      </div>
+      <div>
+        {topArtists.map((artist) => (
+          <div key={artist.id}>{artist.name}</div>
+        ))}
+      </div>
 
       {token && (
         <div className="mt-4">
           <button
             type="button"
             className={`${buttonStyle}`}
-            onClick={DisplayReccomendation}
+            onClick={displayRecommendation}
           >
-            Display Reccomendation
+            Display Recommendation
           </button>
         </div>
       )}
 
-      {token && recommendedSong.length > 0 && (
-        <div>{RenderReccomendation({ recommendedSong, token })}</div>
+      {token && recommendedSongs.length > 0 && (
+        <div>
+          <h2>Recommended Songs:</h2>
+          {recommendedSongs.map((song) => (
+            <SongPlayer key={song.id} song={song} token={token} />
+          ))}
+        </div>
       )}
     </div>
   );
