@@ -1,10 +1,5 @@
 name: Test
-on:
-  push:
-    branches:
-      - master
-      - dev
-      - staging
+on: pull_request
 jobs:
   test-backend:
     runs-on: ubuntu-latest
