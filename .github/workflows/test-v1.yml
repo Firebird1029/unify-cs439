@@ -1,0 +1,21 @@
+name: Test
+on:
+  push:
+    branches:
+      - master
+      - dev
+      - staging
+jobs:
+  test-backend:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./server
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install modules
+        run: npm ci
+      - name: Run Jest
+        run: npm test
