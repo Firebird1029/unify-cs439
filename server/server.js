@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const express = require("express");
 
 const axios = require("axios");
@@ -108,6 +109,4 @@ app.get("/getTopItems", async (req, res) => {
   }
 });
 
-app.listen(5000, () => {
-  console.log("app listening on port 5000");
-});
+module.exports = app;
