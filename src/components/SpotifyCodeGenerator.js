@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+/* eslint-disable no-bitwise */
 import axios from "axios";
 
 function hashCode(str) {
@@ -122,6 +122,7 @@ const GetSpotifyCode = async (SpotifyURL) => {
   }
 
   console.log("Created image");
+  return null;
 };
 
 function getRandomColor() {
