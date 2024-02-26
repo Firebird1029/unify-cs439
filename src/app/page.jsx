@@ -1,12 +1,11 @@
-import UserProfile from "../pages/UserProfile";
-import Navbar from "../components/Navbar";
-
-function App() {
-  return (
-    <div className="App">
-      <UserProfile />
-    </div>
-  );
+import React from "react";
+import NavbarComponent from "@/components/Navbar";
+import Index from "@/components/Index";
+export default function() {
+    return(
+        <div>
+            <NavbarComponent/>
+            <Index/>
+        </div>
+    )
 }
-
-export default App;

@@ -6,7 +6,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import NavbarComponent from "@/components/Navbar";
 
-import SongPlayer from "../components/SongPlayer";
+import SongPlayer from "./SongPlayer";
 
 function UserProfile() {
   const [token, setToken] = useState(null);
