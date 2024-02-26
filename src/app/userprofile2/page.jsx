@@ -4,7 +4,7 @@ import HomeContent from "@/components/HomeContent";
 function Home() {
   return (
     <div>
-      <HomeContent/>
+      <HomeContent />
     </div>
   );
 }
