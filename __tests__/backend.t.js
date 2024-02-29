@@ -40,6 +40,7 @@ describe("Express App Tests", () => {
       const response = await request(app).get(
         "/getTopItems?token=invalid-token",
       );
+
       expect(response.statusCode).toBe(500);
     });
   });
