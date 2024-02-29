@@ -1,7 +1,7 @@
 name: Lint
 on:
   push:
-    branches-ignore:
+    branches:
       - master
 jobs:
   lint-code:
