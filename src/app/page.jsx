@@ -1,6 +1,6 @@
 import Index from "@/components/Index";
 
-export default function () {
+export default function IndexPage() {
   return (
     <div>
       <Index />

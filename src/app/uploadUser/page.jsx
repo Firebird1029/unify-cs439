@@ -1,11 +1,8 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-// import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 function Home() {
-  // const router = useRouter();
-
   const handleTokenFromCallback = () => {
     console.log("handling token");
     // Extract the token from the URL hash
@@ -21,7 +18,7 @@ function Home() {
   };
 
   // Check for token in the URL hash when component mounts
-  React.useEffect(() => {
+  useEffect(() => {
     handleTokenFromCallback();
   }, []);
 

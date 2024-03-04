@@ -3,7 +3,7 @@
 
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 import SongPlayer from "./SongPlayer";
 
@@ -20,7 +20,7 @@ function UserProfile() {
     }
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     console.log("Token:", token);
 
     if (token) {
@@ -36,7 +36,7 @@ function UserProfile() {
     }
   }, [token]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     console.log("Token:", token);
     if (token) {
       fetch(
@@ -51,7 +51,7 @@ function UserProfile() {
     }
   }, [token]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     console.log("Token:", token);
     if (token) {
       fetch(

@@ -4,7 +4,7 @@
 "use client";
 
 import axios from "axios";
-import React, { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import NavbarComponent from "./Navbar";
 
 function removeDuplicates(strings) {
@@ -293,7 +293,7 @@ function HomeContent() {
   };
 
   // Check for token in the URL hash when component mounts
-  React.useEffect(() => {
+  useEffect(() => {
     handleTokenFromCallback();
   }, []);
 

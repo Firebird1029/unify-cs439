@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const CLIENT_ID = process.env.NEXT_PUBLIC_CLIENT_ID;
 const REDIRECT_URI = process.env.NEXT_PUBLIC_REDIRECT_URI;
@@ -40,7 +40,7 @@ function Index() {
   };
 
   // Check for token in the URL hash when component mounts
-  React.useEffect(() => {
+  useEffect(() => {
     handleTokenFromCallback();
   }, []);
 
