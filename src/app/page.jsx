@@ -1,11 +1,9 @@
-import UserProfile from "../pages/UserProfile";
+import Index from "@/components/Index";
 
-function App() {
+export default function IndexPage() {
   return (
-    <div className="App">
-      <UserProfile />
+    <div>
+      <Index />
     </div>
   );
 }
-
-export default App;

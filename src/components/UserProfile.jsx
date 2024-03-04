@@ -3,10 +3,9 @@
 
 "use client";
 
-import React, { useState } from "react";
-import NavbarComponent from "@/components/Navbar";
+import { useState, useEffect } from "react";
 
-import SongPlayer from "../components/SongPlayer";
+import SongPlayer from "./SongPlayer";
 
 function UserProfile() {
   const [token, setToken] = useState(null);
@@ -14,49 +13,14 @@ function UserProfile() {
   const [topArtists, setTopArtists] = useState([]);
   const [topSongs, setTopSongs] = useState([]);
 
-  const CLIENT_ID = "319f3f19b0794ac28b1df51ca946609c";
-  const REDIRECT_URI = "http://localhost:3000";
-  const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
-  const RESPONSE_TYPE = "token";
-
-  const logout = () => {
-    setToken(null);
-    window.localStorage.removeItem("token");
-  };
-
-  const handleLogin = () => {
-    const params = new URLSearchParams();
-    params.append("client_id", CLIENT_ID);
-    params.append("response_type", RESPONSE_TYPE);
-    params.append("redirect_uri", REDIRECT_URI);
-    params.append(
-      "scope",
-      "user-read-private user-read-email user-library-read user-follow-read user-top-read user-modify-playback-state",
-    );
-
-    const url = `${AUTH_ENDPOINT}?${params.toString()}`;
-
-    // Open Spotify login in same window, will redirect back
-    window.open(url, "_self");
-  };
-
-  const handleTokenFromCallback = () => {
-    // Extract the token from the URL hash
-    const urlParams = new URLSearchParams(window.location.hash.substr(1));
-    const newToken = urlParams.get("access_token");
-
-    if (newToken) {
-      setToken(newToken);
-      window.localStorage.setItem("token", newToken);
+  useEffect(() => {
+    const storedToken = window.localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
     }
-  };
-
-  // Check for token in the URL hash when component mounts
-  React.useEffect(() => {
-    handleTokenFromCallback();
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     console.log("Token:", token);
 
     if (token) {
@@ -72,7 +36,7 @@ function UserProfile() {
     }
   }, [token]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     console.log("Token:", token);
     if (token) {
       fetch(
@@ -87,7 +51,7 @@ function UserProfile() {
     }
   }, [token]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     console.log("Token:", token);
     if (token) {
       fetch(
@@ -104,12 +68,6 @@ function UserProfile() {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      <NavbarComponent
-        onLogin={handleLogin}
-        onLogout={logout}
-        isLoggedIn={Boolean(token)}
-      />
-
       {token && userProfile != null && (
         <div>
           <p>Display Name: {userProfile?.display_name}</p>
