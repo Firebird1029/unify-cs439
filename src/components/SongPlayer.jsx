@@ -1,6 +1,7 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
+import PropTypes from "prop-types";
 
-function SongPlayer({ song, token }) {
+function SongPlayer({ song }) {
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -35,5 +36,13 @@ function SongPlayer({ song, token }) {
     </div>
   );
 }
+
+SongPlayer.propTypes = {
+  song: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    preview_url: PropTypes.string.isRequired,
+  }).isRequired,
+};
 
 export default SongPlayer;

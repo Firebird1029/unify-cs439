@@ -31,5 +31,3 @@ await setDoc(doc(db, "cities", "LA"), {
   state: "CA",
   country: "USA",
 });
-
-console.log("hi");
