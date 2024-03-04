@@ -67,6 +67,51 @@ function SongPlayer({ song, token }) {
   );
 }
 
+function RenderUserProfile({ userProfile }) {
+  if (!userProfile) {
+    return <p>No user profile available.</p>;
+  }
+  return (
+    <div>
+      <p>Display Name: {userProfile.display_name}</p>
+      <p>User URL: {userProfile.external_urls.spotify}</p>
+      <p>URI: {userProfile.uri}</p>
+      <p>Total Followers: {userProfile.followers.total}</p>
+    </div>
+  );
+}
+
+function DisplayUniquenessScore({ topArtists }) {
+  let uniqueness = 0;
+  for (let i = 0; i < topArtists.length; i++) {
+    // console.log(topartists[i].popularity);
+    uniqueness += topArtists[i].popularity;
+  }
+  return (
+    <div>
+      Your Uniqueness Score: {(100 - uniqueness / topArtists.length).toFixed(0)}
+      %
+    </div>
+  );
+}
+
+function DisplayTopGenre({ topArtists }) {
+  function mode(arr) {
+    return arr
+      .sort(
+        (a, b) =>
+          arr.filter((v) => v === a).length - arr.filter((v) => v === b).length,
+      )
+      .pop();
+  }
+
+  let genres = [];
+  for (let i = 0; i < topArtists.length; i++) {
+    genres = genres.concat(removeDuplicates(topArtists[i].genres));
+  }
+  return <div>Your Top Genre: {mode(genres)}</div>;
+}
+
 function HomeContent() {
   const [token, setToken] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
@@ -81,6 +126,9 @@ function HomeContent() {
   const REDIRECT_URI = process.env.NEXT_PUBLIC_REDIRECT_URI;
   const AUTH_ENDPOINT = process.env.NEXT_PUBLIC_AUTH_ENDPOINT;
   const RESPONSE_TYPE = process.env.NEXT_PUBLIC_RESPONSE_TYPE;
+
+  const buttonStyle =
+    "bg-white text-black py-2 px-4 rounded focus:outline-none focus:shadow-outline";
 
   const logout = () => {
     setToken(null);
@@ -114,29 +162,6 @@ function HomeContent() {
     }
   };
 
-  function mode(arr) {
-    return arr
-      .sort(
-        (a, b) =>
-          arr.filter((v) => v === a).length - arr.filter((v) => v === b).length,
-      )
-      .pop();
-  }
-
-  function RenderUserProfile() {
-    if (!userProfile) {
-      return <p>No user profile available.</p>;
-    }
-    return (
-      <div>
-        <p>Display Name: {userProfile.display_name}</p>
-        <p>User URL: {userProfile.external_urls.spotify}</p>
-        <p>URI: {userProfile.uri}</p>
-        <p>Total Followers: {userProfile.followers.total}</p>
-      </div>
-    );
-  }
-
   const getUserProfile = async () => {
     if (!token) {
       console.error("Token not available. Please log in.");
@@ -160,7 +185,7 @@ function HomeContent() {
   const fetchTopItems = async (type, timeRange) => {
     if (!token) {
       console.error("Token not available. Please log in.");
-      return;
+      return null;
     }
 
     try {
@@ -175,7 +200,7 @@ function HomeContent() {
       return data.items;
     } catch (error) {
       console.error(`Error fetching top ${type}:`, error);
-      return Promise.reject(error);
+      return error;
     }
   };
 
@@ -267,35 +292,10 @@ function HomeContent() {
     }
   };
 
-  function DisplayUniquenessScore() {
-    let uniqueness = 0;
-    for (let i = 0; i < topArtists.length; i++) {
-      // console.log(topartists[i].popularity);
-      uniqueness += topArtists[i].popularity;
-    }
-    return (
-      <div>
-        Your Uniqueness Score:{" "}
-        {(100 - uniqueness / topArtists.length).toFixed(0)}%
-      </div>
-    );
-  }
-
-  function DisplayTopGenre() {
-    let genres = [];
-    for (let i = 0; i < topArtists.length; i++) {
-      genres = genres.concat(removeDuplicates(topArtists[i].genres));
-    }
-    return <div>Your Top Genre: {mode(genres)}</div>;
-  }
-
   // Check for token in the URL hash when component mounts
   React.useEffect(() => {
     handleTokenFromCallback();
   }, []);
-
-  const buttonStyle =
-    "bg-white text-black py-2 px-4 rounded focus:outline-none focus:shadow-outline";
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
@@ -318,12 +318,16 @@ function HomeContent() {
       )}
 
       {token && userProfile != null && (
-        <div>User Profile:{RenderUserProfile()}</div>
+        <div>User Profile:{RenderUserProfile({ userProfile })}</div>
       )}
 
-      {token && userProfile != null && <div>{DisplayUniquenessScore()}</div>}
+      {token && userProfile != null && (
+        <div>{DisplayUniquenessScore({ topArtists })}</div>
+      )}
 
-      {token && userProfile != null && <div>{DisplayTopGenre()}</div>}
+      {token && userProfile != null && (
+        <div>{DisplayTopGenre({ topArtists })}</div>
+      )}
 
       <div>
         <h2>Time Range for Tracks</h2>

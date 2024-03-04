@@ -66,9 +66,6 @@ function UserProfile() {
     }
   }, [token]);
 
-  const buttonStyle =
-    "bg-white text-black py-2 px-4 rounded focus:outline-none focus:shadow-outline";
-
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       {token && userProfile != null && (

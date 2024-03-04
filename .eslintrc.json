@@ -25,6 +25,25 @@
     "no-unused-vars": "warn",
     "no-console": "warn",
     "import/no-extraneous-dependencies": "off",
-    "no-plusplus": "off"
+    "no-plusplus": "off",
+
+    // https://stackoverflow.com/a/72643821
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "": "never",
+        "js": "never",
+        "jsx": "never"
+      }
+    ],
+
+    // https://github.com/firebase/firebase-admin-node/discussions/1359#discussioncomment-977900
+    "import/no-unresolved": [
+      "error",
+      {
+        "ignore": ["^@/components/.+"]
+      }
+    ]
   }
 }

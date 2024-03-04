@@ -1,7 +1,7 @@
-name: Lint
+name: Lint (Prod)
 on:
-  push:
-    branches-ignore:
+  pull_request:
+    branches:
       - master
 jobs:
   lint-code:
@@ -15,7 +15,7 @@ jobs:
       - name: Install modules
         run: npm ci
       - name: Run Lint script
-        run: npm run lint
+        run: npm run lint:prod
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "[Github Actions] lint files"
