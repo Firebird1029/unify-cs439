@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Navbar, Nav } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
 function NavbarComponent({ onLogin, onLogout, isLoggedIn }) {
   const handleLogin = () => {
@@ -31,5 +31,11 @@ function NavbarComponent({ onLogin, onLogout, isLoggedIn }) {
     </Navbar>
   );
 }
+
+NavbarComponent.propTypes = {
+  onLogin: PropTypes.func.isRequired,
+  onLogout: PropTypes.func.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
+};
 
 export default NavbarComponent;

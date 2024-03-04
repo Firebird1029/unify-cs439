@@ -3,7 +3,7 @@
 
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState } from "react";
 import NavbarComponent from "@/components/Navbar";
 
 import SongPlayer from "../components/SongPlayer";
@@ -101,9 +101,6 @@ function UserProfile() {
         .catch((error) => console.error("Error fetching top songs:", error));
     }
   }, [token]);
-
-  const buttonStyle =
-    "bg-white text-black py-2 px-4 rounded focus:outline-none focus:shadow-outline";
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
