@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Index Component matches the snapshot 1`] = `
+<DocumentFragment>
+  <div>
+    <h1
+      class="font-koulen"
+    >
+      Welcome to Uni.fy!
+    </h1>
+    <button
+      class="border rounded-full px-6 py-2 text-lg font-koulen"
+      type="button"
+    >
+      Log In
+    </button>
+    <button
+      class="border rounded-full px-6 py-2 text-lg font-koulen"
+      type="button"
+    >
+      Enter Code
+    </button>
+  </div>
+</DocumentFragment>
+`;
