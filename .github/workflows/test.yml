@@ -5,7 +5,7 @@ on:
       - master
       - dev
 jobs:
-  test-backend:
+  test-code:
     runs-on: ubuntu-latest
 
     defaults:
