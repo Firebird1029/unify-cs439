@@ -1,9 +1,12 @@
-import UserProfile from "../../components/UserProfile";
+import UserProfile from "@/components/UserProfile";
+
+import UserContent from "@/components/svg-art/user_content";
 
 function App() {
   return (
     <div className="App">
-      <UserProfile />
+      {/* <UserProfile /> */}
+      <UserContent />
     </div>
   );
 }
