@@ -13,56 +13,6 @@ app.get("/api", (req, res) => {
   res.json({ message: "Hello from server!" });
 });
 
-const getUserProfile = async (token) => {
-  if (!token) {
-    console.error("Token not available. Please log in.");
-    return null; // or throw an error
-  }
-
-  try {
-    const { data } = await axios.get("https://api.spotify.com/v1/me", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    console.log(data);
-    console.log(`user profile uri: ${data.uri}`);
-    return data; // return the profile data
-  } catch (error) {
-    console.error("Error fetching user profile:", error);
-    return null; // or throw an error
-  }
-};
-
-const FetchTopItems = async (
-  token,
-  limit = 5,
-  TimeRange = "long_term",
-  type = "artists",
-) => {
-  if (!token) {
-    const errorMessage = "Token not available. Please log in.";
-    console.error(errorMessage);
-    return Promise.reject(new Error(errorMessage));
-  }
-
-  try {
-    const { data } = await axios.get(
-      `https://api.spotify.com/v1/me/top/${type}?time_range=${TimeRange}&limit=${limit}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    );
-    return data.items;
-  } catch (error) {
-    console.error(`Error fetching top ${type}:`, error);
-    return Promise.reject(error);
-  }
-};
-
 app.get("/getUserProfile", async (req, res) => {
   console.log("get user profile was called");
 
@@ -74,38 +24,102 @@ app.get("/getUserProfile", async (req, res) => {
     return res.status(400).send("Token not provided.");
   }
 
-  const profile = await getUserProfile(token);
+  try {
+    const { data } = await axios.get("https://api.spotify.com/v1/me", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-  console.log("Profile: ", profile);
+    console.log(data);
+    console.log(`user profile uri: ${data.uri}`);
 
-  if (profile) {
-    return res.json({ profile });
+    console.log("Profile: ", data);
+    return res.json({ profile: data });
+  } catch (error) {
+    console.error("Error fetching user profile:", error);
+    return res.status(500).send("Error fetching user profile.");
   }
-
-  return res.status(500).send("Error fetching user profile.");
 });
 
 app.get("/getTopItems", async (req, res) => {
   console.log("get top items was called");
 
   const { token, type } = req.query;
+  const timeRange = req.query.timeRange || "short_term";
+  const limit = req.query.limit || 5;
 
-  console.log("Received token", token);
-  console.log("Received type", type);
+  console.log("token:", token);
+  console.log("type:", type);
+  console.log("timeRange:", timeRange);
+  console.log("limit:", limit);
 
   if (!token) {
     return res.status(400).send("Token not provided.");
   }
 
   try {
-    const topItems = await FetchTopItems(token, 5, "short_term", type);
+    const { data } = await axios.get(
+      `https://api.spotify.com/v1/me/top/${type}?time_range=${timeRange}&limit=${limit}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
 
-    console.log("Top Items: ", topItems);
+    console.log("Top Items: ", data.items);
 
-    return res.json({ topItems });
+    return res.json({ topItems: data.items });
   } catch (error) {
     console.error("Error fetching top items:", error);
     return res.status(500).send("Error fetching top items.");
+  }
+});
+
+app.get("/getRecommendations", async (req, res) => {
+  console.log("get recommendations was called");
+
+  const { token } = req.query;
+  const limit = req.query.limit || 10;
+  const seedGenres = req.query.seed_genres;
+  const seedArtists = req.query.seed_artists;
+  const seedTracks = req.query.seed_tracks;
+
+  console.log("token:", token);
+  console.log("limit:", limit);
+  console.log("seed genres:", seedGenres);
+  console.log("seed artists:", seedArtists);
+  console.log("seed tracks:", seedTracks);
+
+  if (!token) {
+    return res.status(400).send("Token not provided.");
+  }
+
+  let queryParams = `limit=${limit}`;
+
+  if (seedGenres)
+    queryParams += `&seed_genres=${encodeURIComponent(seedGenres)}`;
+  if (seedArtists)
+    queryParams += `&seed_artists=${encodeURIComponent(seedArtists)}`;
+  if (seedTracks)
+    queryParams += `&seed_tracks=${encodeURIComponent(seedTracks)}`;
+
+  try {
+    const { data } = await axios.get(
+      `https://api.spotify.com/v1/recommendations?${queryParams}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    console.log("Recommendations: ", data);
+    return res.json(data);
+  } catch (error) {
+    console.error("Error fetching recommendations:", error);
+    return res.status(500).send("Error fetching recommendations.");
   }
 });
 
