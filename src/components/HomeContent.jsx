@@ -3,8 +3,7 @@
 
 "use client";
 
-import axios from "axios";
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import SongPlayer from "./SongPlayer";
 
 function HomeContent() {
@@ -45,17 +44,14 @@ function HomeContent() {
     }
   }, [token]);
 
-  
-
   const fetchTopItems = async (type, timeRange, limit = 25) => {
     if (!token) {
       console.error("Token not available. Please log in.");
       return null;
     }
-  
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/getTopItems?token=${token}&type=${type}&timeRange=${timeRange}&limit=${limit}`
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/getTopItems?token=${token}&type=${type}&timeRange=${timeRange}&limit=${limit}`,
       );
       const data = await response.json();
       return data.topItems;
@@ -139,7 +135,7 @@ function HomeContent() {
       const seedTracks = topLongTermTracks.slice(0, 2).map((track) => track.id);
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/getRecommendations?token=${token}&limit=10&seed_genres=${topGenres.join(",")}&seed_tracks=${seedTracks.join(",")}`
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/getRecommendations?token=${token}&limit=10&seed_genres=${topGenres.join(",")}&seed_tracks=${seedTracks.join(",")}`,
       );
       const data = await response.json();
 
@@ -151,7 +147,6 @@ function HomeContent() {
 
   return (
     <div className="">
-
       {token && userProfile != null && (
         <div>
           <p>Display Name: {userProfile?.display_name}</p>
@@ -167,7 +162,7 @@ function HomeContent() {
       </div>
       <div>
         {topTracks.map((track) => (
-          <SongPlayer key={track.id} song={track}/>
+          <SongPlayer key={track.id} song={track} />
         ))}
       </div>
 
@@ -197,7 +192,7 @@ function HomeContent() {
         <div>
           <h2>Recommended Songs:</h2>
           {recommendedSongs.map((song) => (
-            <SongPlayer key={song.id} song={song}/>
+            <SongPlayer key={song.id} song={song} />
           ))}
         </div>
       )}

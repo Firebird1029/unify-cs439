@@ -13,7 +13,6 @@ app.get("/api", (req, res) => {
   res.json({ message: "Hello from server!" });
 });
 
-
 app.get("/getUserProfile", async (req, res) => {
   console.log("get user profile was called");
 
@@ -42,7 +41,6 @@ app.get("/getUserProfile", async (req, res) => {
     return res.status(500).send("Error fetching user profile.");
   }
 });
-
 
 app.get("/getTopItems", async (req, res) => {
   console.log("get top items was called");
@@ -73,13 +71,11 @@ app.get("/getTopItems", async (req, res) => {
     console.log("Top Items: ", data.items);
 
     return res.json({ topItems: data.items });
-
   } catch (error) {
     console.error("Error fetching top items:", error);
     return res.status(500).send("Error fetching top items.");
   }
 });
-
 
 app.get("/getRecommendations", async (req, res) => {
   console.log("get recommendations was called");
@@ -101,17 +97,23 @@ app.get("/getRecommendations", async (req, res) => {
   }
 
   let queryParams = `limit=${limit}`;
-  
-  if (seedGenres) queryParams += `&seed_genres=${encodeURIComponent(seedGenres)}`;
-  if (seedArtists) queryParams += `&seed_artists=${encodeURIComponent(seedArtists)}`;
-  if (seedTracks) queryParams += `&seed_tracks=${encodeURIComponent(seedTracks)}`;
+
+  if (seedGenres)
+    queryParams += `&seed_genres=${encodeURIComponent(seedGenres)}`;
+  if (seedArtists)
+    queryParams += `&seed_artists=${encodeURIComponent(seedArtists)}`;
+  if (seedTracks)
+    queryParams += `&seed_tracks=${encodeURIComponent(seedTracks)}`;
 
   try {
-    const { data } = await axios.get(`https://api.spotify.com/v1/recommendations?${queryParams}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
+    const { data } = await axios.get(
+      `https://api.spotify.com/v1/recommendations?${queryParams}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
-    });
+    );
 
     console.log("Recommendations: ", data);
     return res.json(data);
