@@ -58,7 +58,9 @@ function App() {
     console.log("sharing song");
 
     // Use Web Share API to share the default image
-    const svgString = ReactDOMServer.renderToString(ShareCassette());
+    const svgString = ReactDOMServer.renderToString(
+      <ShareCassette displayName={userProfile.display_name} />,
+    );
     console.log(svgString);
 
     const img = new Image();
@@ -86,7 +88,7 @@ function App() {
             .share({
               title: "Unify with me!",
               text: `Compare our stats on Uni.fy`,
-              url: "uni.fy",
+              url: "unify",
               files: [
                 new File([blob], "file.png", {
                   type: blob.type,
@@ -107,7 +109,6 @@ function App() {
 
   return (
     <div className="App">
-      {/* <UserProfile /> */}
       {userProfile !== null && topArtists !== null ? (
         <UserContent
           displayName={userProfile.display_name}
