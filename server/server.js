@@ -123,4 +123,35 @@ app.get("/getRecommendations", async (req, res) => {
   }
 });
 
+app.get("/getAudioFeatures", async (req, res) => {
+  console.log("get audio features was called");
+
+  const { token, ids } = req.query;
+
+  console.log("token:", token);
+  console.log("ids:", ids);
+
+  if (!token) {
+    return res.status(400).send("Token not provided.");
+  }
+
+  try {
+    const { data } = await axios.get(
+      `https://api.spotify.com/v1/audio-features?ids=${encodeURIComponent(ids)}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    console.log("audio features: ", data);
+
+    return res.json(data);
+  } catch (error) {
+    console.error("Error fetching audio features:", error);
+    return res.status(500).send("Error fetching audio features");
+  }
+});
+
 module.exports = app;
