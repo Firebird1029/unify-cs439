@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "test": "jest",
-    "server": "node -r dotenv/config server/index.js dotenv_config_path=server/.env",
+    "server": "node -r dotenv/config api/index.js dotenv_config_path=api/.env",
     "lint-next": "next lint",
     "lint": "eslint --fix --c .eslintrc.json --ext .js,.jsx,.mjs .; prettier --write --config ./.prettierrc .",
     "lint:dev": "eslint --c .eslintrc.json --ext .js,.jsx,.mjs . && prettier --check --config ./.prettierrc .",

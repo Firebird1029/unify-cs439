@@ -4,7 +4,7 @@
 
 ```bash
 npm install
-touch server/.env
+touch api/.env
 ```
 
 ## Development
