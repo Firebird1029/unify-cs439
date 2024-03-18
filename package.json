@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "next-dev": "next dev",
+    "server-dev": "nodemon -r dotenv/config api/index.js dotenv_config_path=api/.env",
+    "dev": "concurrently \"npm run server-dev\" \"npm run next-dev\" --kill-others",
     "build": "next build",
     "start": "next start",
     "test": "jest",
@@ -32,6 +34,7 @@
     "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/react": "^14.2.1",
     "autoprefixer": "^10.4.17",
+    "concurrently": "^8.2.2",
     "eslint": "^8.56.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-next": "14.1.0",
