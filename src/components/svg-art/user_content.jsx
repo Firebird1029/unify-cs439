@@ -160,16 +160,16 @@ function UserContent({
           ))}
         </div>
       </div>
-      <div className="bg-gray-50 rounded-lg p-4 mt-4 ml-4 flex justify-center">
+      <div className="bg-gray-50 rounded-lg p-4 mt-4 ml-4justify-center">
         {featuresData ? (
-          <div style={{ height: 500 }}>
+          <div style={{ height: 400 }}>
             <ResponsiveRadar
               data={featuresData}
               keys={["value"]}
               indexBy="feature"
               valueFormat=">-.1f"
               maxValue="100"
-              margin={{ top: 40, right: 0, bottom: 40, left: 0 }}
+              margin={{ top: 20, right: 60, bottom: 20, left: 60 }}
             />
           </div>
         ) : (
