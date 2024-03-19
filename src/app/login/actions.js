@@ -56,3 +56,45 @@ export async function signup(formData) {
   revalidatePath("/", "layout");
   redirect("/account");
 }
+
+export async function loginWithSpotify() {
+  const supabase = createClient();
+
+  // https://supabase.com/docs/reference/javascript/auth-signinwithoauth?example=sign-in-with-scopes
+  supabase.auth.onAuthStateChange((event, session) => {
+    if (session && session.provider_token) {
+      window.localStorage.setItem(
+        "oauth_provider_token",
+        session.provider_token,
+      );
+    }
+
+    if (session && session.provider_refresh_token) {
+      window.localStorage.setItem(
+        "oauth_provider_refresh_token",
+        session.provider_refresh_token,
+      );
+    }
+
+    if (event === "SIGNED_OUT") {
+      window.localStorage.removeItem("oauth_provider_token");
+      window.localStorage.removeItem("oauth_provider_refresh_token");
+    }
+  });
+
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "spotify",
+    options: {
+      redirectTo: process.env.NEXT_PUBLIC_REDIRECT_URI,
+      scopes:
+        "user-read-private user-read-email user-library-read user-follow-read user-top-read user-modify-playback-state",
+    },
+  });
+
+  if (error) {
+    console.error(error.message); // TODO display error message to user
+    redirect("/error");
+  } else {
+    redirect(data.url);
+  }
+}
