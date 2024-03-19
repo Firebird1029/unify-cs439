@@ -1,4 +1,4 @@
-function IndexContent({ handleLogin, enterCode }) {
+export default function IndexContent({ handleLogin, enterCode }) {
   return (
     <svg
       width="100%"
@@ -461,4 +461,3 @@ function IndexContent({ handleLogin, enterCode }) {
     </svg>
   );
 }
-export default IndexContent;
