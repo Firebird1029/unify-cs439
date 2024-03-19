@@ -8,7 +8,6 @@ import ShareCassette from "@/components/svg-art/share_cassette";
 
 export default function UserProfilePage() {
   const [token, setToken] = useState(null);
-  const [userProfile, setUserProfile] = useState(null);
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
@@ -17,24 +16,6 @@ export default function UserProfilePage() {
       setToken(storedToken);
     }
   }, []);
-
-  useEffect(() => {
-    // console.log("Token:", token);
-
-    if (token) {
-      fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/getUserProfile?token=${token}`,
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          // console.log("user profile: ", data.profile);
-          setUserProfile(data.profile);
-        })
-        .then(() => {
-          // console.log("got user profile");
-        });
-    }
-  }, [token]);
 
   // useEffect to get user data object
   useEffect(() => {
@@ -56,7 +37,7 @@ export default function UserProfilePage() {
 
     // Use Web Share API to share the default image
     const svgString = ReactDOMServer.renderToString(
-      <ShareCassette displayName={userProfile.display_name} />,
+      <ShareCassette displayName={userData.userProfile.display_name} />,
     );
     // console.log(svgString);
 
@@ -109,9 +90,8 @@ export default function UserProfilePage() {
 
   return (
     <div className="App">
-      {userProfile !== null && userData !== null ? (
+      {userData !== null ? (
         <UserContent
-          displayName={userProfile.display_name}
           userData={userData}
           shareCassette={shareCassette}
           unify={unify}
