@@ -2,16 +2,17 @@
 
 import { useEffect, useState } from "react";
 
+import IndexContent from "@/components/svg-art/index_content";
+
 const CLIENT_ID = process.env.NEXT_PUBLIC_CLIENT_ID;
 const REDIRECT_URI = process.env.NEXT_PUBLIC_REDIRECT_URI;
 const AUTH_ENDPOINT = process.env.NEXT_PUBLIC_AUTH_ENDPOINT;
 const RESPONSE_TYPE = process.env.NEXT_PUBLIC_RESPONSE_TYPE;
 
-function Index() {
+export default function HomePage() {
   const [token, setToken] = useState(null);
 
   const handleLogin = () => {
-    console.log("logging in");
     const params = new URLSearchParams();
     params.append("client_id", CLIENT_ID);
     params.append("response_type", RESPONSE_TYPE);
@@ -27,8 +28,11 @@ function Index() {
     window.open(url, "_self");
   };
 
+  const enterCode = () => {
+    // console.log("enter code");
+  };
+
   const handleTokenFromCallback = () => {
-    console.log("handling token");
     // Extract the token from the URL hash
     const urlParams = new URLSearchParams(window.location.hash.substr(1));
     const newToken = urlParams.get("access_token");
@@ -45,23 +49,8 @@ function Index() {
   }, []);
 
   return (
-    <div>
-      <h1 className="font-koulen">Welcome to Uni.fy!</h1>
-      <button
-        type="button"
-        className="border rounded-full px-6 py-2 text-lg font-koulen"
-        onClick={() => handleLogin()}
-      >
-        Log In
-      </button>
-      <button
-        type="button"
-        className="border rounded-full px-6 py-2 text-lg font-koulen"
-      >
-        Enter Code
-      </button>
+    <div style={{ width: "100vw", height: "100vh" }}>
+      <IndexContent handleLogin={handleLogin} enterCode={enterCode} />
     </div>
   );
 }
-
-export default Index;

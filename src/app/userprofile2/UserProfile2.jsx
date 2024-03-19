@@ -1,13 +1,11 @@
-/* eslint-disable no-console */
-/* eslint-disable react/prop-types */
-
 "use client";
 
 import { useState, useEffect } from "react";
+import axios from "axios";
 import { ResponsiveRadar } from "@nivo/radar";
-import SongPlayer from "./SongPlayer";
+import SongPlayer from "@/components/SongPlayer";
 
-function HomeContent() {
+function UserProfile2() {
   const [token, setToken] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
   const [recommendedSongs, setRecommendedSongs] = useState([]);
@@ -35,15 +33,14 @@ function HomeContent() {
     // ("Token:", token);
 
     if (token) {
-      fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/getUserProfile?token=${token}`,
-      )
-        .then((res) => res.json())
+      axios
+        .get(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/getUserProfile?token=${token}`,
+        )
+        .then((res) => res.data)
         .then((data) => {
-          // console.log("user profile: ", data.profile);
           setUserProfile(data.profile);
-        })
-        .then(console.log("got user profile"));
+        });
     }
   }, [token]);
 
@@ -53,7 +50,7 @@ function HomeContent() {
       return null;
     }
     try {
-      const response = await fetch(
+      const response = await axios.get(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/getTopItems?token=${token}&type=${type}&timeRange=${timeRange}&limit=${limit}`,
       );
       const data = await response.json();
@@ -137,7 +134,7 @@ function HomeContent() {
       const topLongTermTracks = await fetchTopItems("tracks", "long_term", 25);
       const seedTracks = topLongTermTracks.slice(0, 2).map((track) => track.id);
 
-      const response = await fetch(
+      const response = await axios.get(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/getRecommendations?token=${token}&limit=10&seed_genres=${topGenres.join(",")}&seed_tracks=${seedTracks.join(",")}`,
       );
       const data = await response.json();
@@ -164,7 +161,7 @@ function HomeContent() {
     const popularitySum = songs.reduce((acc, song) => acc + song.popularity, 0);
 
     try {
-      const response = await fetch(
+      const response = await axios.get(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/getAudioFeatures?token=${token}&ids=${trackIds}`,
       );
       const data = await response.json();
@@ -207,7 +204,6 @@ function HomeContent() {
         value: featuresAvg[key],
       }));
 
-      // console.log(formattedAvg);
       return formattedAvg;
     } catch (error) {
       console.error("Error fetching audio features:", error);
@@ -220,7 +216,6 @@ function HomeContent() {
     const fetchData = async () => {
       const data = await getAverageAudioFeatures();
       setFeaturesData(data);
-      // console.log(data);
     };
 
     if (token) {
@@ -298,4 +293,4 @@ function HomeContent() {
   );
 }
 
-export default HomeContent;
+export default UserProfile2;

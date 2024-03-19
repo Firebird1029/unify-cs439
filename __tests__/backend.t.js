@@ -1,6 +1,6 @@
 const request = require("supertest");
-const axios = require("axios");
-const app = require("../server/server");
+// const axios = require("axios");
+const app = require("../api/server");
 
 jest.mock("axios");
 

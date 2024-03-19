@@ -16,6 +16,3 @@ jobs:
         run: npm ci
       - name: Run Lint script
         run: npm run lint:prod
-      - uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "[Github Actions] lint files"

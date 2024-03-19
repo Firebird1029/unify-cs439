@@ -1,3 +1,5 @@
+// https://nextjs.org/docs/app/building-your-application/testing/jest
+
 const nextJest = require("next/jest");
 
 /** @type {import('jest').Config} */
