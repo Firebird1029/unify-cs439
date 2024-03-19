@@ -14,11 +14,7 @@ app.get("/api", (req, res) => {
 });
 
 app.get("/getUserProfile", async (req, res) => {
-  console.log("get user profile was called");
-
   const { token } = req.query; // Assuming the token is passed as a query parameter
-
-  console.log("Received token", token);
 
   if (!token) {
     return res.status(400).send("Token not provided.");
@@ -31,10 +27,6 @@ app.get("/getUserProfile", async (req, res) => {
       },
     });
 
-    console.log(data);
-    console.log(`user profile uri: ${data.uri}`);
-
-    console.log("Profile: ", data);
     return res.json({ profile: data });
   } catch (error) {
     console.error("Error fetching user profile:", error);
@@ -43,16 +35,9 @@ app.get("/getUserProfile", async (req, res) => {
 });
 
 app.get("/getTopItems", async (req, res) => {
-  console.log("get top items was called");
-
   const { token, type } = req.query;
   const timeRange = req.query.timeRange || "short_term";
   const limit = req.query.limit || 5;
-
-  console.log("token:", token);
-  console.log("type:", type);
-  console.log("timeRange:", timeRange);
-  console.log("limit:", limit);
 
   if (!token) {
     return res.status(400).send("Token not provided.");
@@ -68,8 +53,6 @@ app.get("/getTopItems", async (req, res) => {
       },
     );
 
-    console.log("Top Items: ", data.items);
-
     return res.json({ topItems: data.items });
   } catch (error) {
     console.error("Error fetching top items:", error);
@@ -78,19 +61,11 @@ app.get("/getTopItems", async (req, res) => {
 });
 
 app.get("/getRecommendations", async (req, res) => {
-  console.log("get recommendations was called");
-
   const { token } = req.query;
   const limit = req.query.limit || 10;
   const seedGenres = req.query.seed_genres;
   const seedArtists = req.query.seed_artists;
   const seedTracks = req.query.seed_tracks;
-
-  console.log("token:", token);
-  console.log("limit:", limit);
-  console.log("seed genres:", seedGenres);
-  console.log("seed artists:", seedArtists);
-  console.log("seed tracks:", seedTracks);
 
   if (!token) {
     return res.status(400).send("Token not provided.");
@@ -115,7 +90,6 @@ app.get("/getRecommendations", async (req, res) => {
       },
     );
 
-    console.log("Recommendations: ", data);
     return res.json(data);
   } catch (error) {
     console.error("Error fetching recommendations:", error);
@@ -124,12 +98,7 @@ app.get("/getRecommendations", async (req, res) => {
 });
 
 app.get("/getAudioFeatures", async (req, res) => {
-  console.log("get audio features was called");
-
   const { token, ids } = req.query;
-
-  console.log("token:", token);
-  console.log("ids:", ids);
 
   if (!token) {
     return res.status(400).send("Token not provided.");
@@ -144,8 +113,6 @@ app.get("/getAudioFeatures", async (req, res) => {
         },
       },
     );
-
-    console.log("audio features: ", data);
 
     return res.json(data);
   } catch (error) {

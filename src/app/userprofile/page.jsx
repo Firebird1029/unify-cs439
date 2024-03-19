@@ -1,11 +1,9 @@
-import UserProfile from "../../components/UserProfile";
+import UserProfile from "./UserProfile";
 
-function App() {
+export default function UserProfilePage() {
   return (
     <div className="App">
       <UserProfile />
     </div>
   );
 }
-
-export default App;

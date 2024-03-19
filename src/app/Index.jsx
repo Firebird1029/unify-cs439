@@ -7,11 +7,10 @@ const REDIRECT_URI = process.env.NEXT_PUBLIC_REDIRECT_URI;
 const AUTH_ENDPOINT = process.env.NEXT_PUBLIC_AUTH_ENDPOINT;
 const RESPONSE_TYPE = process.env.NEXT_PUBLIC_RESPONSE_TYPE;
 
-function Index() {
+export default function HomePage() {
   const [token, setToken] = useState(null);
 
   const handleLogin = () => {
-    console.log("logging in");
     const params = new URLSearchParams();
     params.append("client_id", CLIENT_ID);
     params.append("response_type", RESPONSE_TYPE);
@@ -28,7 +27,6 @@ function Index() {
   };
 
   const handleTokenFromCallback = () => {
-    console.log("handling token");
     // Extract the token from the URL hash
     const urlParams = new URLSearchParams(window.location.hash.substr(1));
     const newToken = urlParams.get("access_token");
@@ -63,5 +61,3 @@ function Index() {
     </div>
   );
 }
-
-export default Index;

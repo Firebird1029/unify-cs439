@@ -42,7 +42,7 @@
     "import/no-unresolved": [
       "error",
       {
-        "ignore": ["^@/components/.+"]
+        "ignore": ["^@/components/.+", "^@/app/.+"]
       }
     ]
   }

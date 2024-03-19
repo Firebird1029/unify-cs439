@@ -55,8 +55,8 @@
     "tailwindcss": "^3.3.0"
   },
   "lint-staged": {
-    "*.{js,jsx,mjs,css}": [
-      "eslint --cache --fix",
+    "*.{js,jsx,mjs}": [
+      "eslint --fix --c .eslintrc.json --ext .js,.jsx,.mjs --cache",
       "prettier --write --config ./.prettierrc"
     ]
   }

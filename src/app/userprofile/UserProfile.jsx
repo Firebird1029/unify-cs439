@@ -1,11 +1,8 @@
-/* eslint-disable no-console */
-/* eslint-disable react/prop-types */
-
 "use client";
 
 import { useState, useEffect } from "react";
 
-import SongPlayer from "./SongPlayer";
+import SongPlayer from "@/components/SongPlayer";
 
 function UserProfile() {
   const [token, setToken] = useState(null);
@@ -21,30 +18,24 @@ function UserProfile() {
   }, []);
 
   useEffect(() => {
-    console.log("Token:", token);
-
     if (token) {
       fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/getUserProfile?token=${token}`,
       )
         .then((res) => res.json())
         .then((data) => {
-          console.log("user profile: ", data.profile);
           setUserProfile(data.profile);
-        })
-        .then(console.log("got user profile"));
+        });
     }
   }, [token]);
 
   useEffect(() => {
-    console.log("Token:", token);
     if (token) {
       fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/getTopItems?token=${token}&type=artists`,
       )
         .then((res) => res.json())
         .then((data) => {
-          console.log("top artists: ", data);
           setTopArtists(data.topItems);
         })
         .catch((error) => console.error("Error fetching top items:", error));
@@ -52,14 +43,12 @@ function UserProfile() {
   }, [token]);
 
   useEffect(() => {
-    console.log("Token:", token);
     if (token) {
       fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/getTopItems?token=${token}&type=tracks`,
       )
         .then((res) => res.json())
         .then((data) => {
-          console.log("top songs: ", data);
           setTopSongs(data.topItems);
         })
         .catch((error) => console.error("Error fetching top songs:", error));

@@ -1,13 +1,10 @@
-/* eslint-disable no-console */
-/* eslint-disable react/prop-types */
-
 "use client";
 
 import { useState, useEffect } from "react";
 import { ResponsiveRadar } from "@nivo/radar";
-import SongPlayer from "./SongPlayer";
+import SongPlayer from "@/components/SongPlayer";
 
-function HomeContent() {
+function UserProfile2() {
   const [token, setToken] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
   const [recommendedSongs, setRecommendedSongs] = useState([]);
@@ -40,10 +37,8 @@ function HomeContent() {
       )
         .then((res) => res.json())
         .then((data) => {
-          // console.log("user profile: ", data.profile);
           setUserProfile(data.profile);
-        })
-        .then(console.log("got user profile"));
+        });
     }
   }, [token]);
 
@@ -207,7 +202,6 @@ function HomeContent() {
         value: featuresAvg[key],
       }));
 
-      // console.log(formattedAvg);
       return formattedAvg;
     } catch (error) {
       console.error("Error fetching audio features:", error);
@@ -220,7 +214,6 @@ function HomeContent() {
     const fetchData = async () => {
       const data = await getAverageAudioFeatures();
       setFeaturesData(data);
-      // console.log(data);
     };
 
     if (token) {
@@ -298,4 +291,4 @@ function HomeContent() {
   );
 }
 
-export default HomeContent;
+export default UserProfile2;

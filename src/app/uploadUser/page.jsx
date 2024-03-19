@@ -2,14 +2,11 @@
 
 import { useEffect } from "react";
 
-function Home() {
+export default function UploadUser() {
   const handleTokenFromCallback = () => {
-    console.log("handling token");
     // Extract the token from the URL hash
     const urlParams = new URLSearchParams(window.location.hash.substr(1));
     const newToken = urlParams.get("access_token");
-
-    console.log(newToken);
 
     if (newToken) {
       window.localStorage.setItem("token", newToken);
@@ -24,5 +21,3 @@ function Home() {
 
   return <div>loading...</div>;
 }
-
-export default Home;
