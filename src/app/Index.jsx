@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 
+import IndexContent from "@/components/svg-art/index_content";
+
 const CLIENT_ID = process.env.NEXT_PUBLIC_CLIENT_ID;
 const REDIRECT_URI = process.env.NEXT_PUBLIC_REDIRECT_URI;
 const AUTH_ENDPOINT = process.env.NEXT_PUBLIC_AUTH_ENDPOINT;
@@ -26,6 +28,10 @@ export default function HomePage() {
     window.open(url, "_self");
   };
 
+  const enterCode = () => {
+    console.log("enter code");
+  };
+
   const handleTokenFromCallback = () => {
     // Extract the token from the URL hash
     const urlParams = new URLSearchParams(window.location.hash.substr(1));
@@ -43,21 +49,8 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div>
-      <h1 className="font-koulen">Welcome to Uni.fy!</h1>
-      <button
-        type="button"
-        className="border rounded-full px-6 py-2 text-lg font-koulen"
-        onClick={() => handleLogin()}
-      >
-        Log In
-      </button>
-      <button
-        type="button"
-        className="border rounded-full px-6 py-2 text-lg font-koulen"
-      >
-        Enter Code
-      </button>
+    <div style={{ width: "100vw", height: "100vh" }}>
+      <IndexContent handleLogin={handleLogin} enterCode={enterCode} />
     </div>
   );
 }
