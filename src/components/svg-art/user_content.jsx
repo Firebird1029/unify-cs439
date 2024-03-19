@@ -1,13 +1,7 @@
 import { ResponsiveRadar } from "@nivo/radar";
 import "@/app/globals.css";
 
-function UserContent({
-  displayName,
-  userData,
-  shareCassette,
-  unify,
-  featuresData,
-}) {
+function UserContent({ displayName, userData, shareCassette, unify }) {
   return (
     <div className="grid grid-cols-2 p-8 flex">
       {/* <style>
@@ -155,16 +149,30 @@ function UserContent({
         >
           Top Artists:
           <div className="mt-4" />
-          {userData.map((artist) => (
+          {userData.topArtists.map((artist) => (
             <div>{artist.name}</div>
           ))}
         </div>
       </div>
-      <div className="bg-gray-50 rounded-lg p-4 mt-4 ml-4justify-center">
-        {featuresData ? (
+      <div className="bg-gray-100 rounded-lg p-4 mt-4 ml-4 flex">
+        <div
+          className="text-black text-l font-koulen"
+          style={{
+            fontSize: 40,
+          }}
+        >
+          Top Songs:
+          <div className="mt-4" />
+          {userData.topSongs.map((song) => (
+            <div>{song.name}</div>
+          ))}
+        </div>
+      </div>
+      <div className="rounded-lg p-4 mt-4 ml-4 justify-center">
+        {userData.featuresData ? (
           <div style={{ height: 400 }}>
             <ResponsiveRadar
-              data={featuresData}
+              data={userData.featuresData}
               keys={["value"]}
               indexBy="feature"
               valueFormat=">-.1f"
@@ -176,7 +184,6 @@ function UserContent({
           <div>Loading...</div>
         )}
       </div>
-      <div className="rounded-lg p-4 mt-4 ml-4 flex" />
     </div>
   );
 }

@@ -44,6 +44,9 @@ app.get("/getTopItems", async (req, res) => {
   }
 
   try {
+    console.log(
+      `https://api.spotify.com/v1/me/top/${type}?time_range=${timeRange}&limit=${limit}`,
+    );
     const { data } = await axios.get(
       `https://api.spotify.com/v1/me/top/${type}?time_range=${timeRange}&limit=${limit}`,
       {
@@ -118,6 +121,127 @@ app.get("/getAudioFeatures", async (req, res) => {
   } catch (error) {
     console.error("Error fetching audio features:", error);
     return res.status(500).send("Error fetching audio features");
+  }
+});
+
+app.get("/getAverageAudioFeatures", async (req, res) => {
+  const { token } = req.query;
+
+  // console.log("getting average audio features");
+
+  // console.log(token);
+
+  if (!token) {
+    return res.status(400).json({ error: "Token not provided." });
+  }
+
+  try {
+    // const songs = null;
+    const songs = await axios.get(
+      `https://api.spotify.com/v1/me/top/tracks?time_range=short_term&limit=5`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    // console.log(songs.data);
+
+    if (!songs) {
+      console.error("Failed to fetch top items");
+      return res.status(500).send("Failed to fetch top items");
+    }
+
+    const trackIds = songs.data.items.map((track) => track.id).join(",");
+
+    const { data } = await axios.get(
+      `https://api.spotify.com/v1/audio-features?ids=${encodeURIComponent(trackIds)}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    const audioFeatures = data.audio_features;
+
+    const featuresSum = audioFeatures.reduce(
+      (acc, feature) => {
+        acc.acousticness += feature.acousticness;
+        acc.danceability += feature.danceability;
+        acc.energy += feature.energy;
+        acc.instrumentalness += feature.instrumentalness;
+        acc.speechiness += feature.speechiness;
+        acc.valence += feature.valence;
+        return acc;
+      },
+      {
+        acousticness: 0,
+        danceability: 0,
+        energy: 0,
+        instrumentalness: 0,
+        speechiness: 0,
+        valence: 0,
+      },
+    );
+
+    const featuresAvg = Object.keys(featuresSum).reduce((acc, key) => {
+      acc[key] = (featuresSum[key] * 100) / audioFeatures.length;
+      return acc;
+    }, {});
+
+    return res.json(featuresAvg);
+  } catch (error) {
+    console.error("Error fetching audio features:", error);
+    return res.status(500).send("Error fetching audio features");
+  }
+});
+
+app.get("/getUserData", async (req, res) => {
+  const { token } = req.query; // Assuming the token is passed as a query parameter
+
+  if (!token) {
+    return res.status(400).send("Token not provided.");
+  }
+
+  try {
+    // Fetch average audio features
+    const averageAudioFeaturesResponse = await axios.get(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/getAverageAudioFeatures?token=${token}`,
+    );
+    const averageAudioFeatures = averageAudioFeaturesResponse.data;
+
+    const featuresData = Object.keys(averageAudioFeatures).map((key) => ({
+      feature: key,
+      value: averageAudioFeatures[key],
+    }));
+
+    // Fetch top artists
+    const topArtistsResponse = await axios.get(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/getTopItems?token=${token}&type=artists`,
+    );
+
+    const topArtists = topArtistsResponse.data.topItems;
+
+    // Fetch top songs
+    const topSongsResponse = await axios.get(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/getTopItems?token=${token}&type=tracks`,
+    );
+
+    const topSongs = topSongsResponse.data.topItems;
+
+    // Constructing the user data JSON
+    const userData = {
+      featuresData,
+      topArtists,
+      topSongs,
+    };
+
+    return res.json(userData);
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+    return res.status(500).send("Error fetching user data.");
   }
 });
 
