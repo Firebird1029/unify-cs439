@@ -60,6 +60,7 @@ export async function signup(formData) {
 export async function loginWithSpotify() {
   const supabase = createClient();
 
+  // TODO does this even get triggered? add console logs to check
   // https://supabase.com/docs/reference/javascript/auth-signinwithoauth?example=sign-in-with-scopes
   supabase.auth.onAuthStateChange((event, session) => {
     if (session && session.provider_token) {
@@ -86,6 +87,7 @@ export async function loginWithSpotify() {
     provider: "spotify",
     options: {
       redirectTo: process.env.NEXT_PUBLIC_REDIRECT_URI,
+      emailRedirectTo: `${baseURL}/auth/confirm`,
       scopes:
         "user-read-private user-read-email user-library-read user-follow-read user-top-read user-modify-playback-state",
     },

@@ -13,6 +13,13 @@ app.get("/api", (req, res) => {
   res.json({ message: "Hello from server!" });
 });
 
+/** ******
+ * ! MIGRATE ALL THESE FUNCTIONS TO SPOTIFY.JS !
+ ********* */
+
+/** ******
+ * this function has already been migrated
+ ********* */
 app.get("/getUserProfile", async (req, res) => {
   const { token } = req.query; // Assuming the token is passed as a query parameter
 
@@ -34,6 +41,9 @@ app.get("/getUserProfile", async (req, res) => {
   }
 });
 
+/** ******
+ * this function has already been migrated
+ ********* */
 app.get("/getTopItems", async (req, res) => {
   const { token, type } = req.query;
   const timeRange = req.query.timeRange || "short_term";
