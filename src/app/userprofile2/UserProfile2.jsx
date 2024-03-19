@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import axios from "axios";
 import { ResponsiveRadar } from "@nivo/radar";
 import SongPlayer from "@/components/SongPlayer";
 
@@ -32,10 +33,11 @@ function UserProfile2() {
     // ("Token:", token);
 
     if (token) {
-      fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/getUserProfile?token=${token}`,
-      )
-        .then((res) => res.json())
+      axios
+        .get(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/getUserProfile?token=${token}`,
+        )
+        .then((res) => res.data)
         .then((data) => {
           setUserProfile(data.profile);
         });
@@ -48,7 +50,7 @@ function UserProfile2() {
       return null;
     }
     try {
-      const response = await fetch(
+      const response = await axios.get(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/getTopItems?token=${token}&type=${type}&timeRange=${timeRange}&limit=${limit}`,
       );
       const data = await response.json();
@@ -132,7 +134,7 @@ function UserProfile2() {
       const topLongTermTracks = await fetchTopItems("tracks", "long_term", 25);
       const seedTracks = topLongTermTracks.slice(0, 2).map((track) => track.id);
 
-      const response = await fetch(
+      const response = await axios.get(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/getRecommendations?token=${token}&limit=10&seed_genres=${topGenres.join(",")}&seed_tracks=${seedTracks.join(",")}`,
       );
       const data = await response.json();
@@ -159,7 +161,7 @@ function UserProfile2() {
     const popularitySum = songs.reduce((acc, song) => acc + song.popularity, 0);
 
     try {
-      const response = await fetch(
+      const response = await axios.get(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/getAudioFeatures?token=${token}&ids=${trackIds}`,
       );
       const data = await response.json();

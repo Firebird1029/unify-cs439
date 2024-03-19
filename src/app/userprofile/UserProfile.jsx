@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import axios from "axios";
 
 import SongPlayer from "@/components/SongPlayer";
 
@@ -19,10 +20,11 @@ function UserProfile() {
 
   useEffect(() => {
     if (token) {
-      fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/getUserProfile?token=${token}`,
-      )
-        .then((res) => res.json())
+      axios
+        .get(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/getUserProfile?token=${token}`,
+        )
+        .then((res) => res.data)
         .then((data) => {
           setUserProfile(data.profile);
         });
@@ -31,10 +33,11 @@ function UserProfile() {
 
   useEffect(() => {
     if (token) {
-      fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/getTopItems?token=${token}&type=artists`,
-      )
-        .then((res) => res.json())
+      axios
+        .get(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/getTopItems?token=${token}&type=artists`,
+        )
+        .then((res) => res.data)
         .then((data) => {
           setTopArtists(data.topItems);
         })
@@ -44,10 +47,11 @@ function UserProfile() {
 
   useEffect(() => {
     if (token) {
-      fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/getTopItems?token=${token}&type=tracks`,
-      )
-        .then((res) => res.json())
+      axios
+        .get(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/getTopItems?token=${token}&type=tracks`,
+        )
+        .then((res) => res.data)
         .then((data) => {
           setTopSongs(data.topItems);
         })
