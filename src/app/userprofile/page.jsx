@@ -24,7 +24,7 @@ export default function UserProfilePage() {
       fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/getUserData?token=${token}`)
         .then((res) => res.json())
         .then((data) => {
-          console.log("user data: ", data);
+          // console.log("user data: ", data);
           setUserData(data);
         })
         .catch((error) => console.error("Error fetching user data:", error));
