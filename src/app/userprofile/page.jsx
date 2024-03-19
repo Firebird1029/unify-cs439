@@ -38,7 +38,7 @@ export default function UserProfilePage() {
   }, []);
 
   useEffect(() => {
-    console.log("Token:", token);
+    // console.log("Token:", token);
 
     if (token) {
       fetch(
@@ -46,22 +46,24 @@ export default function UserProfilePage() {
       )
         .then((res) => res.json())
         .then((data) => {
-          console.log("user profile: ", data.profile);
+          // console.log("user profile: ", data.profile);
           setUserProfile(data.profile);
         })
-        .then(console.log("got user profile"));
+        .then(() => {
+          // console.log("got user profile");
+        });
     }
   }, [token]);
 
   useEffect(() => {
-    console.log("Token:", token);
+    // console.log("Token:", token);
     if (token) {
       fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/getTopItems?token=${token}&type=artists`,
       )
         .then((res) => res.json())
         .then((data) => {
-          console.log("top artists: ", data);
+          // console.log("top artists: ", data);
           setTopArtists(data.topItems);
         })
         .catch((error) => console.error("Error fetching top items:", error));
@@ -70,13 +72,13 @@ export default function UserProfilePage() {
 
   // Function to handle sharing
   const shareCassette = async () => {
-    console.log("sharing song");
+    // console.log("sharing song");
 
     // Use Web Share API to share the default image
     const svgString = ReactDOMServer.renderToString(
       <ShareCassette displayName={userProfile.display_name} />,
     );
-    console.log(svgString);
+    // console.log(svgString);
 
     const img = new Image();
 
@@ -95,10 +97,10 @@ export default function UserProfilePage() {
 
       // Convert canvas to blob
       canvas.toBlob((blob) => {
-        console.log(blob);
+        // console.log(blob);
 
         if (navigator.share) {
-          console.log("Web share API supported");
+          // console.log("Web share API supported");
           navigator
             .share({
               title: "Unify with me!",
@@ -110,16 +112,18 @@ export default function UserProfilePage() {
                 }),
               ],
             })
-            .then(() => console.log("Shared successfully"))
+            .then(() => {
+              // console.log("Shared successfully");
+            })
             .catch((error) => console.error("Error sharing:", error));
         } else {
-          console.log("Web Share API not supported");
+          // console.log("Web Share API not supported");
         }
       }, "image/png");
     };
   };
   const unify = () => {
-    console.log("unifying");
+    // console.log("unifying");
   };
 
   const getAverageAudioFeatures = async () => {

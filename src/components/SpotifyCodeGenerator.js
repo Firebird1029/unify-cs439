@@ -38,8 +38,8 @@ function getColorFromSeed(seed) {
 
 // Example function to modify the SVG content
 const modifySvg = (svgString, uri) => {
-  console.log(uri);
-  console.log(hashCode(uri));
+  // console.log(uri);
+  // console.log(hashCode(uri));
   const parser = new DOMParser();
   const doc = parser.parseFromString(svgString, "image/svg+xml");
 
@@ -71,7 +71,7 @@ const modifySvg = (svgString, uri) => {
 
     // const randomColor = getRandomColor();
     const randomColor = getColorFromSeed(hashCode(uri) + i * 1000000);
-    console.log(randomColor);
+    // console.log(randomColor);
     rect.setAttribute("fill", randomColor);
 
     svgElement.insertBefore(rect, svgElement.firstChild);
@@ -90,23 +90,23 @@ const GetSpotifyCode = async (SpotifyURL) => {
   const textColor = "black";
   const imageWidth = "400";
 
-  const URIRegex = /\/([^\/]+)\/([^?]+)/; /// \/([^\/?]+)\?/;
+  const URIRegex = /\/([^/]+)\/([^?]+)/; /// \/([^\/?]+)\?/;
   const URIString = SpotifyURL.match(URIRegex)[2].split("/")[1];
 
   const type = SpotifyURL.match(URIRegex)[2].split("/")[0];
 
-  console.log(`${type}`);
+  // console.log(`${type}`);
 
-  console.log(`${URIString}`);
+  // console.log(`${URIString}`);
 
   const FullURI = `spotify:${type}:${URIString}`;
 
   const url = `https://scannables.scdn.co/uri/plain/${format}/${backgroundColor}/${textColor}/${imageWidth}/${FullURI}`;
 
   try {
-    console.log(`${url}`);
+    // console.log(`${url}`);
 
-    console.log("Start image creation");
+    // console.log("Start image creation");
 
     const response = await axios.get(url, { responseType: "arraybuffer" });
 
@@ -118,10 +118,10 @@ const GetSpotifyCode = async (SpotifyURL) => {
 
     return modifiedSvgString;
   } catch (error) {
-    console.error(`Error saving Spotify code: ${error.message}`);
+    // console.error(`Error saving Spotify code: ${error.message}`);
   }
 
-  console.log("Created image");
+  // console.log("Created image");
   return null;
 };
 

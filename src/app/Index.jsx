@@ -29,7 +29,7 @@ export default function HomePage() {
   };
 
   const enterCode = () => {
-    console.log("enter code");
+    // console.log("enter code");
   };
 
   const handleTokenFromCallback = () => {

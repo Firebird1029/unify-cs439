@@ -38,11 +38,11 @@ function SongPlayer({ song, token }) {
 
   // Function to handle sharing
   const shareSong = async () => {
-    console.log("sharing song");
+    // console.log("sharing song");
 
     // Use Web Share API to share the default image
     const svgString = await GetSpotifyCode(song.external_urls.spotify);
-    console.log(svgString);
+    // console.log(svgString);
 
     const img = new Image();
 
@@ -61,10 +61,10 @@ function SongPlayer({ song, token }) {
 
       // Convert canvas to blob
       canvas.toBlob((blob) => {
-        console.log(blob);
+        // console.log(blob);
 
         if (navigator.share) {
-          console.log("Web share API supported");
+          // console.log("Web share API supported");
           navigator
             .share({
               title: "Check out this song!",
@@ -76,10 +76,12 @@ function SongPlayer({ song, token }) {
                 }),
               ],
             })
-            .then(() => console.log("Shared successfully"))
+            .then(() => {
+              // console.log("Shared successfully");
+            })
             .catch((error) => console.error("Error sharing:", error));
         } else {
-          console.log("Web Share API not supported");
+          // console.log("Web Share API not supported");
         }
       }, "image/png");
     };
