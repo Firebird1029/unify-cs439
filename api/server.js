@@ -216,6 +216,14 @@ app.get("/getUserData", async (req, res) => {
   }
 
   try {
+    const userProfileResponse = await axios.get(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/getUserProfile?token=${token}`,
+    );
+
+    const userProfile = userProfileResponse.data.profile;
+
+    // console.log("user profile: ", userProfileResponse);
+
     // Fetch average audio features
     const averageAudioFeaturesResponse = await axios.get(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/getAverageAudioFeatures?token=${token}`,
@@ -243,6 +251,7 @@ app.get("/getUserData", async (req, res) => {
 
     // Constructing the user data JSON
     const userData = {
+      userProfile,
       featuresData,
       topArtists,
       topSongs,

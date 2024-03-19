@@ -1,7 +1,7 @@
 import { ResponsiveRadar } from "@nivo/radar";
 import "@/app/globals.css";
 
-function UserContent({ displayName, userData, shareCassette, unify }) {
+function UserContent({ userData, shareCassette, unify }) {
   return (
     <div className="grid grid-cols-2 p-8 flex">
       {/* <style>
@@ -15,7 +15,7 @@ function UserContent({ displayName, userData, shareCassette, unify }) {
             fontSize: 60,
           }}
         >
-          @{displayName}
+          @{userData.userProfile.display_name}
         </p>
         <div className="flex flex-row justify-center">
           <button
