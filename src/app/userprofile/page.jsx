@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import ReactDOMServer from "react-dom/server";
-import UserProfile from "@/components/UserProfile";
 
 import UserContent from "@/components/svg-art/user_content";
 import ShareCassette from "@/components/svg-art/share_cassette";
