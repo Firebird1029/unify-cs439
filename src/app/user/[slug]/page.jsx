@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import createClient from "@/utils/supabase/client";
+import UserContent from "@/components/svg-art/user_content";
 
 export default function UserPage({ params: { slug } }) {
   const supabase = createClient();
@@ -23,6 +24,7 @@ export default function UserPage({ params: { slug } }) {
         }
 
         if (data && data.length > 0) {
+          console.log("topArtists: ", data[0].spotify_data.topArtists);
           setUserData(data[0].spotify_data);
         }
 
@@ -31,8 +33,11 @@ export default function UserPage({ params: { slug } }) {
   }, []);
   return (
     <div>
-      <h1>User Page</h1>
-      {!loading && userData && <div>{JSON.stringify(userData)}</div>}
+      {!loading && userData && (
+        <div>
+          <UserContent userData={userData} shareCassette={null} unify={null} />
+        </div>
+      )}
       {!loading && !userData && <div>User not found!</div>}
     </div>
   );
