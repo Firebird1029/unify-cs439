@@ -1,4 +1,5 @@
 import { ResponsiveRadar } from "@nivo/radar";
+import { ResponsivePie } from "@nivo/pie";
 import "@/app/globals.css";
 
 function UnifyContent({ user1Data, user2Data }) {
@@ -21,6 +22,16 @@ function UnifyContent({ user1Data, user2Data }) {
     userData.feature = item.feature;
     return userData;
   });
+
+  const user1topGenres = Object.entries(user1Data.topGenres)
+    .sort((a, b) => b[1] - a[1]) // Sort genres by frequency in descending order
+    .slice(0, 5) // Get the top 5 genres
+    .map(([id, value]) => ({ id, value })); // Map to { id: genre, value: frequency } objects
+
+  const user2topGenres = Object.entries(user2Data.topGenres)
+    .sort((a, b) => b[1] - a[1]) // Sort genres by frequency in descending order
+    .slice(0, 5) // Get the top 5 genres
+    .map(([id, value]) => ({ id, value })); // Map to { id: genre, value: frequency } objects
 
   // console.log("combinedFeaturesData: ", combinedFeaturesData);
 
@@ -79,6 +90,64 @@ function UnifyContent({ user1Data, user2Data }) {
             ))}
           </div>
         </div>
+        {user1topGenres ? (
+          <div style={{ height: 400 }}>
+            <ResponsivePie
+              data={user1topGenres}
+              margin={{ top: 40, right: 140, bottom: 40, left: 140 }}
+              innerRadius={0.25}
+              keys={["value"]}
+              colors={{ scheme: "blues" }}
+              borderWidth={20}
+              borderColor="black"
+              arcLinkLabelsSkipAngle={10}
+              arcLinkLabelsTextColor="#333333"
+              arcLinkLabelsThickness={2}
+              arcLinkLabelsColor={{ from: "color" }}
+              enableArcLabels={false}
+              arcLabel="id"
+              arcLabelsSkipAngle={10}
+              arcLabelsTextColor={{
+                from: "color",
+                modifiers: [["darker", 2]],
+              }}
+              isInteractive={false}
+              animate={false}
+              legends={[]}
+            />
+          </div>
+        ) : (
+          <div>Loading...</div>
+        )}
+        {user2topGenres ? (
+          <div style={{ height: 400 }}>
+            <ResponsivePie
+              data={user2topGenres}
+              margin={{ top: 40, right: 140, bottom: 40, left: 140 }}
+              innerRadius={0.25}
+              keys={["value"]}
+              colors={{ scheme: "reds" }}
+              borderWidth={20}
+              borderColor="black"
+              arcLinkLabelsSkipAngle={10}
+              arcLinkLabelsTextColor="#333333"
+              arcLinkLabelsThickness={2}
+              arcLinkLabelsColor={{ from: "color" }}
+              enableArcLabels={false}
+              arcLabel="id"
+              arcLabelsSkipAngle={10}
+              arcLabelsTextColor={{
+                from: "color",
+                modifiers: [["darker", 2]],
+              }}
+              isInteractive={false}
+              animate={false}
+              legends={[]}
+            />
+          </div>
+        ) : (
+          <div>Loading...</div>
+        )}
         <div className="bg-gray-100 rounded-lg p-4 mt-4 flex">
           <div
             className="text-black text-l font-koulen"
@@ -135,10 +204,6 @@ function UnifyContent({ user1Data, user2Data }) {
         ) : (
           <div>Loading...</div>
         )}
-      </div>
-      <div className="grid grid-cols-2 p-8 flex">
-        <div className="bg-gray-100 rounded-lg p-4 mt-4 flex" />
-        <div className="bg-gray-100 rounded-lg p-4 mt-4 ml-4 flex" />
       </div>
     </>
   );
