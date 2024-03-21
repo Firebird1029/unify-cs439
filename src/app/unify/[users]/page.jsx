@@ -6,7 +6,7 @@ import createClient from "@/utils/supabase/client";
 import UnifyContent from "@/components/UnifyContent";
 
 export default function UnifyPage({ params: { users } }) {
-  console.log(users);
+  // console.log(users);
 
   const [user1, user2] = users.split("%26");
 
