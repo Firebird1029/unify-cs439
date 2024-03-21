@@ -1,10 +1,104 @@
 import { ResponsiveRadar } from "@nivo/radar";
 import { ResponsivePie } from "@nivo/pie";
 import "@/app/globals.css";
+import ReactDOMServer from "react-dom/server";
+import ShareUnify from "@/components/svg-art/share_unify";
+
+function calculateSimilarity(list1, list2) {
+  const intersection = Object.keys(list1).filter((key) =>
+    Object.prototype.hasOwnProperty.call(list2, key),
+  ).length;
+  const union = Object.keys({ ...list1, ...list2 }).length;
+  const similarity = intersection / union;
+  return similarity * 100; // Convert to percentage
+}
 
 function UnifyContent({ user1Data, user2Data }) {
   // console.log(user1Data.featuresData);
   // console.log(user2Data.featuresData);
+
+  // Function to handle sharing
+  const shareUnify = async () => {
+    // console.log("sharing song");
+
+    // Use Web Share API to share the default image
+    const svgString = ReactDOMServer.renderToString(<ShareUnify />);
+    // console.log(svgString);
+
+    const img = new Image();
+
+    // Set the source of the image
+    img.src = `data:image/svg+xml;utf8,${encodeURIComponent(svgString)}`;
+
+    // Wait for the image to load
+    img.onload = () => {
+      // Create a canvas element
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+
+      if (!ctx) {
+        console.error("Unable to obtain 2D context for canvas.");
+        return;
+      }
+
+      canvas.width = img.width;
+      canvas.height = img.height;
+
+      // Clear canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Add canvas to the document body for debugging
+      // document.body.appendChild(canvas);
+
+      canvas.width = img.width;
+      canvas.height = img.height;
+
+      // Draw the image on the canvas
+      canvas.getContext("2d")?.drawImage(img, 0, 0);
+
+      ctx.textAlign = "center";
+
+      // Render the text onto the canvas
+      ctx.font = "20px Koulen";
+      ctx.fillStyle = "black";
+      ctx.fillText(
+        `@${user2Data.userProfile.display_name}`,
+        canvas.width / 2,
+        302,
+      );
+      ctx.fillText(
+        `@${user1Data.userProfile.display_name}`,
+        canvas.width / 2,
+        501,
+      );
+
+      // Convert canvas to blob
+      canvas.toBlob((blob) => {
+        // console.log(blob);
+
+        if (navigator.share) {
+          // console.log("Web share API supported");
+          navigator
+            .share({
+              title: "Unify with me!",
+              text: `Compare our stats on Uni.fy`,
+              url: "unify",
+              files: [
+                new File([blob], "file.png", {
+                  type: blob.type,
+                }),
+              ],
+            })
+            .then(() => {
+              // console.log("Shared successfully");
+            })
+            .catch((error) => console.error("Error sharing:", error));
+        } else {
+          // console.log("Web Share API not supported");
+        }
+      }, "image/png");
+    };
+  };
 
   const user1Name = user1Data.userProfile.display_name;
   const user2Name = user2Data.userProfile.display_name;
@@ -32,6 +126,11 @@ function UnifyContent({ user1Data, user2Data }) {
     .sort((a, b) => b[1] - a[1]) // Sort genres by frequency in descending order
     .slice(0, 5) // Get the top 5 genres
     .map(([id, value]) => ({ id, value })); // Map to { id: genre, value: frequency } objects
+
+  const genreSimilarity = calculateSimilarity(
+    user1Data.topGenres,
+    user2Data.topGenres,
+  );
 
   // console.log("combinedFeaturesData: ", combinedFeaturesData);
 
@@ -76,13 +175,27 @@ function UnifyContent({ user1Data, user2Data }) {
           <span className="circle-text-small">Same Top Artist</span>
         </div>
         <div className="circle">
-          <span className="circle-text-large">90%</span>
+          <span className="circle-text-large">{genreSimilarity}%</span>
           <span className="circle-text-small">Genres Shared</span>
         </div>
         <div className="circle">
           <span className="circle-text-large">+10%</span>
           <span className="circle-text-small">Same Top Song</span>
         </div>
+      </div>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <button
+          type="button"
+          className="bg-gray-300 font-koulen rounded-full py-2.5 px-4 flex items-center mr-4"
+          style={{
+            cursor: "pointer",
+            backgroundColor: "#d1d5db",
+            fontSize: 30,
+          }}
+          onClick={shareUnify}
+        >
+          SHARE RESULTS
+        </button>
       </div>
       <div className="grid grid-cols-2 p-8 flex">
         <div className="bg-gray-300 rounded-lg p-4 mt-4 flex">
@@ -228,6 +341,7 @@ function UnifyContent({ user1Data, user2Data }) {
           <div>Loading...</div>
         )}
       </div>
+      <ShareUnify />
     </>
   );
 }
