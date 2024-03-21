@@ -341,7 +341,6 @@ function UnifyContent({ user1Data, user2Data }) {
           <div>Loading...</div>
         )}
       </div>
-      <ShareUnify />
     </>
   );
 }
