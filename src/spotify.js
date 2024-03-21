@@ -31,6 +31,30 @@ async function getTopItems(
   );
 }
 
+async function getTopGenres(token) {
+  const genreFrequencies = {};
+
+  const topArtists = await getTopItems(token, "artists", "medium_term", "25");
+
+  // Iterate over each artist object
+  topArtists.items.forEach((artist) => {
+    // Extract genres array from each artist
+    const { genres } = artist;
+
+    // Iterate over genres array
+    genres.forEach((genre) => {
+      // Increment genre frequency count
+      if (genre in genreFrequencies) {
+        genreFrequencies[genre]++;
+      } else {
+        genreFrequencies[genre] = 1;
+      }
+    });
+  });
+
+  return genreFrequencies;
+}
+
 // Get the audio features of tracks based on their ids
 async function getAudioFeatures(token, ids) {
   if (!ids) {
@@ -120,12 +144,15 @@ async function getSpotifyData(token) {
 
     const topSongs = topSongsData.items;
 
+    const topGenres = await getTopGenres(token);
+
     // Constructing the user data JSON
     const userData = {
       userProfile,
       featuresData,
       topArtists,
       topSongs,
+      topGenres,
     };
 
     return userData;

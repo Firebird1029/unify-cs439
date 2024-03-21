@@ -24,7 +24,7 @@ export default function UserPage({ params: { slug } }) {
         }
 
         if (data && data.length > 0) {
-          console.log("topArtists: ", data[0].spotify_data.topArtists);
+          // console.log("topArtists: ", data[0].spotify_data.topArtists);
           setUserData(data[0].spotify_data);
         }
 
