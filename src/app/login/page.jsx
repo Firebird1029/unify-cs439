@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import createClient from "@/utils/supabase/client";
-import { login, loginWithSpotify, signup } from "./actions";
+import { loginWithSpotify } from "./actions";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -37,35 +37,13 @@ export default function LoginPage() {
 
   return (
     !loading && (
-      <>
-        <form>
-          <label htmlFor="email">Email:</label>
-          <input id="email" name="email" type="email" required />
-          <label htmlFor="password">Password:</label>
-          <input id="password" name="password" type="password" required />
-          <button type="submit" formAction={login}>
-            Log in
-          </button>
-          <button type="submit" formAction={signup}>
-            Sign up
-          </button>
-        </form>
+      <div>
         <p>
-          NOTE: You will need to confirm your email after signing up! If not,
-          you will not be able to login.
+          <button type="button" onClick={() => loginWithSpotify()}>
+            Login with Spotify
+          </button>
         </p>
-
-        <div>
-          <br />
-          <br />
-          <br />
-          <p>
-            <button type="button" onClick={() => loginWithSpotify()}>
-              Login with Spotify
-            </button>
-          </p>
-        </div>
-      </>
+      </div>
     )
   );
 }
