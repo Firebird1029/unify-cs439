@@ -37,12 +37,19 @@ function UnifyContent({ user1Data, user2Data }) {
 
   return (
     <>
+      <div
+        className="font-koulen"
+        style={{ fontSize: 100, textAlign: "center" }}
+      >
+        {" "}
+        0% Match!
+      </div>
       <div className="grid grid-cols-2 p-8 flex">
         {/* <style>
       @import
       url('https://fonts.googleapis.com/css2?family=Koulen&display=swap');
     </style> */}
-        <div className="bg-blue-800 rounded-lg p-4 flex flex-col">
+        <div className="bg-blue-800 rounded-lg p-4 mb-4 flex flex-col">
           <p
             className="text-white text-xl font-koulen mb-24 mr-4 mt-4 ml-4"
             style={{
@@ -52,7 +59,7 @@ function UnifyContent({ user1Data, user2Data }) {
             @{user1Data.userProfile.display_name}
           </p>
         </div>
-        <div className="bg-red-800 rounded-lg p-4 ml-4 flex flex-col">
+        <div className="bg-red-800 rounded-lg p-4 ml-4 mb-4 flex flex-col">
           <p
             className="text-white text-xl font-koulen mb-24 mr-4 mt-4 ml-4"
             style={{
@@ -62,7 +69,23 @@ function UnifyContent({ user1Data, user2Data }) {
             @{user2Data.userProfile.display_name}
           </p>
         </div>
-        <div className="bg-gray-100 rounded-lg p-4 mt-4 flex">
+      </div>
+      <div className="circle-row mt-8">
+        <div className="circle">
+          <span className="circle-text-large">+5%</span>
+          <span className="circle-text-small">Same Top Artist</span>
+        </div>
+        <div className="circle">
+          <span className="circle-text-large">90%</span>
+          <span className="circle-text-small">Genres Shared</span>
+        </div>
+        <div className="circle">
+          <span className="circle-text-large">+10%</span>
+          <span className="circle-text-small">Same Top Song</span>
+        </div>
+      </div>
+      <div className="grid grid-cols-2 p-8 flex">
+        <div className="bg-gray-300 rounded-lg p-4 mt-4 flex">
           <div
             className="text-black text-l font-koulen"
             style={{
@@ -76,7 +99,7 @@ function UnifyContent({ user1Data, user2Data }) {
             ))}
           </div>
         </div>
-        <div className="bg-gray-100 rounded-lg p-4 mt-4 ml-4 flex">
+        <div className="bg-gray-300 rounded-lg p-4 mt-4 ml-4 flex">
           <div
             className="text-black text-l font-koulen"
             style={{
@@ -148,7 +171,7 @@ function UnifyContent({ user1Data, user2Data }) {
         ) : (
           <div>Loading...</div>
         )}
-        <div className="bg-gray-100 rounded-lg p-4 mt-4 flex">
+        <div className="bg-gray-300 rounded-lg p-4 mt-4 flex">
           <div
             className="text-black text-l font-koulen"
             style={{
@@ -162,7 +185,7 @@ function UnifyContent({ user1Data, user2Data }) {
             ))}
           </div>
         </div>
-        <div className="bg-gray-100 rounded-lg p-4 mt-4 ml-4 flex">
+        <div className="bg-gray-300 rounded-lg p-4 mt-4 ml-4 flex">
           <div
             className="text-black text-l font-koulen"
             style={{
