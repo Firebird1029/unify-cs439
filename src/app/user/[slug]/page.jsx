@@ -18,9 +18,7 @@ export default function UserPage({ params: { slug } }) {
     // console.log("sharing song");
 
     // Use Web Share API to share the default image
-    const svgString = ReactDOMServer.renderToString(
-      <ShareCassette displayName={userData.userProfile.display_name} />,
-    );
+    const svgString = ReactDOMServer.renderToString(<ShareCassette />);
     // console.log(svgString);
 
     const img = new Image();
@@ -32,11 +30,38 @@ export default function UserPage({ params: { slug } }) {
     img.onload = () => {
       // Create a canvas element
       const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+
+      if (!ctx) {
+        console.error("Unable to obtain 2D context for canvas.");
+        return;
+      }
+
+      canvas.width = img.width;
+      canvas.height = img.height;
+
+      // Clear canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Add canvas to the document body for debugging
+      // document.body.appendChild(canvas);
+
       canvas.width = img.width;
       canvas.height = img.height;
 
       // Draw the image on the canvas
       canvas.getContext("2d")?.drawImage(img, 0, 0);
+
+      ctx.textAlign = "center";
+
+      // Render the text onto the canvas
+      ctx.font = "20px Koulen";
+      ctx.fillStyle = "black";
+      ctx.fillText(
+        `@${userData.userProfile.display_name}`,
+        canvas.width / 2,
+        389,
+      );
 
       // Convert canvas to blob
       canvas.toBlob((blob) => {
