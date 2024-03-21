@@ -2,14 +2,69 @@
 
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import ReactDOMServer from "react-dom/server";
 import createClient from "@/utils/supabase/client";
 import UserContent from "@/components/svg-art/user_content";
+import ShareCassette from "@/components/svg-art/share_cassette";
 
 export default function UserPage({ params: { slug } }) {
   const supabase = createClient();
 
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState(null);
+
+  // Function to handle sharing
+  const shareCassette = async () => {
+    // console.log("sharing song");
+
+    // Use Web Share API to share the default image
+    const svgString = ReactDOMServer.renderToString(
+      <ShareCassette displayName={userData.userProfile.display_name} />,
+    );
+    // console.log(svgString);
+
+    const img = new Image();
+
+    // Set the source of the image
+    img.src = `data:image/svg+xml;utf8,${encodeURIComponent(svgString)}`;
+
+    // Wait for the image to load
+    img.onload = () => {
+      // Create a canvas element
+      const canvas = document.createElement("canvas");
+      canvas.width = img.width;
+      canvas.height = img.height;
+
+      // Draw the image on the canvas
+      canvas.getContext("2d")?.drawImage(img, 0, 0);
+
+      // Convert canvas to blob
+      canvas.toBlob((blob) => {
+        // console.log(blob);
+
+        if (navigator.share) {
+          // console.log("Web share API supported");
+          navigator
+            .share({
+              title: "Unify with me!",
+              text: `Compare our stats on Uni.fy`,
+              url: "unify",
+              files: [
+                new File([blob], "file.png", {
+                  type: blob.type,
+                }),
+              ],
+            })
+            .then(() => {
+              // console.log("Shared successfully");
+            })
+            .catch((error) => console.error("Error sharing:", error));
+        } else {
+          // console.log("Web Share API not supported");
+        }
+      }, "image/png");
+    };
+  };
 
   useEffect(() => {
     // find user by username (given as URL slug) in DB
@@ -35,7 +90,11 @@ export default function UserPage({ params: { slug } }) {
     <div>
       {!loading && userData && (
         <div>
-          <UserContent userData={userData} shareCassette={null} unify={null} />
+          <UserContent
+            userData={userData}
+            shareCassette={shareCassette}
+            unify={null}
+          />
         </div>
       )}
       {!loading && !userData && <div>User not found!</div>}
