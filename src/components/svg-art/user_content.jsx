@@ -25,7 +25,7 @@ function UserContent({ userData, shareCassette, unify }) {
           @{userData.userProfile.display_name}
         </p>
         <div className="flex flex-row justify-center">
-          <button
+          {/* <button
             type="button"
             className="bg-gray-300 rounded-full py-2.5 px-4 flex items-center mr-4"
             style={{
@@ -36,7 +36,7 @@ function UserContent({ userData, shareCassette, unify }) {
             onClick={unify}
           >
             <span className="font-koulen text-gray-800 mr-2">Unify</span>
-          </button>
+          </button> */}
           <button
             type="button"
             className="bg-gray-300 rounded-full py-2.5 px-4 flex items-center"

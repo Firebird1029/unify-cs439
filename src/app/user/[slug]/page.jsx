@@ -73,7 +73,7 @@ export default function UserPage({ params: { slug } }) {
             .share({
               title: "Unify with me!",
               text: `Compare our stats on Uni.fy`,
-              url: "unify",
+              url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/unify/${userData.userProfile.id}`,
               files: [
                 new File([blob], "file.png", {
                   type: blob.type,
