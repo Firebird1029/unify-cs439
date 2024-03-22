@@ -17,6 +17,59 @@ export default function UnifyPage({ params: { users } }) {
   const [user2Data, setUser2Data] = useState(null);
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (!users.includes("%26")) {
+          // console.log("user: ", users);
+
+          // Get current user's information from Supabase
+          const { data: currentUser, error } = await supabase.auth.getUser();
+
+          if (error) {
+            throw error;
+          }
+
+          // console.log(currentUser);
+
+          // console.log("id: ", currentUser.user.id);
+
+          supabase
+            .from("profiles")
+            .select("username")
+            .eq("id", currentUser.user.id)
+            .then(({ data, error2 }) => {
+              if (error2) {
+                // TODO
+                console.error(error2); // TODO display error message to user
+              }
+
+              // console.log(data);
+
+              if (data && data.length > 0) {
+                // Concatenate paramValue with currentUser's ID
+                const redirectURL = `${users}&${data[0].username}`;
+
+                // console.log(redirectURL);
+
+                // Redirect to the generated URL
+                window.location.href = redirectURL;
+              }
+            });
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error.message);
+      }
+    };
+
+    fetchData();
+
+    // Cleanup function if necessary
+    return () => {
+      // Cleanup code if needed
+    };
+  }, []); // Empty dependency array ensures useEffect runs only once
+
+  useEffect(() => {
     // find user by username (given as URL slug) in DB
     supabase
       .from("profiles")
