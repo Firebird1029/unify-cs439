@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import createClient from "@/utils/supabase/client";
-import UnifyContent from "@/components/UnifyContent";
+import UnifyContent from "./UnifyContent";
 
 export default function UnifyPage({ params: { users } }) {
   // console.log(users);
