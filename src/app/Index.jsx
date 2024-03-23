@@ -3,54 +3,35 @@
 import { useEffect, useState } from "react";
 
 import IndexContent from "@/components/svg-art/index_content";
-
-const CLIENT_ID = process.env.NEXT_PUBLIC_CLIENT_ID;
-const REDIRECT_URI = process.env.NEXT_PUBLIC_REDIRECT_URI;
-const AUTH_ENDPOINT = process.env.NEXT_PUBLIC_AUTH_ENDPOINT;
-const RESPONSE_TYPE = process.env.NEXT_PUBLIC_RESPONSE_TYPE;
+import createClient from "@/utils/supabase/client";
+import { loginWithSpotify } from "./login/actions";
 
 export default function HomePage() {
-  const [token, setToken] = useState(null);
+  const supabase = createClient();
 
-  const handleLogin = () => {
-    const params = new URLSearchParams();
-    params.append("client_id", CLIENT_ID);
-    params.append("response_type", RESPONSE_TYPE);
-    params.append("redirect_uri", REDIRECT_URI);
-    params.append(
-      "scope",
-      "user-read-private user-read-email user-library-read user-follow-read user-top-read user-modify-playback-state",
-    );
-
-    const url = `${AUTH_ENDPOINT}?${params.toString()}`;
-
-    // Open Spotify login in same window, will redirect back
-    window.open(url, "_self");
-  };
-
-  const enterCode = () => {
-    // console.log("enter code");
-  };
-
-  const handleTokenFromCallback = () => {
-    // Extract the token from the URL hash
-    const urlParams = new URLSearchParams(window.location.hash.substr(1));
-    const newToken = urlParams.get("access_token");
-
-    if (newToken) {
-      setToken(newToken);
-      window.localStorage.setItem("token", newToken);
-    }
-  };
-
-  // Check for token in the URL hash when component mounts
+  // check if user is already logged in
   useEffect(() => {
-    handleTokenFromCallback();
+    (async () => {
+      // console.log("use effect running");
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      // console.log("user: ", user);
+      if (user) {
+        // already logged in
+        // router.replace("/account");
+        // console.log("user is logged in");
+      } else {
+        // console.log("user is not logged in");
+      }
+    })().catch((err) => {
+      console.error(err); // TODO display error message to user
+    });
   }, []);
 
   return (
     <div style={{ width: "100vw", height: "100vh" }}>
-      <IndexContent handleLogin={handleLogin} enterCode={enterCode} />
+      <IndexContent />
     </div>
   );
 }

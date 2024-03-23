@@ -17,6 +17,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@nivo/pie": "^0.85.1",
     "@nivo/radar": "^0.85.1",
     "@supabase/ssr": "^0.1.0",
     "@supabase/supabase-js": "^2.39.8",

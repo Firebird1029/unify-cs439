@@ -1,4 +1,4 @@
-function ShareCassette({ displayName }) {
+function ShareCassette() {
   return (
     <svg
       width="393"
@@ -123,9 +123,6 @@ function ShareCassette({ displayName }) {
           mask="url(#path-31-outside-2_1_718)"
         />
       </g>
-      <text x="165" y="389" fontSize="21" fill="black" fontFamily="Koulen">
-        @{displayName}
-      </text>
       <defs>
         <clipPath id="clip0_1_718">
           <rect width="393" height="852" fill="white" />

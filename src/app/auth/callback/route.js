@@ -10,6 +10,8 @@ export async function GET(request) {
   const redirectTo = request.nextUrl.clone();
   redirectTo.searchParams.delete("code");
 
+  // console.log("code: ", code);
+
   if (code) {
     const supabase = createClient();
 
@@ -37,10 +39,17 @@ export async function GET(request) {
       return NextResponse.redirect(redirectTo);
     }
 
+    // console.log("spotify user data: ", spotifyUserData);
+
+    // console.log("username: ", spotifyUserData.userProfile.id);
+
     // update DB with Spotify username + Spotify data
     const { dbError } = await supabase
       .from("profiles")
-      .update({ username: spotifyUserData.id, spotify_data: spotifyUserData })
+      .update({
+        username: spotifyUserData.userProfile.id,
+        spotify_data: spotifyUserData,
+      })
       .eq("id", data.user.id);
 
     if (dbError) {
@@ -50,7 +59,10 @@ export async function GET(request) {
     }
 
     // once finished, redirect user to account page
-    redirectTo.pathname = "/account";
+    redirectTo.pathname = `/user/${spotifyUserData.userProfile.id}`;
     return NextResponse.redirect(redirectTo);
   }
+
+  redirectTo.pathname = "/";
+  return NextResponse.redirect(redirectTo);
 }
