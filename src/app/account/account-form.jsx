@@ -6,6 +6,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import createClient from "@/utils/supabase/client";
 
 export default function AccountForm({ user }) {
@@ -37,8 +38,7 @@ export default function AccountForm({ user }) {
         setAvatarUrl(data.avatar_url);
       }
     } catch (error) {
-      alert("Error loading user data!");
-      console.log(error);
+      // TODO display error message to user
     } finally {
       setLoading(false);
     }
@@ -61,9 +61,9 @@ export default function AccountForm({ user }) {
         updated_at: new Date().toISOString(),
       });
       if (error) throw error;
-      alert("Profile updated!");
+      // TODO alert("Profile updated!");
     } catch (error) {
-      alert("Error updating the data!");
+      // TODO alert("Error updating the data!");
     } finally {
       setLoading(false);
     }
@@ -134,3 +134,10 @@ export default function AccountForm({ user }) {
     </div>
   );
 }
+
+AccountForm.propTypes = {
+  user: PropTypes.shape({
+    id: PropTypes.string,
+    email: PropTypes.string,
+  }).isRequired,
+};

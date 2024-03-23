@@ -1,8 +1,9 @@
 import { ResponsiveRadar } from "@nivo/radar";
 import { ResponsivePie } from "@nivo/pie";
 import "@/app/globals.css";
+import PropTypes from "prop-types";
 
-function UserContent({ userData, shareCassette, unify }) {
+function UserContent({ userData, shareCassette }) {
   // Convert object to array of { id: genre, value: frequency } objects
   const top5Genres = Object.entries(userData.topGenres)
     .sort((a, b) => b[1] - a[1]) // Sort genres by frequency in descending order
@@ -142,3 +143,24 @@ function UserContent({ userData, shareCassette, unify }) {
   );
 }
 export default UserContent;
+
+UserContent.propTypes = {
+  userData: PropTypes.shape({
+    userProfile: PropTypes.shape({
+      display_name: PropTypes.string,
+    }),
+    topArtists: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+    topSongs: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+    featuresData: PropTypes.arrayOf(PropTypes.shape()),
+    topGenres: PropTypes.arrayOf(PropTypes.shape()), // TODO ???
+  }).isRequired,
+  shareCassette: PropTypes.func.isRequired,
+};

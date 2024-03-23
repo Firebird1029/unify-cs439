@@ -1,8 +1,9 @@
 import { ResponsiveRadar } from "@nivo/radar";
 import { ResponsivePie } from "@nivo/pie";
-import "@/app/globals.css";
 import ReactDOMServer from "react-dom/server";
+import PropTypes from "prop-types";
 import ShareUnify from "@/components/svg-art/share_unify";
+import "@/app/globals.css";
 
 function calculateSimilarity(list1, list2) {
   const intersection = Object.keys(list1).filter((key) =>
@@ -13,17 +14,11 @@ function calculateSimilarity(list1, list2) {
   return similarity * 100; // Convert to percentage
 }
 
-function UnifyContent({ user1Data, user2Data }) {
-  // console.log(user1Data.featuresData);
-  // console.log(user2Data.featuresData);
-
+export default function UnifyContent({ user1Data, user2Data }) {
   // Function to handle sharing
   const shareUnify = async () => {
-    // console.log("sharing song");
-
     // Use Web Share API to share the default image
     const svgString = ReactDOMServer.renderToString(<ShareUnify />);
-    // console.log(svgString);
 
     const img = new Image();
 
@@ -37,7 +32,7 @@ function UnifyContent({ user1Data, user2Data }) {
       const ctx = canvas.getContext("2d");
 
       if (!ctx) {
-        console.error("Unable to obtain 2D context for canvas.");
+        // TODO console.error("Unable to obtain 2D context for canvas.");
         return;
       }
 
@@ -74,10 +69,7 @@ function UnifyContent({ user1Data, user2Data }) {
 
       // Convert canvas to blob
       canvas.toBlob((blob) => {
-        // console.log(blob);
-
         if (navigator.share) {
-          // console.log("Web share API supported");
           navigator
             .share({
               title: "Unify with me!",
@@ -89,12 +81,11 @@ function UnifyContent({ user1Data, user2Data }) {
                 }),
               ],
             })
-            .then(() => {
-              // console.log("Shared successfully");
-            })
-            .catch((error) => console.error("Error sharing:", error));
+            .catch(() => {
+              // TODO console.error("Error sharing:", error);
+            });
         } else {
-          // console.log("Web Share API not supported");
+          // TODO console.log("Web Share API not supported");
         }
       }, "image/png");
     };
@@ -131,8 +122,6 @@ function UnifyContent({ user1Data, user2Data }) {
     user1Data.topGenres,
     user2Data.topGenres,
   );
-
-  // console.log("combinedFeaturesData: ", combinedFeaturesData);
 
   return (
     <>
@@ -344,4 +333,40 @@ function UnifyContent({ user1Data, user2Data }) {
     </>
   );
 }
-export default UnifyContent;
+
+UnifyContent.propTypes = {
+  user1Data: PropTypes.shape({
+    userProfile: PropTypes.shape({
+      display_name: PropTypes.string,
+    }),
+    featuresData: PropTypes.arrayOf(PropTypes.shape()),
+    topGenres: PropTypes.shape({}),
+    topSongs: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+    topArtists: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+  }).isRequired,
+  user2Data: PropTypes.shape({
+    userProfile: PropTypes.shape({
+      display_name: PropTypes.string,
+    }),
+    featuresData: PropTypes.arrayOf(PropTypes.shape()),
+    topGenres: PropTypes.shape({}),
+    topSongs: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+    topArtists: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+  }).isRequired,
+};

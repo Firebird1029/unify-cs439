@@ -10,15 +10,13 @@ export async function GET(request) {
   const redirectTo = request.nextUrl.clone();
   redirectTo.searchParams.delete("code");
 
-  // console.log("code: ", code);
-
   if (code) {
     const supabase = createClient();
 
     const { data, error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (error) {
-      console.log(error.message); // TODO display error message to user
+      // TODO display error message to user error.message
       redirectTo.pathname = "/error";
       return NextResponse.redirect(redirectTo);
     }
@@ -34,14 +32,10 @@ export async function GET(request) {
     try {
       spotifyUserData = await getSpotifyData(data.session.provider_token);
     } catch (e) {
-      console.error(e); // TODO display error message to user
+      // TODO display error message to user e
       redirectTo.pathname = "/error";
       return NextResponse.redirect(redirectTo);
     }
-
-    // console.log("spotify user data: ", spotifyUserData);
-
-    // console.log("username: ", spotifyUserData.userProfile.id);
 
     // update DB with Spotify username + Spotify data
     const { dbError } = await supabase
@@ -53,7 +47,7 @@ export async function GET(request) {
       .eq("id", data.user.id);
 
     if (dbError) {
-      console.log(dbError.message); // TODO display error message to user
+      // TODO display error message to user dbError.message
       redirectTo.pathname = "/error";
       return NextResponse.redirect(redirectTo);
     }

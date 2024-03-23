@@ -28,7 +28,7 @@ export async function GET(request) {
       redirectTo.searchParams.delete("next");
       return NextResponse.redirect(redirectTo);
     }
-    console.log(error.message); // TODO display error message to user
+    // TODO display error message to user error.message
   }
 
   // return the user to an error page with some instructions

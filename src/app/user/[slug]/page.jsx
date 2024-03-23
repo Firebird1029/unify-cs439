@@ -15,11 +15,8 @@ export default function UserPage({ params: { slug } }) {
 
   // Function to handle sharing
   const shareCassette = async () => {
-    // console.log("sharing song");
-
     // Use Web Share API to share the default image
     const svgString = ReactDOMServer.renderToString(<ShareCassette />);
-    // console.log(svgString);
 
     const img = new Image();
 
@@ -33,7 +30,7 @@ export default function UserPage({ params: { slug } }) {
       const ctx = canvas.getContext("2d");
 
       if (!ctx) {
-        console.error("Unable to obtain 2D context for canvas.");
+        // TODO "Unable to obtain 2D context for canvas."
         return;
       }
 
@@ -65,10 +62,7 @@ export default function UserPage({ params: { slug } }) {
 
       // Convert canvas to blob
       canvas.toBlob((blob) => {
-        // console.log(blob);
-
         if (navigator.share) {
-          // console.log("Web share API supported");
           navigator
             .share({
               title: "Unify with me!",
@@ -80,12 +74,11 @@ export default function UserPage({ params: { slug } }) {
                 }),
               ],
             })
-            .then(() => {
-              // console.log("Shared successfully");
-            })
-            .catch((error) => console.error("Error sharing:", error));
+            .catch(() => {
+              // TODO "Error sharing" + errr
+            });
         } else {
-          // console.log("Web Share API not supported");
+          // Web share API not supported
         }
       }, "image/png");
     };
@@ -99,12 +92,10 @@ export default function UserPage({ params: { slug } }) {
       .eq("username", slug)
       .then(({ data, error }) => {
         if (error) {
-          // TODO
-          console.error(error); // TODO display error message to user
+          // TODO display error message to user error
         }
 
         if (data && data.length > 0) {
-          // console.log("topArtists: ", data[0].spotify_data.topArtists);
           setUserData(data[0].spotify_data);
         }
 

@@ -10,7 +10,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./server
+        working-directory: ./
 
     steps:
       - uses: actions/checkout@v4
