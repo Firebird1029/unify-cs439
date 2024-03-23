@@ -27,7 +27,9 @@ export default function UserProfilePage() {
           // console.log("user data: ", data);
           setUserData(data);
         })
-        .catch((error) => console.error("Error fetching user data:", error));
+        .catch(() => {
+          // TODO ("Error fetching user data:", error)
+        });
     }
   }, [token]);
 
@@ -76,7 +78,9 @@ export default function UserProfilePage() {
             .then(() => {
               // console.log("Shared successfully");
             })
-            .catch((error) => console.error("Error sharing:", error));
+            .catch(() => {
+              // TODO console.error("Error sharing:", error)
+            });
         } else {
           // console.log("Web Share API not supported");
         }

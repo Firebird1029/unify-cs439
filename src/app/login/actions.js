@@ -24,7 +24,7 @@ export async function login(formData) {
   const { error } = await supabase.auth.signInWithPassword(data);
 
   if (error) {
-    console.error(error.message); // TODO display error message to user
+    // TODO display error message to user error.message
     redirect("/error");
   }
 
@@ -49,7 +49,7 @@ export async function signup(formData) {
   const { error } = await supabase.auth.signUp(data);
 
   if (error) {
-    console.error(error.message); // TODO display error message to user
+    // TODO display error message to user error.message
     redirect("/error");
   }
 
@@ -94,7 +94,7 @@ export async function loginWithSpotify() {
   });
 
   if (error) {
-    console.error(error.message); // TODO display error message to user
+    // TODO display error message to user error.message
     redirect("/error");
   } else {
     redirect(data.url);

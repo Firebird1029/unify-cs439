@@ -65,101 +65,72 @@ async function getAudioFeatures(token, ids) {
 }
 
 async function getAverageAudioFeatures(token) {
-  try {
-    const topSongs = await getTopItems(token, "tracks", "short_term", "5");
+  const topSongs = await getTopItems(token, "tracks", "short_term", "5");
 
-    // console.log("topSongs: ", topSongs);
+  const trackIds = topSongs.items.map((track) => track.id).join(",");
 
-    const trackIds = topSongs.items.map((track) => track.id).join(",");
+  const audioFeatureData = await getAudioFeatures(token, trackIds);
 
-    // console.log("trackIds: ", trackIds);
+  const audioFeatures = audioFeatureData.audio_features;
 
-    const audioFeatureData = await getAudioFeatures(token, trackIds);
-
-    // console.log("audioFeatureData: ", audioFeatureData);
-
-    const audioFeatures = audioFeatureData.audio_features;
-
-    const featuresSum = audioFeatures.reduce(
-      (acc, feature) => {
-        acc.acousticness += feature.acousticness;
-        acc.danceability += feature.danceability;
-        acc.energy += feature.energy;
-        acc.instrumentalness += feature.instrumentalness;
-        acc.speechiness += feature.speechiness;
-        acc.valence += feature.valence;
-        return acc;
-      },
-      {
-        acousticness: 0,
-        danceability: 0,
-        energy: 0,
-        instrumentalness: 0,
-        speechiness: 0,
-        valence: 0,
-      },
-    );
-
-    const featuresAvg = Object.keys(featuresSum).reduce((acc, key) => {
-      acc[key] = (featuresSum[key] * 100) / audioFeatures.length;
+  const featuresSum = audioFeatures.reduce(
+    (acc, feature) => {
+      acc.acousticness += feature.acousticness;
+      acc.danceability += feature.danceability;
+      acc.energy += feature.energy;
+      acc.instrumentalness += feature.instrumentalness;
+      acc.speechiness += feature.speechiness;
+      acc.valence += feature.valence;
       return acc;
-    }, {});
+    },
+    {
+      acousticness: 0,
+      danceability: 0,
+      energy: 0,
+      instrumentalness: 0,
+      speechiness: 0,
+      valence: 0,
+    },
+  );
 
-    return featuresAvg;
-  } catch (error) {
-    console.error("Error getting average audio features: ", error);
-    throw error;
-  }
+  const featuresAvg = Object.keys(featuresSum).reduce((acc, key) => {
+    acc[key] = (featuresSum[key] * 100) / audioFeatures.length;
+    return acc;
+  }, {});
+
+  return featuresAvg;
 }
 
 async function getSpotifyData(token) {
-  try {
-    // console.log("Getting spotify data");
+  const userProfile = await getUserData(token);
 
-    // console.log("Token: ", token);
+  const averageAudioFeatures = await getAverageAudioFeatures(token);
 
-    const userProfile = await getUserData(token);
+  const featuresData = Object.keys(averageAudioFeatures).map((key) => ({
+    feature: key,
+    value: averageAudioFeatures[key],
+  }));
 
-    // console.log("User profile: ", userProfile);
+  const topArtistsData = await getTopItems(token, "artists", "short_term", "5");
 
-    const averageAudioFeatures = await getAverageAudioFeatures(token);
+  const topArtists = topArtistsData.items;
 
-    // console.log("average audio features: ", averageAudioFeatures);
+  const topSongsData = await getTopItems(token, "tracks", "short_term", "5");
 
-    const featuresData = Object.keys(averageAudioFeatures).map((key) => ({
-      feature: key,
-      value: averageAudioFeatures[key],
-    }));
+  const topSongs = topSongsData.items;
 
-    const topArtistsData = await getTopItems(
-      token,
-      "artists",
-      "short_term",
-      "5",
-    );
+  const topGenres = await getTopGenres(token);
 
-    const topArtists = topArtistsData.items;
+  // Constructing the user data JSON
+  const userData = {
+    userProfile,
+    featuresData,
+    topArtists,
+    topSongs,
+    topGenres,
+  };
 
-    const topSongsData = await getTopItems(token, "tracks", "short_term", "5");
-
-    const topSongs = topSongsData.items;
-
-    const topGenres = await getTopGenres(token);
-
-    // Constructing the user data JSON
-    const userData = {
-      userProfile,
-      featuresData,
-      topArtists,
-      topSongs,
-      topGenres,
-    };
-
-    return userData;
-  } catch (error) {
-    console.error("Error getting Spotify data: ", error);
-    throw error;
-  }
+  return userData;
 }
 
 function anotherSpotifyFunction() {

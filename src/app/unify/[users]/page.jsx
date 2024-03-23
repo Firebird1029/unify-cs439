@@ -39,8 +39,7 @@ export default function UnifyPage({ params: { users } }) {
             .eq("id", currentUser.user.id)
             .then(({ data, error2 }) => {
               if (error2) {
-                // TODO
-                console.error(error2); // TODO display error message to user
+                // TODO display error message to user error2
               }
 
               // console.log(data);
@@ -57,7 +56,7 @@ export default function UnifyPage({ params: { users } }) {
             });
         }
       } catch (error) {
-        console.error("Error fetching data:", error.message);
+        // TODO "Error fetching data:", error.message
       }
     };
 
@@ -77,8 +76,7 @@ export default function UnifyPage({ params: { users } }) {
       .eq("username", user1)
       .then(({ data, error }) => {
         if (error) {
-          // TODO
-          console.error(error); // TODO display error message to user
+          // TODO display error message to user error
         }
 
         if (data && data.length > 0) {
@@ -97,8 +95,7 @@ export default function UnifyPage({ params: { users } }) {
       .eq("username", user2)
       .then(({ data, error }) => {
         if (error) {
-          // TODO
-          console.error(error); // TODO display error message to user
+          // TODO display error message to user error
         }
 
         if (data && data.length > 0) {

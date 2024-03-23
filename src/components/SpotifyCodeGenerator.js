@@ -84,7 +84,7 @@ const modifySvg = (svgString, uri) => {
   return modifiedSvgString;
 };
 
-const GetSpotifyCode = async (SpotifyURL) => {
+export default async function GetSpotifyCode(SpotifyURL) {
   const format = "svg";
   const backgroundColor = "FFFFFF"; // Math.floor(Math.random()*16777215).toString(16);
   const textColor = "black";
@@ -123,28 +123,26 @@ const GetSpotifyCode = async (SpotifyURL) => {
 
   // console.log("Created image");
   return null;
-};
-
-function getRandomColor() {
-  const baseColor = Math.floor(Math.random() * 16777215).toString(16); // Generate a random base color
-
-  // Convert the base color to RGB
-  const rgb = parseInt(baseColor, 16);
-  const r = (rgb >> 16) & 255;
-  const g = (rgb >> 8) & 255;
-  const b = rgb & 255;
-
-  // Adjust the brightness and saturation for a pastel effect
-  const colorR = Math.floor((r + 255) / 2);
-  const colorG = Math.floor((g + 255) / 2);
-  const colorB = Math.floor((b + 255) / 2);
-
-  // Convert the pastel color back to hex
-  const pastelColor = ((colorR << 16) | (colorG << 8) | colorB)
-    .toString(16)
-    .padStart(6, "0");
-
-  return `#${pastelColor}`;
 }
 
-export default GetSpotifyCode;
+// function getRandomColor() {
+//   const baseColor = Math.floor(Math.random() * 16777215).toString(16); // Generate a random base color
+
+//   // Convert the base color to RGB
+//   const rgb = parseInt(baseColor, 16);
+//   const r = (rgb >> 16) & 255;
+//   const g = (rgb >> 8) & 255;
+//   const b = rgb & 255;
+
+//   // Adjust the brightness and saturation for a pastel effect
+//   const colorR = Math.floor((r + 255) / 2);
+//   const colorG = Math.floor((g + 255) / 2);
+//   const colorB = Math.floor((b + 255) / 2);
+
+//   // Convert the pastel color back to hex
+//   const pastelColor = ((colorR << 16) | (colorG << 8) | colorB)
+//     .toString(16)
+//     .padStart(6, "0");
+
+//   return `#${pastelColor}`;
+// }

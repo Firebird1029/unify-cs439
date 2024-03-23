@@ -30,8 +30,6 @@ function UserProfile2() {
   // User Profile Code from UserProfile.jsx
 
   useEffect(() => {
-    // ("Token:", token);
-
     if (token) {
       axios
         .get(
@@ -46,7 +44,7 @@ function UserProfile2() {
 
   const fetchTopItems = async (type, timeRange, limit = 25) => {
     if (!token) {
-      console.error("Token not available. Please log in.");
+      // TODO console.error("Token not available. Please log in.");
       return null;
     }
     try {
@@ -56,7 +54,7 @@ function UserProfile2() {
       const data = await response.json();
       return data.topItems;
     } catch (error) {
-      console.error(`Error fetching top ${type}:`, error);
+      // TODO console.error(`Error fetching top ${type}:`, error);
       return error;
     }
   };
@@ -89,7 +87,7 @@ function UserProfile2() {
       const artists = await fetchTopItems("artists", timeRange, 20);
       return artists.flatMap((artist) => artist.genres);
     } catch (error) {
-      console.error(`Error fetching genres for ${timeRange}:`, error);
+      // TODO console.error(`Error fetching genres for ${timeRange}:`, error);
       return [];
     }
   };
@@ -115,7 +113,7 @@ function UserProfile2() {
 
   const displayRecommendation = async () => {
     if (!token) {
-      console.error("Token not available. Please log in.");
+      // TODO console.error("Token not available. Please log in.");
       return;
     }
 
@@ -141,7 +139,7 @@ function UserProfile2() {
 
       setRecommendedSongs(data.tracks);
     } catch (error) {
-      console.error("Error in recommendation process:", error);
+      // TODO console.error("Error in recommendation process:", error);
     }
   };
 
@@ -149,7 +147,7 @@ function UserProfile2() {
     const songs = await fetchTopItems("tracks", "long_term", 50);
 
     if (!songs) {
-      console.error("failed to fetch top items");
+      // TODO console.error("failed to fetch top items");
       return null;
     }
 
@@ -206,7 +204,7 @@ function UserProfile2() {
 
       return formattedAvg;
     } catch (error) {
-      console.error("Error fetching audio features:", error);
+      // TODO console.error("Error fetching audio features:", error);
       return error;
     }
   };

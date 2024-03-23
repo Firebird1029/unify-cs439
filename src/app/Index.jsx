@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import IndexContent from "@/components/svg-art/index_content";
 import createClient from "@/utils/supabase/client";
-import { loginWithSpotify } from "./login/actions";
 
 export default function HomePage() {
   const supabase = createClient();
@@ -24,8 +23,8 @@ export default function HomePage() {
       } else {
         // console.log("user is not logged in");
       }
-    })().catch((err) => {
-      console.error(err); // TODO display error message to user
+    })().catch(() => {
+      // TODO display error message to user
     });
   }, []);
 

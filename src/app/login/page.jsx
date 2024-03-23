@@ -29,8 +29,8 @@ export default function LoginPage() {
       } else {
         setLoading(false);
       }
-    })().catch((err) => {
-      console.error(err); // TODO display error message to user
+    })().catch(() => {
+      // TODO display error message to user (param)
       router.push("/error");
     });
   }, []);
