@@ -1,0 +1,18 @@
+name: Lint (Prod)
+on:
+  pull_request:
+    branches:
+      - master
+jobs:
+  lint-code:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install modules
+        run: npm ci
+      - name: Run Lint script
+        run: npm run lint:prod

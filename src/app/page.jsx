@@ -1,12 +1,9 @@
-import React from "react";
-import NavbarComponent from "@/components/Navbar";
-import Index from "@/components/Index";
+import HomePage from "./Index";
 
-export default function () {
+export default function IndexPage() {
   return (
     <div>
-      <NavbarComponent />
-      <Index />
+      <HomePage />
     </div>
   );
 }

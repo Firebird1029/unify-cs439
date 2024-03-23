@@ -1,12 +1,16 @@
 name: Test
-on: pull_request
+on:
+  pull_request:
+    branches:
+      - master
+      - dev
 jobs:
-  test-backend:
+  test-code:
     runs-on: ubuntu-latest
 
     defaults:
       run:
-        working-directory: ./server
+        working-directory: ./
 
     steps:
       - uses: actions/checkout@v4

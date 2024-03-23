@@ -1,22 +1,22 @@
 # README
 
-## Setup
+## Installation & Setup
 
 ```bash
 npm install
-touch server/.env
+touch api/.env
 ```
 
 ## Development
 
-You should start both the frontend and backend simultaneously, e.g. in two Terminal windows.
+To start the frontend and backend locally together, simply run `npm run dev`. Ctrl+C will kill both processes.
 
 ### Frontend
 
 To run the frontend application in development:
 
 ```bash
-npm run dev
+npm run next-dev
 ```
 
 Access it from `localhost:3000`.
@@ -26,7 +26,7 @@ Access it from `localhost:3000`.
 To run the backend server in development:
 
 ```bash
-npm run server
+npm run server-dev
 ```
 
 Access it from `localhost:3001`.

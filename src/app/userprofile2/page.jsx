@@ -1,12 +1,10 @@
 import React from "react";
-import HomeContent from "@/components/HomeContent";
+import UserProfile2 from "./UserProfile2";
 
-function Home() {
+export default function UserProfile2Page() {
   return (
     <div>
-      <HomeContent />
+      <UserProfile2 />
     </div>
   );
 }
-
-export default Home;

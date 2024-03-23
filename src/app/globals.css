@@ -1,3 +1,4 @@
+/* TODO switch to Next.js font system */
 @import url("https://fonts.googleapis.com/css2?family=Koulen&display=swap");
 @import "tailwindcss/base";
 @import "tailwindcss/components";
@@ -7,4 +8,37 @@
   font-family: "Koulen", sans-serif;
   font-weight: 400;
   font-style: normal;
+}
+
+.circle-row {
+  display: flex;
+  justify-content: center;
+}
+
+.circle {
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background-color: #d1d5db;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 10px;
+  flex-direction: column;
+}
+
+.circle:nth-child(2) {
+  margin-top: -40px; /* Adjust as needed */
+}
+
+.circle-text-large {
+  font-size: 58px;
+  color: black;
+  font-family: "Koulen", sans-serif;
+}
+
+.circle-text-small {
+  font-size: 36px;
+  color: black;
+  font-family: "Koulen", sans-serif;
 }
