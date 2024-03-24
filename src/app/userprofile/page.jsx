@@ -19,12 +19,10 @@ export default function UserProfilePage() {
 
   // useEffect to get user data object
   useEffect(() => {
-    // console.log("Token:", token);
     if (token) {
       fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/getUserData?token=${token}`)
         .then((res) => res.json())
         .then((data) => {
-          // console.log("user data: ", data);
           setUserData(data);
         })
         .catch(() => {
@@ -35,13 +33,10 @@ export default function UserProfilePage() {
 
   // Function to handle sharing
   const shareCassette = async () => {
-    // console.log("sharing song");
-
     // Use Web Share API to share the default image
     const svgString = ReactDOMServer.renderToString(
       <ShareCassette displayName={userData.userProfile.display_name} />,
     );
-    // console.log(svgString);
 
     const img = new Image();
 
@@ -60,10 +55,7 @@ export default function UserProfilePage() {
 
       // Convert canvas to blob
       canvas.toBlob((blob) => {
-        // console.log(blob);
-
         if (navigator.share) {
-          // console.log("Web share API supported");
           navigator
             .share({
               title: "Unify with me!",
@@ -75,22 +67,18 @@ export default function UserProfilePage() {
                 }),
               ],
             })
-            .then(() => {
-              // console.log("Shared successfully");
-            })
+            .then(() => {})
             .catch(() => {
               // TODO console.error("Error sharing:", error)
             });
         } else {
-          // console.log("Web Share API not supported");
+          // TODO console.log("Web Share API not supported");
         }
       }, "image/png");
     };
   };
 
-  const unify = () => {
-    // console.log("unifying");
-  };
+  const unify = () => {};
 
   return (
     <div className="App">
