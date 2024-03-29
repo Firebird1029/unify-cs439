@@ -178,9 +178,8 @@ export default function UnifyContent({ user1Data, user2Data }) {
     .slice(0, 5) // Get the top 5 genres
     .map(([id, value]) => ({ id, value })); // Map to { id: genre, value: frequency } objects
 
-  const genreSimilarity = calculateGenreSimilarity(
-    user1Data.topGenres,
-    user2Data.topGenres,
+  const genreSimilarity = Math.round(
+    calculateGenreSimilarity(user1Data.topGenres, user2Data.topGenres),
   );
 
   return (
@@ -220,9 +219,11 @@ export default function UnifyContent({ user1Data, user2Data }) {
       <div className="circle-row mt-8">
         <div className="circle">
           <span className="circle-text-large">
-            {calculateArtistSimilarity(
-              user1Data.topArtists.map((artist) => artist.name),
-              user2Data.topArtists.map((artist) => artist.name),
+            {Math.round(
+              calculateArtistSimilarity(
+                user1Data.topArtists.map((artist) => artist.name),
+                user2Data.topArtists.map((artist) => artist.name),
+              ),
             )}
             %
           </span>
