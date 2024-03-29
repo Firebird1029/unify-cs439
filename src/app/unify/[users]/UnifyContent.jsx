@@ -14,15 +14,21 @@ function calculateGenreSimilarity(list1, list2) {
   return Math.round(similarity * 100); // Convert to percentage
 }
 
+// check how far away matching top artists are from each other in top artists list
 function calculateArtistSimilarity(list1, list2) {
   const maxLength = Math.max(list1.length, list2.length);
   let Similarity = 0;
   for (let i = 0; i < maxLength; i++) {
-    if (list1[i] === list2[i]) {
-      Similarity += maxLength - i;
+    if (list2.includes(list1[i])) {
+      const j = list2.indexOf(list1[i]);
+      Similarity += 1 / (Math.abs(i - j) + 1) / 5;
+      // console.log(i, j, Similarity);
     }
+    // if (list1[i] === list2[i]) {
+    //   Similarity += maxLength - i;
+    // }
   }
-  return Math.min(Similarity / (maxLength * (maxLength + 1)), 1) * 100;
+  return Math.min(Similarity * 100, 100);
 }
 
 function featureDataSimilarity(features1, features2) {
@@ -36,7 +42,8 @@ function featureDataSimilarity(features1, features2) {
   }
 
   // calculate song feature similarity by squaring average difference in song feaure
-  return Math.round((totalDifference / features1.length / 100) ** 2 * 100);
+  // console.log(totalDifference / features1.length / 100);
+  return Math.round((1 - totalDifference / features1.length / 100) ** 2 * 100);
 }
 
 function percentMatch(user1, user2) {
@@ -227,7 +234,7 @@ export default function UnifyContent({ user1Data, user2Data }) {
             )}
             %
           </span>
-          <span className="circle-text-small">Matching Artists</span>
+          <span className="circle-text-small">Artist Similarity</span>
         </div>
         <div className="circle">
           <span className="circle-text-large">{genreSimilarity}%</span>
