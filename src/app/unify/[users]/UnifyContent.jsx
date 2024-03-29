@@ -64,6 +64,83 @@ function percentMatch(user1, user2) {
   );
 }
 
+function VinylCircle({ centerCircleColor }) {
+  const radii = [];
+  for (let i = 159; i > 41; i -= 3) {
+    radii.push(i);
+  }
+
+  return (
+    <svg width="400" height="400">
+      {radii.map((radius) => (
+        <circle
+          key={radius}
+          r={radius}
+          cx="200"
+          cy="200"
+          fill="none"
+          stroke="black"
+          strokeWidth="1.35"
+        />
+      ))}
+      <circle
+        r="25"
+        cx="200"
+        cy="200"
+        fill="none"
+        stroke={centerCircleColor}
+        strokeWidth="32"
+      />
+      <circle
+        r="44"
+        cx="200"
+        cy="200"
+        fill="none"
+        stroke="black"
+        strokeWidth="8"
+      />
+    </svg>
+  );
+}
+
+function GenrePieChart({ data, centerCircleColor }) {
+  return (
+    <div style={{ height: 400, position: "relative" }}>
+      <ResponsivePie
+        data={data}
+        margin={{ top: 40, right: 140, bottom: 40, left: 140 }}
+        innerRadius={0.3}
+        keys={["value"]}
+        colors={["#444444", "#888888", "#cccccc", "#444444", "#cccccc"]}
+        arcLinkLabelsTextColor="#333333"
+        arcLinkLabelsThickness={2}
+        arcLinkLabelsColor={{ from: "color" }}
+        enableArcLabels={false}
+        arcLabelsTextColor={{ from: "color", modifiers: [["darker", 2]] }}
+        isInteractive={false}
+        animate={false}
+        legends={[]}
+      />
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          right: 200,
+          bottom: 0,
+          left: 200,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          textAlign: "center",
+        }}
+      >
+        <VinylCircle centerCircleColor={centerCircleColor} />
+      </div>
+    </div>
+  );
+}
+
 export default function UnifyContent({ user1Data, user2Data }) {
   // Function to handle sharing
   const shareUnify = async () => {
@@ -295,60 +372,12 @@ export default function UnifyContent({ user1Data, user2Data }) {
           </div>
         </div>
         {user1topGenres ? (
-          <div style={{ height: 400 }}>
-            <ResponsivePie
-              data={user1topGenres}
-              margin={{ top: 40, right: 140, bottom: 40, left: 140 }}
-              innerRadius={0.25}
-              keys={["value"]}
-              colors={{ scheme: "blues" }}
-              borderWidth={20}
-              borderColor="black"
-              arcLinkLabelsSkipAngle={10}
-              arcLinkLabelsTextColor="#333333"
-              arcLinkLabelsThickness={2}
-              arcLinkLabelsColor={{ from: "color" }}
-              enableArcLabels={false}
-              arcLabel="id"
-              arcLabelsSkipAngle={10}
-              arcLabelsTextColor={{
-                from: "color",
-                modifiers: [["darker", 2]],
-              }}
-              isInteractive={false}
-              animate={false}
-              legends={[]}
-            />
-          </div>
+          <GenrePieChart data={user1topGenres} centerCircleColor="#1d40b0" />
         ) : (
           <div>Loading...</div>
         )}
         {user2topGenres ? (
-          <div style={{ height: 400 }}>
-            <ResponsivePie
-              data={user2topGenres}
-              margin={{ top: 40, right: 140, bottom: 40, left: 140 }}
-              innerRadius={0.25}
-              keys={["value"]}
-              colors={{ scheme: "reds" }}
-              borderWidth={20}
-              borderColor="black"
-              arcLinkLabelsSkipAngle={10}
-              arcLinkLabelsTextColor="#333333"
-              arcLinkLabelsThickness={2}
-              arcLinkLabelsColor={{ from: "color" }}
-              enableArcLabels={false}
-              arcLabel="id"
-              arcLabelsSkipAngle={10}
-              arcLabelsTextColor={{
-                from: "color",
-                modifiers: [["darker", 2]],
-              }}
-              isInteractive={false}
-              animate={false}
-              legends={[]}
-            />
-          </div>
+          <GenrePieChart data={user2topGenres} centerCircleColor="#9c1c1c" />
         ) : (
           <div>Loading...</div>
         )}
@@ -413,6 +442,8 @@ export default function UnifyContent({ user1Data, user2Data }) {
   );
 }
 
+// Proptypes for all components
+
 UnifyContent.propTypes = {
   user1Data: PropTypes.shape({
     userProfile: PropTypes.shape({
@@ -448,4 +479,20 @@ UnifyContent.propTypes = {
       }),
     ),
   }).isRequired,
+};
+
+VinylCircle.propTypes = {
+  centerCircleColor: PropTypes.string,
+};
+VinylCircle.defaultProps = {
+  centerCircleColor: "#1d40af",
+};
+
+GenrePieChart.propTypes = {
+  data: PropTypes.shape({}),
+  centerCircleColor: PropTypes.string,
+};
+GenrePieChart.defaultProps = {
+  data: PropTypes.shape({}),
+  centerCircleColor: "#1d40af",
 };
