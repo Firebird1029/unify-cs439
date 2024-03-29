@@ -26,7 +26,7 @@ export default function UnifyPage({ params: { users } }) {
           const { data: currentUser, error } = await supabase.auth.getUser();
 
           if (error) {
-            throw error;
+            window.location.href = "/";
           }
 
           // console.log(currentUser);
