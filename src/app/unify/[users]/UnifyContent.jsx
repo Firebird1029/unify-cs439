@@ -11,7 +11,7 @@ function calculateSimilarity(list1, list2) {
   ).length;
   const union = Object.keys({ ...list1, ...list2 }).length;
   const similarity = intersection / union;
-  return similarity * 100; // Convert to percentage
+  return Math.round(similarity * 100); // Convert to percentage
 }
 
 export default function UnifyContent({ user1Data, user2Data }) {
