@@ -5,13 +5,56 @@ import PropTypes from "prop-types";
 import ShareUnify from "@/components/svg-art/share_unify";
 import "@/app/globals.css";
 
-function calculateSimilarity(list1, list2) {
+function calculateGenreSimilarity(list1, list2) {
   const intersection = Object.keys(list1).filter((key) =>
     Object.prototype.hasOwnProperty.call(list2, key),
   ).length;
   const union = Object.keys({ ...list1, ...list2 }).length;
   const similarity = intersection / union;
   return Math.round(similarity * 100); // Convert to percentage
+}
+
+function calculateArtistSimilarity(list1, list2) {
+  const maxLength = Math.max(list1.length, list2.length);
+  let Similarity = 0;
+  for (let i = 0; i < maxLength; i++) {
+    if (list1[i] === list2[i]) {
+      Similarity += maxLength - i;
+    }
+  }
+  return Math.min(Similarity / (maxLength * (maxLength + 1)), 1) * 100;
+}
+
+function featureDataSimilarity(features1, features2) {
+  // console.log(features1, features2);
+  if (features1.length !== features2.length) {
+    throw new Error("Arrays must have the same length");
+  }
+  let totalDifference = 0;
+  for (let i = 0; i < features1.length; i++) {
+    totalDifference += Math.abs(features1[i].value - features2[i].value);
+  }
+
+  // calculate song feature similarity by squaring average difference in song feaure
+  return Math.round((totalDifference / features1.length / 100) ** 2 * 100);
+}
+
+function percentMatch(user1, user2) {
+  const genreSimilarity = calculateGenreSimilarity(
+    user1.topGenres,
+    user2.topGenres,
+  );
+  const featureSimilarity = featureDataSimilarity(
+    user1.featuresData,
+    user2.featuresData,
+  );
+  const artistSimilarity = calculateArtistSimilarity(
+    user1.topArtists.map((artist) => artist.name),
+    user2.topArtists.map((artist) => artist.name),
+  );
+  return Math.round(
+    (genreSimilarity + featureSimilarity + artistSimilarity) / 3,
+  );
 }
 
 export default function UnifyContent({ user1Data, user2Data }) {
@@ -67,14 +110,31 @@ export default function UnifyContent({ user1Data, user2Data }) {
         501,
       );
 
+      // draw percent match to canvas
+      ctx.font = "70px Koulen";
+      ctx.strokeStyle = "black";
+      ctx.lineWidth = 6;
+      ctx.miterLimit = 2; // fix miter bug
+      ctx.strokeText(
+        `${percentMatch(user1Data, user2Data)}% Match`,
+        canvas.width / 2,
+        220,
+      );
+      ctx.fillStyle = "white";
+      ctx.fillText(
+        `${percentMatch(user1Data, user2Data)}% Match`,
+        canvas.width / 2,
+        220,
+      );
+
       // Convert canvas to blob
       canvas.toBlob((blob) => {
         if (navigator.share) {
           navigator
             .share({
               title: "Unify with me!",
-              text: `Compare our stats on Uni.fy`,
-              url: "unify",
+              text: `Compare our stats on Unify`,
+              url: "",
               files: [
                 new File([blob], "file.png", {
                   type: blob.type,
@@ -118,7 +178,7 @@ export default function UnifyContent({ user1Data, user2Data }) {
     .slice(0, 5) // Get the top 5 genres
     .map(([id, value]) => ({ id, value })); // Map to { id: genre, value: frequency } objects
 
-  const genreSimilarity = calculateSimilarity(
+  const genreSimilarity = calculateGenreSimilarity(
     user1Data.topGenres,
     user2Data.topGenres,
   );
@@ -129,8 +189,7 @@ export default function UnifyContent({ user1Data, user2Data }) {
         className="font-koulen"
         style={{ fontSize: 100, textAlign: "center" }}
       >
-        {" "}
-        0% Match!
+        {percentMatch(user1Data, user2Data)}% Match!
       </div>
       <div className="grid grid-cols-2 p-8 flex">
         {/* <style>
@@ -160,16 +219,28 @@ export default function UnifyContent({ user1Data, user2Data }) {
       </div>
       <div className="circle-row mt-8">
         <div className="circle">
-          <span className="circle-text-large">+5%</span>
-          <span className="circle-text-small">Same Top Artist</span>
+          <span className="circle-text-large">
+            {calculateArtistSimilarity(
+              user1Data.topArtists.map((artist) => artist.name),
+              user2Data.topArtists.map((artist) => artist.name),
+            )}
+            %
+          </span>
+          <span className="circle-text-small">Matching Artists</span>
         </div>
         <div className="circle">
           <span className="circle-text-large">{genreSimilarity}%</span>
           <span className="circle-text-small">Genres Shared</span>
         </div>
         <div className="circle">
-          <span className="circle-text-large">+10%</span>
-          <span className="circle-text-small">Same Top Song</span>
+          <span className="circle-text-large">
+            {featureDataSimilarity(
+              user1Data.featuresData,
+              user2Data.featuresData,
+            )}
+            %
+          </span>
+          <span className="circle-text-small">Song Similarity</span>
         </div>
       </div>
       <div style={{ display: "flex", justifyContent: "center" }}>
@@ -196,7 +267,7 @@ export default function UnifyContent({ user1Data, user2Data }) {
           >
             Top Artists:
             <div className="mt-4" />
-            {user1Data.topArtists.map((artist) => (
+            {user1Data.topArtists.slice(0, 5).map((artist) => (
               <div>{artist.name}</div>
             ))}
           </div>
@@ -210,7 +281,7 @@ export default function UnifyContent({ user1Data, user2Data }) {
           >
             Top Artists:
             <div className="mt-4" />
-            {user2Data.topArtists.map((artist) => (
+            {user2Data.topArtists.slice(0, 5).map((artist) => (
               <div>{artist.name}</div>
             ))}
           </div>
@@ -282,7 +353,7 @@ export default function UnifyContent({ user1Data, user2Data }) {
           >
             Top Songs:
             <div className="mt-4" />
-            {user1Data.topSongs.map((song) => (
+            {user1Data.topSongs.slice(0, 5).map((song) => (
               <div>{song.name}</div>
             ))}
           </div>
@@ -296,7 +367,7 @@ export default function UnifyContent({ user1Data, user2Data }) {
           >
             Top Songs:
             <div className="mt-4" />
-            {user2Data.topSongs.map((song) => (
+            {user2Data.topSongs.slice(0, 5).map((song) => (
               <div>{song.name}</div>
             ))}
           </div>

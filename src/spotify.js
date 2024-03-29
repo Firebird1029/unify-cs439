@@ -111,11 +111,16 @@ async function getSpotifyData(token) {
     value: averageAudioFeatures[key],
   }));
 
-  const topArtistsData = await getTopItems(token, "artists", "short_term", "5");
+  const topArtistsData = await getTopItems(
+    token,
+    "artists",
+    "short_term",
+    "25",
+  );
 
   const topArtists = topArtistsData.items;
 
-  const topSongsData = await getTopItems(token, "tracks", "short_term", "5");
+  const topSongsData = await getTopItems(token, "tracks", "short_term", "25");
 
   const topSongs = topSongsData.items;
 

@@ -104,7 +104,7 @@ function UserContent({ userData, shareCassette }) {
         >
           Top Artists:
           <div className="mt-4" />
-          {userData.topArtists.map((artist) => (
+          {userData.topArtists.slice(0, 5).map((artist) => (
             <div key={artist.name}>{artist.name}</div>
           ))}
         </div>
@@ -118,7 +118,7 @@ function UserContent({ userData, shareCassette }) {
         >
           Top Songs:
           <div className="mt-4" />
-          {userData.topSongs.map((song) => (
+          {userData.topSongs.slice(0, 5).map((song) => (
             <div key={song.name}>{song.name}</div>
           ))}
         </div>
