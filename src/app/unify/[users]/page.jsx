@@ -16,7 +16,7 @@ export default function UnifyPage({ params: { users } }) {
   const [loading, setLoading] = useState(true);
   const [user1Data, setUser1Data] = useState(null);
   const [user2Data, setUser2Data] = useState(null);
-  const [isError, setError] = useState(null);
+  const [errorMessage, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,7 +41,7 @@ export default function UnifyPage({ params: { users } }) {
             .eq("id", currentUser.user.id)
             .then(({ data, error2 }) => {
               if (error2) {
-                setError("User not found.");
+                setError("You must log in to unify.");
               }
 
               // console.log(data);
@@ -84,11 +84,11 @@ export default function UnifyPage({ params: { users } }) {
 
         if (data && data.length > 0) {
           setUser1Data(data[0].spotify_data);
+          setLoading(false);
         } else {
+          setLoading(true);
           setError("User not found.");
         }
-
-        setLoading(false);
       });
   }, []);
 
@@ -108,9 +108,12 @@ export default function UnifyPage({ params: { users } }) {
 
         if (data && data.length > 0) {
           setUser2Data(data[0].spotify_data);
+          setLoading(false);
+        } else {
+          setLoading(true);
+          setError("User not found.");
         }
 
-        setLoading(false);
         // console.log(loading, user1Data, user2Data);
       });
   }, []);
@@ -124,8 +127,8 @@ export default function UnifyPage({ params: { users } }) {
           </div>
         )}
       </div>
-      {isError && (
-        <ErrorAlert Title="Error: " Message={isError} RedirectTo="/" />
+      {errorMessage && loading && (
+        <ErrorAlert Title="Error: " Message={errorMessage} RedirectTo="/" />
       )}
       <div />
     </>
