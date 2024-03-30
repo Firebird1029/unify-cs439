@@ -3,19 +3,18 @@ import { loginWithSpotify } from "@/app/login/actions";
 export default function IndexContent() {
   function handleSignOut() {
     // Perform sign-out actions here, e.g., make an API request to sign the user out
-    fetch("/auth/signout", { method: "POST" })
-      .then((response) => {
-        if (response.ok) {
-          // Handle successful sign-out, e.g., redirect to login page
-          window.location.href = "/";
-        } else {
-          // Handle sign-out failure
-          // console.error("Sign-out failed");
-        }
-      })
-      .catch((error) => {
-        // console.error("Error occurred during sign-out:", error);
-      });
+    fetch("/auth/signout", { method: "POST" }).then((response) => {
+      if (response.ok) {
+        // Handle successful sign-out, e.g., redirect to login page
+        window.location.href = "/";
+      } else {
+        // Handle sign-out failure
+        // console.error("Sign-out failed");
+      }
+    });
+    // .catch((error) => {
+    //   // console.error("Error occurred during sign-out:", error);
+    // });
   }
 
   return (
