@@ -6,12 +6,14 @@ import ReactDOMServer from "react-dom/server";
 import createClient from "@/utils/supabase/client";
 import UserContent from "@/components/svg-art/user_content";
 import ShareCassette from "@/components/svg-art/share_cassette";
+import ErrorAlert from "@/app/error/error";
 
 export default function UserPage({ params: { slug } }) {
   const supabase = createClient();
 
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState(null);
+  const [errorMessage, setError] = useState(null);
 
   // Function to handle sharing
   const shareCassette = async () => {
@@ -30,7 +32,7 @@ export default function UserPage({ params: { slug } }) {
       const ctx = canvas.getContext("2d");
 
       if (!ctx) {
-        // TODO "Unable to obtain 2D context for canvas."
+        setError("Unable to obtain 2D context for canvas.");
         return;
       }
 
@@ -40,14 +42,11 @@ export default function UserPage({ params: { slug } }) {
       // Clear canvas
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Add canvas to the document body for debugging
-      // document.body.appendChild(canvas);
-
       canvas.width = img.width;
       canvas.height = img.height;
 
       // Draw the image on the canvas
-      canvas.getContext("2d")?.drawImage(img, 0, 0);
+      ctx.drawImage(img, 0, 0);
 
       ctx.textAlign = "center";
 
@@ -74,8 +73,8 @@ export default function UserPage({ params: { slug } }) {
                 }),
               ],
             })
-            .catch(() => {
-              // TODO "Error sharing" + errr
+            .catch((err) => {
+              setError(`Error sharing: ${err}`);
             });
         } else {
           // Web share API not supported
@@ -92,16 +91,15 @@ export default function UserPage({ params: { slug } }) {
       .eq("username", slug)
       .then(({ data, error }) => {
         if (error) {
-          // TODO display error message to user error
-        }
-
-        if (data && data.length > 0) {
+          setError("User not found.");
+        } else if (data && data.length > 0) {
           setUserData(data[0].spotify_data);
         }
 
         setLoading(false);
       });
-  }, []);
+  }, [slug]);
+
   return (
     <div>
       {!loading && userData && (
@@ -113,7 +111,16 @@ export default function UserPage({ params: { slug } }) {
           />
         </div>
       )}
-      {!loading && !userData && <div>User not found!</div>}
+      {!loading && !userData && !errorMessage && (
+        <ErrorAlert
+          Title="Error: "
+          Message={"User not found."}
+          RedirectTo="/"
+        />
+      )}
+      {errorMessage && loading && (
+        <ErrorAlert Title="Error: " Message={errorMessage} RedirectTo="/" />
+      )}
     </div>
   );
 }

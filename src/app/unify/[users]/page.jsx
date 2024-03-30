@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import createClient from "@/utils/supabase/client";
 import UnifyContent from "./UnifyContent";
+import ErrorAlert from "@/app/error/error";
 
 export default function UnifyPage({ params: { users } }) {
   // console.log(users);
@@ -15,6 +16,7 @@ export default function UnifyPage({ params: { users } }) {
   const [loading, setLoading] = useState(true);
   const [user1Data, setUser1Data] = useState(null);
   const [user2Data, setUser2Data] = useState(null);
+  const [errorMessage, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,7 +28,7 @@ export default function UnifyPage({ params: { users } }) {
           const { data: currentUser, error } = await supabase.auth.getUser();
 
           if (error) {
-            throw error;
+            setError("You must log in to unify.");
           }
 
           // console.log(currentUser);
@@ -39,7 +41,7 @@ export default function UnifyPage({ params: { users } }) {
             .eq("id", currentUser.user.id)
             .then(({ data, error2 }) => {
               if (error2) {
-                // TODO display error message to user error2
+                setError("You must log in to unify.");
               }
 
               // console.log(data);
@@ -56,7 +58,7 @@ export default function UnifyPage({ params: { users } }) {
             });
         }
       } catch (error) {
-        // TODO "Error fetching data:", error.message
+        setError("Could not fetch data.");
       }
     };
 
@@ -75,15 +77,18 @@ export default function UnifyPage({ params: { users } }) {
       .select("spotify_data")
       .eq("username", user1)
       .then(({ data, error }) => {
+        // console.log(data, error);
         if (error) {
-          // TODO display error message to user error
+          setError("User not found.");
         }
 
         if (data && data.length > 0) {
           setUser1Data(data[0].spotify_data);
+          setLoading(false);
+        } else {
+          setLoading(true);
+          setError("User not found.");
         }
-
-        setLoading(false);
       });
   }, []);
 
@@ -94,27 +99,37 @@ export default function UnifyPage({ params: { users } }) {
       .select("spotify_data")
       .eq("username", user2)
       .then(({ data, error }) => {
+        // console.log(data, error);
         if (error) {
-          // TODO display error message to user error
+          setError("User not found.");
         }
 
         if (data && data.length > 0) {
           setUser2Data(data[0].spotify_data);
+          setLoading(false);
+        } else {
+          setLoading(true);
+          setError("User not found.");
         }
 
-        setLoading(false);
+        // console.log(loading, user1Data, user2Data);
       });
   }, []);
 
   return (
-    <div>
-      {!loading && user1Data && user2Data && (
-        <div>
-          <UnifyContent user1Data={user1Data} user2Data={user2Data} />
-        </div>
+    <>
+      <div>
+        {!loading && user1Data && user2Data && (
+          <div>
+            <UnifyContent user1Data={user1Data} user2Data={user2Data} />
+          </div>
+        )}
+      </div>
+      {errorMessage && loading && (
+        <ErrorAlert Title="Error: " Message={errorMessage} RedirectTo="/" />
       )}
-      {!loading && (!user1Data || !user2Data) && <div>User not found!</div>}
-    </div>
+      <div />
+    </>
   );
 }
 
