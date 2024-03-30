@@ -102,8 +102,6 @@ export default function UnifyPage({ params: { users } }) {
         // console.log(data, error);
         if (error) {
           setError("User not found.");
-        } else {
-          setError("User not found.");
         }
 
         if (data && data.length > 0) {
