@@ -10,11 +10,11 @@ export default function IndexContent() {
           window.location.href = "/";
         } else {
           // Handle sign-out failure
-          console.error("Sign-out failed");
+          // console.error("Sign-out failed");
         }
       })
       .catch((error) => {
-        console.error("Error occurred during sign-out:", error);
+        // console.error("Error occurred during sign-out:", error);
       });
   }
 
