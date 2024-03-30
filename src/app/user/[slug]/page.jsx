@@ -118,7 +118,7 @@ export default function UserPage({ params: { slug } }) {
           RedirectTo="/"
         />
       )}
-      {errorMessage && !loading && (
+      {errorMessage && loading && (
         <ErrorAlert Title="Error: " Message={errorMessage} RedirectTo="/" />
       )}
     </div>
