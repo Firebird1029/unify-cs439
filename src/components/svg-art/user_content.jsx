@@ -104,8 +104,8 @@ function UserContent({ userData, shareCassette }) {
         >
           Top Artists:
           <div className="mt-4" />
-          {userData.topArtists.map((artist) => (
-            <div>{artist.name}</div>
+          {userData.topArtists.slice(0, 5).map((artist) => (
+            <div key={artist.name}>{artist.name}</div>
           ))}
         </div>
       </div>
@@ -118,8 +118,8 @@ function UserContent({ userData, shareCassette }) {
         >
           Top Songs:
           <div className="mt-4" />
-          {userData.topSongs.map((song) => (
-            <div>{song.name}</div>
+          {userData.topSongs.slice(0, 5).map((song) => (
+            <div key={song.name}>{song.name}</div>
           ))}
         </div>
       </div>
@@ -160,7 +160,7 @@ UserContent.propTypes = {
       }),
     ),
     featuresData: PropTypes.arrayOf(PropTypes.shape()),
-    topGenres: PropTypes.arrayOf(PropTypes.shape()), // TODO ???
+    topGenres: PropTypes.shape(), // TODO ???
   }).isRequired,
   shareCassette: PropTypes.func.isRequired,
 };

@@ -1,10 +1,7 @@
-// TODO style this page
+"use client";
+
+import ErrorAlert from "@/app/error/error";
 
 export default function ErrorPage() {
-  return (
-    <div>
-      <h1>Uh Oh!</h1>
-      <p>Sorry, something went wrong.</p>
-    </div>
-  );
+  return <ErrorAlert Title={""} Message={"An error occured."} />;
 }
