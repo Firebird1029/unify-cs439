@@ -6,6 +6,7 @@ import ReactDOMServer from "react-dom/server";
 import createClient from "@/utils/supabase/client";
 import UserContent from "@/components/svg-art/user_content";
 import ShareCassette from "@/components/svg-art/share_cassette";
+import ErrorAlert from "@/app/error/error";
 
 export default function UserPage({ params: { slug } }) {
   const supabase = createClient();
@@ -113,7 +114,13 @@ export default function UserPage({ params: { slug } }) {
           />
         </div>
       )}
-      {!loading && !userData && <div>User not found!</div>}
+      {!loading && !userData && (
+        <ErrorAlert
+          Title="Error: "
+          Message={"User not found."}
+          RedirectTo="/"
+        />
+      )}
     </div>
   );
 }
