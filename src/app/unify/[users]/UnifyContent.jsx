@@ -105,10 +105,10 @@ function VinylCircle({ centerCircleColor }) {
 
 function GenrePieChart({ data, centerCircleColor }) {
   return (
-    <div style={{ height: 400, position: "relative" }}>
+    <div style={{ height: 440, position: "relative" }}>
       <ResponsivePie
         data={data}
-        margin={{ top: 40, right: 140, bottom: 40, left: 140 }}
+        margin={{ top: 70, right: 140, bottom: 50, left: 140 }}
         innerRadius={0.3}
         keys={["value"]}
         colors={["#444444", "#888888", "#cccccc", "#444444", "#cccccc"]}
@@ -120,11 +120,20 @@ function GenrePieChart({ data, centerCircleColor }) {
         isInteractive={false}
         animate={false}
         legends={[]}
+        theme={{
+          text: {
+            fontSize: 25,
+            fill: "#333333",
+            outlineWidth: 10,
+            outlineColor: "transparent",
+            fontFamily: "Koulen",
+          },
+        }}
       />
       <div
         style={{
           position: "absolute",
-          top: 0,
+          top: 20,
           right: 200,
           bottom: 0,
           left: 200,
@@ -346,28 +355,24 @@ export default function UnifyContent({ user1Data, user2Data }) {
         <div className="bg-gray-300 rounded-lg p-4 mt-4 flex">
           <div
             className="text-black text-l font-koulen"
-            style={{
-              fontSize: 40,
-            }}
+            style={{ fontSize: 50 }}
           >
             Top Artists:
-            <div className="mt-4" />
-            {user1Data.topArtists.slice(0, 5).map((artist) => (
-              <div>{artist.name}</div>
+            <div className="mt-2" />
+            {user1Data.topArtists.slice(0, 8).map((artist) => (
+              <div style={{ fontSize: 35 }}>{artist.name}</div>
             ))}
           </div>
         </div>
         <div className="bg-gray-300 rounded-lg p-4 mt-4 ml-4 flex">
           <div
             className="text-black text-l font-koulen"
-            style={{
-              fontSize: 40,
-            }}
+            style={{ fontSize: 50 }}
           >
             Top Artists:
-            <div className="mt-4" />
-            {user2Data.topArtists.slice(0, 5).map((artist) => (
-              <div>{artist.name}</div>
+            <div className="mt-2" />
+            {user2Data.topArtists.slice(0, 8).map((artist) => (
+              <div style={{ fontSize: 35 }}>{artist.name}</div>
             ))}
           </div>
         </div>
@@ -384,28 +389,24 @@ export default function UnifyContent({ user1Data, user2Data }) {
         <div className="bg-gray-300 rounded-lg p-4 mt-4 flex">
           <div
             className="text-black text-l font-koulen"
-            style={{
-              fontSize: 40,
-            }}
+            style={{ fontSize: 50 }}
           >
             Top Songs:
-            <div className="mt-4" />
-            {user1Data.topSongs.slice(0, 5).map((song) => (
-              <div>{song.name}</div>
+            <div className="mt-2" />
+            {user1Data.topSongs.slice(0, 8).map((song) => (
+              <div style={{ fontSize: 35 }}>{song.name}</div>
             ))}
           </div>
         </div>
         <div className="bg-gray-300 rounded-lg p-4 mt-4 ml-4 flex">
           <div
             className="text-black text-l font-koulen"
-            style={{
-              fontSize: 40,
-            }}
+            style={{ fontSize: 50 }}
           >
             Top Songs:
-            <div className="mt-4" />
-            {user2Data.topSongs.slice(0, 5).map((song) => (
-              <div>{song.name}</div>
+            <div className="mt-2" />
+            {user2Data.topSongs.slice(0, 8).map((song) => (
+              <div style={{ fontSize: 35 }}>{song.name}</div>
             ))}
           </div>
         </div>
@@ -424,12 +425,14 @@ export default function UnifyContent({ user1Data, user2Data }) {
               maxValue="100"
               colors={{ scheme: "set1" }}
               margin={{ top: 40, right: 60, bottom: 40, left: 60 }}
+              gridLabelOffset={25}
               theme={{
                 text: {
                   fontSize: 25,
                   fill: "#333333",
-                  outlineWidth: 0,
+                  outlineWidth: 10,
                   outlineColor: "transparent",
+                  fontFamily: "Koulen",
                 },
               }}
             />
