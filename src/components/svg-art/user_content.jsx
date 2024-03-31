@@ -2,6 +2,7 @@ import { ResponsiveRadar } from "@nivo/radar";
 import { ResponsivePie } from "@nivo/pie";
 import "@/app/globals.css";
 import PropTypes from "prop-types";
+import GeneralCassette from "@/components/svg-art/cassette";
 
 function UserContent({ userData, shareCassette }) {
   // Convert object to array of { id: genre, value: frequency } objects
@@ -53,8 +54,11 @@ function UserContent({ userData, shareCassette }) {
             </span>
           </button>
         </div>
+        {/* Move this somewhere else */}
       </div>
-      <div className="bg-gray-100 rounded-lg p-4 ml-4 flex"> </div>
+      <div className="bg-gray-100 rounded-lg p-4 ml-4 flex">
+        <GeneralCassette userData={userData} unify={null} />
+      </div>
       <div className="rounded-lg p-4 mt-4 ml-4 justify-center">
         <div
           className="text-black text-l font-koulen"
