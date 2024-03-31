@@ -1,5 +1,6 @@
 import { ResponsiveRadar } from "@nivo/radar";
 import { ResponsivePie } from "@nivo/pie";
+import { useState, useEffect, useRef } from "react";
 import ReactDOMServer from "react-dom/server";
 import PropTypes from "prop-types";
 import ShareUnify from "@/components/svg-art/share_unify";
@@ -64,10 +65,13 @@ function percentMatch(user1, user2) {
   );
 }
 
-function VinylCircle({ centerCircleColor }) {
+function VinylCircle({ centerCircleColor, width }) {
+  const newWidth = Math.min((width - 280) / 2, 160);
   const radii = [];
-  for (let i = 159; i > 41; i -= 3) {
-    radii.push(i);
+  if (newWidth > 0) {
+    for (let i = newWidth - 1; i > 10; i -= 3) {
+      radii.push(i);
+    }
   }
 
   return (
@@ -84,28 +88,46 @@ function VinylCircle({ centerCircleColor }) {
         />
       ))}
       <circle
-        r="25"
+        r={Math.round(newWidth * 0.15625)}
         cx="200"
         cy="200"
         fill="none"
         stroke={centerCircleColor}
-        strokeWidth="32"
+        strokeWidth={Math.round(newWidth * 0.2)}
       />
       <circle
-        r="44"
+        r={Math.round(newWidth * 0.275)}
         cx="200"
         cy="200"
         fill="none"
         stroke="black"
-        strokeWidth="8"
+        strokeWidth={Math.round(newWidth * 0.05)}
       />
     </svg>
   );
 }
 
 function GenrePieChart({ data, centerCircleColor }) {
+  const [divWidth, setDivWidth] = useState(0); // Step 1: State for storing div width
+  const divRef = useRef(null); // Step 2: Ref for the div
+
+  // Step 3: Effect hook for setting and updating div width
+  useEffect(() => {
+    // Function to update div width
+    const updateWidth = () => {
+      if (divRef.current) {
+        setDivWidth(divRef.current.offsetWidth); // Update div width
+      }
+    };
+
+    window.addEventListener("resize", updateWidth); // Add resize event listener
+    updateWidth(); // Initial update
+
+    return () => window.removeEventListener("resize", updateWidth); // Cleanup
+  }, []);
+
   return (
-    <div style={{ height: 440, position: "relative" }}>
+    <div ref={divRef} style={{ height: 440, position: "relative" }}>
       <ResponsivePie
         data={data}
         margin={{ top: 70, right: 140, bottom: 50, left: 140 }}
@@ -124,7 +146,7 @@ function GenrePieChart({ data, centerCircleColor }) {
           text: {
             fontSize: 25,
             fill: "#333333",
-            outlineWidth: 10,
+            outlineWidth: 0,
             outlineColor: "transparent",
             fontFamily: "Koulen",
           },
@@ -134,9 +156,9 @@ function GenrePieChart({ data, centerCircleColor }) {
         style={{
           position: "absolute",
           top: 20,
-          right: 200,
+          right: 0,
           bottom: 0,
-          left: 200,
+          left: Math.min(0, divWidth - 400),
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -144,7 +166,7 @@ function GenrePieChart({ data, centerCircleColor }) {
           textAlign: "center",
         }}
       >
-        <VinylCircle centerCircleColor={centerCircleColor} />
+        <VinylCircle centerCircleColor={centerCircleColor} width={divWidth} />
       </div>
     </div>
   );
@@ -526,9 +548,11 @@ UnifyContent.propTypes = {
 
 VinylCircle.propTypes = {
   centerCircleColor: PropTypes.string,
+  width: PropTypes.number,
 };
 VinylCircle.defaultProps = {
   centerCircleColor: "#1d40af",
+  width: PropTypes.number,
 };
 
 GenrePieChart.propTypes = {
