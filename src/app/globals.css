@@ -42,3 +42,8 @@
   color: black;
   font-family: "Koulen", sans-serif;
 }
+/* Fixes issue with lists not numbering */
+ol li {
+  list-style: decimal;
+  list-style-position: inside;
+}

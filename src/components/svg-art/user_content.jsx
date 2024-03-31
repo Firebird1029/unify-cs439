@@ -11,18 +11,16 @@ function UserContent({ userData, shareCassette }) {
     .map(([id, value]) => ({ id, value })); // Map to { id: genre, value: frequency } objects
 
   return (
-    <div className="grid grid-cols-2 p-8 flex">
+    <div
+      className="flex flex-col \
+                    md:grid md:grid-cols-2 md:p-8"
+    >
       {/* <style>
         @import
         url('https://fonts.googleapis.com/css2?family=Koulen&display=swap');
       </style> */}
       <div className="bg-gray-800 rounded-lg p-4 flex flex-col">
-        <p
-          className="text-white text-xl font-koulen mb-24 mr-4 mt-4 ml-4"
-          style={{
-            fontSize: 60,
-          }}
-        >
+        <p className="text-white text-5xl font-koulen mb-24 mr-4 mt-4 ml-4">
           @{userData.userProfile.display_name}
         </p>
         <div className="flex flex-row justify-center">
@@ -103,10 +101,13 @@ function UserContent({ userData, shareCassette }) {
           }}
         >
           Top Artists:
-          <div className="mt-4" />
-          {userData.topArtists.slice(0, 5).map((artist) => (
-            <div key={artist.name}>{artist.name}</div>
-          ))}
+          <ol type="1" className="">
+            {userData.topArtists.slice(0, 5).map((artist) => (
+              <li className="ml-5" key={artist.name}>
+                {artist.name}
+              </li>
+            ))}
+          </ol>
         </div>
       </div>
       <div className="bg-gray-100 rounded-lg p-4 mt-4 ml-4 flex">
@@ -117,10 +118,13 @@ function UserContent({ userData, shareCassette }) {
           }}
         >
           Top Songs:
-          <div className="mt-4" />
-          {userData.topSongs.slice(0, 5).map((song) => (
-            <div key={song.name}>{song.name}</div>
-          ))}
+          <ol type="1">
+            {userData.topSongs.slice(0, 5).map((song) => (
+              <li className="ml-5" key={song.name}>
+                {song.name}
+              </li>
+            ))}
+          </ol>
         </div>
       </div>
       <div className="rounded-lg p-4 mt-4 ml-4 justify-center">
