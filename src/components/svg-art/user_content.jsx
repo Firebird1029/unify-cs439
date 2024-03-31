@@ -221,18 +221,38 @@ UserContent.propTypes = {
     userProfile: PropTypes.shape({
       display_name: PropTypes.string,
     }),
-    topArtists: PropTypes.arrayOf(
-      PropTypes.shape({
-        name: PropTypes.string,
-      }),
-    ),
+    featuresData: PropTypes.arrayOf(PropTypes.shape()),
+    topGenres: PropTypes.shape({}),
     topSongs: PropTypes.arrayOf(
       PropTypes.shape({
         name: PropTypes.string,
       }),
     ),
-    featuresData: PropTypes.arrayOf(PropTypes.shape()),
-    topGenres: PropTypes.shape(), // TODO ???
+    topSongsMedium: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+    topSongsLong: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+    topArtists: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+    topArtistsMedium: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+    topArtistsLong: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
   }).isRequired,
   shareCassette: PropTypes.func.isRequired,
 };

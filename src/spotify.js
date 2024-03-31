@@ -31,13 +31,11 @@ async function getTopItems(
   );
 }
 
-async function getTopGenres(token) {
+function getTopGenres(topArtists) {
   const genreFrequencies = {};
 
-  const topArtists = await getTopItems(token, "artists", "medium_term", "25");
-
   // Iterate over each artist object
-  topArtists.items.forEach((artist) => {
+  topArtists.forEach((artist) => {
     // Extract genres array from each artist
     const { genres } = artist;
 
@@ -64,10 +62,13 @@ async function getAudioFeatures(token, ids) {
   return callSpotifyApi(token, `/audio-features?ids=${ids}`);
 }
 
-async function getAverageAudioFeatures(token) {
-  const topSongs = await getTopItems(token, "tracks", "short_term", "5");
-
+async function getAverageAudioFeatures(token, topSongs) {
   const trackIds = topSongs.items.map((track) => track.id).join(",");
+
+  const popularitySum = topSongs.items.reduce(
+    (acc, song) => acc + song.popularity,
+    0,
+  );
 
   const audioFeatureData = await getAudioFeatures(token, trackIds);
 
@@ -98,40 +99,92 @@ async function getAverageAudioFeatures(token) {
     return acc;
   }, {});
 
+  featuresAvg.popularity = popularitySum / audioFeatures.length;
+
   return featuresAvg;
 }
 
 async function getSpotifyData(token) {
+  // User Profile
   const userProfile = await getUserData(token);
 
-  const averageAudioFeatures = await getAverageAudioFeatures(token);
+  // Artist Data
+  const topArtistsShortData = await getTopItems(
+    token,
+    "artists",
+    "short_term",
+    "25",
+  );
+  const topArtistsMediumData = await getTopItems(
+    token,
+    "artists",
+    "medium_term",
+    "25",
+  );
+  const topArtistsLongData = await getTopItems(
+    token,
+    "artists",
+    "long_term",
+    "25",
+  );
+
+  const topArtists = topArtistsShortData.items;
+  const topArtistsMedium = topArtistsMediumData.items;
+  const topArtistsLong = topArtistsLongData.items;
+
+  // Song Data
+  const topSongsShortData = await getTopItems(
+    token,
+    "tracks",
+    "short_term",
+    "25",
+  );
+  const topSongsMediumData = await getTopItems(
+    token,
+    "tracks",
+    "medium_term",
+    "25",
+  );
+  const topSongsLongData = await getTopItems(
+    token,
+    "tracks",
+    "long_term",
+    "50",
+  );
+
+  const topSongs = topSongsShortData.items;
+  const topSongsMedium = topSongsMediumData.items;
+  const topSongsLong = topSongsLongData.items.slice(0, 25);
+
+  // Audio Features
+  const averageAudioFeatures = await getAverageAudioFeatures(
+    token,
+    topSongsLongData,
+  );
 
   const featuresData = Object.keys(averageAudioFeatures).map((key) => ({
     feature: key,
     value: averageAudioFeatures[key],
   }));
 
-  const topArtistsData = await getTopItems(
-    token,
-    "artists",
-    "short_term",
-    "25",
-  );
-
-  const topArtists = topArtistsData.items;
-
-  const topSongsData = await getTopItems(token, "tracks", "short_term", "25");
-
-  const topSongs = topSongsData.items;
-
-  const topGenres = await getTopGenres(token);
+  // top Genres (across all terms)
+  const combinedArtists = [
+    ...topArtists,
+    ...topArtistsMedium,
+    ...topArtistsLong,
+  ];
+  const topGenres = getTopGenres(combinedArtists);
 
   // Constructing the user data JSON
   const userData = {
     userProfile,
     featuresData,
     topArtists,
+    topArtistsMedium,
+    topArtistsLong,
     topSongs,
+    topSongsMedium,
+    topSongsLong,
     topGenres,
   };
 

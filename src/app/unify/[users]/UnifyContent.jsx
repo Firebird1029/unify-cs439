@@ -459,7 +459,27 @@ UnifyContent.propTypes = {
         name: PropTypes.string,
       }),
     ),
+    topSongsMedium: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+    topSongsLong: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
     topArtists: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+    topArtistsMedium: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+    topArtistsLong: PropTypes.arrayOf(
       PropTypes.shape({
         name: PropTypes.string,
       }),
@@ -476,7 +496,27 @@ UnifyContent.propTypes = {
         name: PropTypes.string,
       }),
     ),
+    topSongsMedium: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+    topSongsLong: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
     topArtists: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+    topArtistsMedium: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+    topArtistsLong: PropTypes.arrayOf(
       PropTypes.shape({
         name: PropTypes.string,
       }),
