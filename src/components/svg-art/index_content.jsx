@@ -1,9 +1,13 @@
+import { useState } from "react";
 import { loginWithSpotify } from "@/app/login/actions";
 import Ipod from "@/components/svg-art/ipod";
+import LoadingIcon from "@/components/LoadingIcon";
 import "@/app/globals.css";
 import LeftPanel from "@/components/svg-art/left_panel";
 
 export default function IndexContent() {
+  const [loading, setLoading] = useState(false);
+
   function handleSignOut() {
     // Perform sign-out actions here, e.g., make an API request to sign the user out
 
@@ -22,11 +26,21 @@ export default function IndexContent() {
   }
 
   return (
-    <div className="h-screen relative">
+    <div className="flex h-screen relative">
       <div
-        className="space-x-0 pt-12 px-12 border-10 border-red \
+        className={`w-[100%] flex flex-col justify-center items-center text-center ${
+          loading ? "" : "hidden"
+        }`}
+      >
+        <LoadingIcon />
+        <p className="mt-3 text-2xl font-koulen">Getting things set up...</p>
+      </div>
+      <div
+        className={`space-x-0 pt-12 px-12 border-10 border-red \
                     flex flex-col justify-center \
-                    lg:flex-row lg:items-center lg:justify-end lg:space-x-12 lg:absolute lg:bottom-px"
+                    lg:flex-row lg:items-center lg:justify-end lg:space-x-12 lg:absolute lg:bottom-px ${
+                      loading ? "hidden" : ""
+                    }`}
       >
         {" "}
         {/* Keeps Ipod at Bottom for large screens */}
@@ -46,7 +60,10 @@ export default function IndexContent() {
                 className="border rounded-full bg-white px-5 py-3 text-3xl font-koulen \
                               transition hover:scale-110"
                 type="button"
-                onClick={() => loginWithSpotify()}
+                onClick={() => {
+                  setLoading(true);
+                  loginWithSpotify();
+                }}
               >
                 Log in with Spotify
                 {/* {document.cookie.length > 0 ? "Continue to Account" : "Log in with Spotify" /* PLACEHOLDER: Needs better conditional check! */}
