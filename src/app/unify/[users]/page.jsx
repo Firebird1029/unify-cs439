@@ -109,7 +109,9 @@ export default function UnifyPage({ params: { users } }) {
           setLoading(false);
         } else {
           setLoading(true);
-          setError("User not found.");
+          if (users.includes("%26")) {
+            setError("User not found.");
+          }
         }
 
         // console.log(loading, user1Data, user2Data);
