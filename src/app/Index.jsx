@@ -28,9 +28,5 @@ export default function HomePage() {
     });
   }, []);
 
-  return (
-    <div style={{ width: "100vw", height: "100vh" }}>
-      <IndexContent />
-    </div>
-  );
+  return <IndexContent />;
 }

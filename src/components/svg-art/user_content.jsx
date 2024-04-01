@@ -119,18 +119,17 @@ function UserContent({ userData, shareCassette }) {
     .map(([id, value]) => ({ id, value })); // Map to { id: genre, value: frequency } objects
 
   return (
-    <div className="grid grid-cols-2 p-8 flex">
+    <div
+      className="flex flex-col \
+                    md:grid md:grid-cols-2 md:p-8"
+    >
       {/* <style>
         @import
         url('https://fonts.googleapis.com/css2?family=Koulen&display=swap');
       </style> */}
+
       <div className="bg-[#39466B] rounded-lg p-4 flex flex-col">
-        <p
-          className="text-white text-xl font-koulen mb-24 mr-4 mt-4 ml-4"
-          style={{
-            fontSize: 60,
-          }}
-        >
+        <p className="text-white text-5xl font-koulen mb-24 mr-4 mt-4 ml-4">
           @{userData.userProfile.display_name}
         </p>
         <div className="flex flex-row justify-center">
