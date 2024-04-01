@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { loginWithSpotify } from "@/app/login/actions";
 import Ipod from "@/components/svg-art/ipod";
@@ -9,18 +9,18 @@ import LeftPanel from "@/components/svg-art/left_panel";
 import LoadingIcon from "@/components/LoadingIcon";
 
 export default function IndexContent() {
-  const [loggedIn, setLogIn] = useState(false);
+  const [loggedIn, setLogIn] = useState();
   const [cookies] = useCookies();
   const [loading, setLoading] = useState(false);
 
   // check if user is already logged in
-  useEffect(() => {
-    if (cookies && Object.keys(cookies).length > 0) {
-      // already logged in
-      // console.log("logged in");
+  useLayoutEffect(() => {
+    if (Object.keys(cookies).length > 0) {
       setLogIn(true);
+    } else {
+      setLogIn(false);
     }
-  }, []);
+  }, [cookies]);
 
   function handleSignOut() {
     // Perform sign-out actions here, e.g., make an API request to sign the user out
@@ -37,6 +37,10 @@ export default function IndexContent() {
     // .catch((error) => {
     //   // console.error("Error occurred during sign-out:", error);
     // });
+  }
+
+  if (loggedIn === undefined) {
+    return <div />;
   }
 
   return (
