@@ -1,5 +1,6 @@
 import { ResponsiveRadar } from "@nivo/radar";
 import { ResponsivePie } from "@nivo/pie";
+import { useState, useEffect, useRef } from "react";
 import ReactDOMServer from "react-dom/server";
 import PropTypes from "prop-types";
 import ShareUnify from "@/components/svg-art/share_unify";
@@ -64,10 +65,13 @@ function percentMatch(user1, user2) {
   );
 }
 
-function VinylCircle({ centerCircleColor }) {
+function VinylCircle({ centerCircleColor, width }) {
+  const newWidth = Math.min((width - 280) / 2, 160);
   const radii = [];
-  for (let i = 159; i > 41; i -= 3) {
-    radii.push(i);
+  if (newWidth > 0) {
+    for (let i = newWidth - 1; i > 10; i -= 3) {
+      radii.push(i);
+    }
   }
 
   return (
@@ -84,31 +88,49 @@ function VinylCircle({ centerCircleColor }) {
         />
       ))}
       <circle
-        r="25"
+        r={Math.round(newWidth * 0.15625)}
         cx="200"
         cy="200"
         fill="none"
         stroke={centerCircleColor}
-        strokeWidth="32"
+        strokeWidth={Math.round(newWidth * 0.2)}
       />
       <circle
-        r="44"
+        r={Math.round(newWidth * 0.275)}
         cx="200"
         cy="200"
         fill="none"
         stroke="black"
-        strokeWidth="8"
+        strokeWidth={Math.round(newWidth * 0.05)}
       />
     </svg>
   );
 }
 
 function GenrePieChart({ data, centerCircleColor }) {
+  const [divWidth, setDivWidth] = useState(0); // Step 1: State for storing div width
+  const divRef = useRef(null); // Step 2: Ref for the div
+
+  // Step 3: Effect hook for setting and updating div width
+  useEffect(() => {
+    // Function to update div width
+    const updateWidth = () => {
+      if (divRef.current) {
+        setDivWidth(divRef.current.offsetWidth); // Update div width
+      }
+    };
+
+    window.addEventListener("resize", updateWidth); // Add resize event listener
+    updateWidth(); // Initial update
+
+    return () => window.removeEventListener("resize", updateWidth); // Cleanup
+  }, []);
+
   return (
-    <div style={{ height: 400, position: "relative" }}>
+    <div ref={divRef} style={{ height: 440, position: "relative" }}>
       <ResponsivePie
         data={data}
-        margin={{ top: 40, right: 140, bottom: 40, left: 140 }}
+        margin={{ top: 70, right: 140, bottom: 50, left: 140 }}
         innerRadius={0.3}
         keys={["value"]}
         colors={["#444444", "#888888", "#cccccc", "#444444", "#cccccc"]}
@@ -120,14 +142,23 @@ function GenrePieChart({ data, centerCircleColor }) {
         isInteractive={false}
         animate={false}
         legends={[]}
+        theme={{
+          text: {
+            fontSize: 25,
+            fill: "#333333",
+            outlineWidth: 0,
+            outlineColor: "transparent",
+            fontFamily: "Koulen",
+          },
+        }}
       />
       <div
         style={{
           position: "absolute",
-          top: 0,
-          right: 200,
+          top: 20,
+          right: 0,
           bottom: 0,
-          left: 200,
+          left: Math.min(0, divWidth - 400),
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -135,7 +166,7 @@ function GenrePieChart({ data, centerCircleColor }) {
           textAlign: "center",
         }}
       >
-        <VinylCircle centerCircleColor={centerCircleColor} />
+        <VinylCircle centerCircleColor={centerCircleColor} width={divWidth} />
       </div>
     </div>
   );
@@ -346,28 +377,24 @@ export default function UnifyContent({ user1Data, user2Data }) {
         <div className="bg-gray-300 rounded-lg p-4 mt-4 flex">
           <div
             className="text-black text-l font-koulen"
-            style={{
-              fontSize: 40,
-            }}
+            style={{ fontSize: 50 }}
           >
             Top Artists:
-            <div className="mt-4" />
-            {user1Data.topArtists.slice(0, 5).map((artist) => (
-              <div>{artist.name}</div>
+            <div className="mt-2" />
+            {user1Data.topArtists.slice(0, 8).map((artist) => (
+              <div style={{ fontSize: 35 }}>{artist.name}</div>
             ))}
           </div>
         </div>
         <div className="bg-gray-300 rounded-lg p-4 mt-4 ml-4 flex">
           <div
             className="text-black text-l font-koulen"
-            style={{
-              fontSize: 40,
-            }}
+            style={{ fontSize: 50 }}
           >
             Top Artists:
-            <div className="mt-4" />
-            {user2Data.topArtists.slice(0, 5).map((artist) => (
-              <div>{artist.name}</div>
+            <div className="mt-2" />
+            {user2Data.topArtists.slice(0, 8).map((artist) => (
+              <div style={{ fontSize: 35 }}>{artist.name}</div>
             ))}
           </div>
         </div>
@@ -384,28 +411,24 @@ export default function UnifyContent({ user1Data, user2Data }) {
         <div className="bg-gray-300 rounded-lg p-4 mt-4 flex">
           <div
             className="text-black text-l font-koulen"
-            style={{
-              fontSize: 40,
-            }}
+            style={{ fontSize: 50 }}
           >
             Top Songs:
-            <div className="mt-4" />
-            {user1Data.topSongs.slice(0, 5).map((song) => (
-              <div>{song.name}</div>
+            <div className="mt-2" />
+            {user1Data.topSongs.slice(0, 8).map((song) => (
+              <div style={{ fontSize: 35 }}>{song.name}</div>
             ))}
           </div>
         </div>
         <div className="bg-gray-300 rounded-lg p-4 mt-4 ml-4 flex">
           <div
             className="text-black text-l font-koulen"
-            style={{
-              fontSize: 40,
-            }}
+            style={{ fontSize: 50 }}
           >
             Top Songs:
-            <div className="mt-4" />
-            {user2Data.topSongs.slice(0, 5).map((song) => (
-              <div>{song.name}</div>
+            <div className="mt-2" />
+            {user2Data.topSongs.slice(0, 8).map((song) => (
+              <div style={{ fontSize: 35 }}>{song.name}</div>
             ))}
           </div>
         </div>
@@ -424,12 +447,14 @@ export default function UnifyContent({ user1Data, user2Data }) {
               maxValue="100"
               colors={{ scheme: "set1" }}
               margin={{ top: 40, right: 60, bottom: 40, left: 60 }}
+              gridLabelOffset={25}
               theme={{
                 text: {
                   fontSize: 25,
                   fill: "#333333",
-                  outlineWidth: 0,
+                  outlineWidth: 10,
                   outlineColor: "transparent",
+                  fontFamily: "Koulen",
                 },
               }}
             />
@@ -456,7 +481,27 @@ UnifyContent.propTypes = {
         name: PropTypes.string,
       }),
     ),
+    topSongsMedium: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+    topSongsLong: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
     topArtists: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+    topArtistsMedium: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+    topArtistsLong: PropTypes.arrayOf(
       PropTypes.shape({
         name: PropTypes.string,
       }),
@@ -473,7 +518,27 @@ UnifyContent.propTypes = {
         name: PropTypes.string,
       }),
     ),
+    topSongsMedium: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+    topSongsLong: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
     topArtists: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+    topArtistsMedium: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+    topArtistsLong: PropTypes.arrayOf(
       PropTypes.shape({
         name: PropTypes.string,
       }),
@@ -483,9 +548,11 @@ UnifyContent.propTypes = {
 
 VinylCircle.propTypes = {
   centerCircleColor: PropTypes.string,
+  width: PropTypes.number,
 };
 VinylCircle.defaultProps = {
   centerCircleColor: "#1d40af",
+  width: PropTypes.number,
 };
 
 GenrePieChart.propTypes = {
