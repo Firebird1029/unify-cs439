@@ -6,30 +6,18 @@ import { loginWithSpotify } from "@/app/login/actions";
 import Ipod from "@/components/svg-art/ipod";
 import "@/app/globals.css";
 import LeftPanel from "@/components/svg-art/left_panel";
-import createClient from "@/utils/supabase/client";
 
 export default function IndexContent() {
-  const [userData, setUser] = useState(null);
-  const supabase = createClient();
-
+  const [loggedIn, setLogIn] = useState(false);
   const [cookies] = useCookies();
 
   // check if user is already logged in
   useEffect(() => {
-    (async () => {
-      // console.log("use effect running");
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      // console.log("user: ", user);
-      if (user && cookies && Object.keys(cookies).length > 0) {
-        // already logged in
-        // console.log("logged in");
-        setUser("user");
-      }
-    })().catch(() => {
-      // TODO display error message to user
-    });
+    if (cookies && Object.keys(cookies).length > 0) {
+      // already logged in
+      // console.log("logged in");
+      setLogIn(true);
+    }
   }, []);
 
   function handleSignOut() {
@@ -76,9 +64,7 @@ export default function IndexContent() {
                 type="button"
                 onClick={() => loginWithSpotify()}
               >
-                {userData !== null
-                  ? "Continue to Account"
-                  : "Log in with Spotify"}
+                {loggedIn ? "Continue to Account" : "Log in with Spotify"}
               </button>
               <button
                 className="border rounded-full bg-white px-5 py-3 text-3xl font-koulen \
