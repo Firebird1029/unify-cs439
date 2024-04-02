@@ -1,26 +1,37 @@
 "use client";
 
-import { useLayoutEffect, useState } from "react";
-import { useCookies } from "react-cookie";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { loginWithSpotify } from "@/app/login/actions";
 import Ipod from "@/components/svg-art/ipod";
 import "@/app/globals.css";
 import LeftPanel from "@/components/svg-art/left_panel";
 import LoadingIcon from "@/components/LoadingIcon";
+import createClient from "@/utils/supabase/client";
 
 export default function IndexContent() {
-  const [loggedIn, setLogIn] = useState();
-  const [cookies] = useCookies();
+  const router = useRouter();
+  const supabase = createClient();
+
+  const [loggedIn, setLoggedIn] = useState(false);
   const [loading, setLoading] = useState(false);
 
   // check if user is already logged in
-  useLayoutEffect(() => {
-    if (Object.keys(cookies).length > 0) {
-      setLogIn(true);
-    } else {
-      setLogIn(false);
-    }
-  }, [cookies]);
+  useEffect(() => {
+    (async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (user) {
+        // already logged in
+        setLoggedIn(true);
+      }
+    })().catch(() => {
+      // TODO display error message to user (param)
+      router.push("/error");
+    });
+  }, []);
 
   function handleSignOut() {
     // Perform sign-out actions here, e.g., make an API request to sign the user out
