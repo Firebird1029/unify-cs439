@@ -44,7 +44,10 @@ export default function IndexContent() {
   }
 
   return (
-    <div className="flex h-screen relative">
+    <div
+      className="flex relative \
+                    lg:h-screen"
+    >
       <div
         className={`w-[100%] flex flex-col justify-center items-center text-center ${
           loading ? "" : "hidden"
