@@ -356,7 +356,7 @@ export default function UnifyContent({ user1Data, user2Data }) {
             )}
             %
           </span>
-          <span className="circle-text-small">Song Similarity</span>
+          <span className="circle-text-small">Vibe Similarity</span>
         </div>
       </div>
       <div style={{ display: "flex", justifyContent: "center" }}>
