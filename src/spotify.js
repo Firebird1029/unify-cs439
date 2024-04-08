@@ -27,7 +27,6 @@ async function getUserData(token) {
   return callSpotifyApi(token, "/me");
 }
 
-// EXAMPLE
 async function getTopItems(
   token,
   type = "tracks",
@@ -202,10 +201,6 @@ async function getSpotifyData(token) {
   return userData;
 }
 
-function anotherSpotifyFunction() {
-  // TODO this can be replaced with anything
-}
-
 export {
   getSpotifyData,
   callSpotifyApi,
@@ -213,4 +208,5 @@ export {
   getTopGenres,
   getAudioFeatures,
   getAverageAudioFeatures,
+  getTopItems,
 };
