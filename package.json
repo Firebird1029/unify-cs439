@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "jest",
+    "test": "jest --coverage",
     "lint-next": "next lint",
     "lint": "eslint --fix --c .eslintrc.json --ext .js,.jsx,.mjs .; prettier --write --config ./.prettierrc .",
     "lint:dev": "eslint --c .eslintrc.json --ext .js,.jsx,.mjs . && prettier --check --config ./.prettierrc .",
