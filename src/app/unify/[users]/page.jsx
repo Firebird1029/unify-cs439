@@ -9,6 +9,7 @@ two users if two were given in the url, separated by an '&'.
 
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import { useRouter } from "next/navigation";
 import createClient from "@/utils/supabase/client";
 import { UnifyContent } from "./UnifyContent";
 import ErrorAlert from "@/app/error/error";
@@ -17,6 +18,7 @@ export default function UnifyPage({ params: { users } }) {
   // split the slug (users) on & (gets replaced as %26 automatically) to get user1 and user2 usernames
   const [user1, user2] = users.split("%26");
 
+  const router = useRouter();
   const supabase = createClient();
 
   const [loading, setLoading] = useState(true);
@@ -53,9 +55,14 @@ export default function UnifyPage({ params: { users } }) {
                 const redirectURL = `${users}&${data[0].username}`;
 
                 // Redirect to the generated URL
-                window.location.href = redirectURL;
+                router.replace(redirectURL);
               }
             });
+        }
+
+        if (user1 === user2) {
+          // if the two users are the same, you cannot unify the same user, so redirect to logged in user content
+          router.replace(`/user/${user1}`);
         }
       } catch (error) {
         setError("Could not fetch data.");
@@ -87,7 +94,7 @@ export default function UnifyPage({ params: { users } }) {
   }, []);
 
   useEffect(() => {
-    if (users.includes("%26")) {
+    if (users.includes("%26") && user1 !== user2) {
       // find second user by username (given as URL slug) in DB
       supabase
         .from("profiles")
