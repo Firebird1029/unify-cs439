@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 import "@/app/globals.css";
 import GenrePieChart from "@/shared/GenrePieChart";
 import Boombox from "@/components/svg-art/boombox";
-import Cassette from "@/components/svg-art/cassette";
+import Cassette from "@/app/user/[slug]/cassette";
 import PaperTitle from "@/components/svg-art/paper_title";
 
 function UserContent({ userData, shareCassette }) {

@@ -4,6 +4,8 @@
  * side (A or B)
  * and userColors (color scheme)
  */
+import { homemadeApple } from "@/fonts";
+
 export default function Cassette({ userData, side, userColors }) {
   return (
     <svg
@@ -186,9 +188,11 @@ export default function Cassette({ userData, side, userColors }) {
       <foreignObject x="129.5" y="55" width="365" height="35">
         <div
           id="username"
-          className="w-full h-full flex justify-center items-center font-homemade-apple text-xl"
+          className="w-full h-full flex justify-center items-center text-xl"
         >
-          @ {userData.userProfile.display_name}
+          <div className={homemadeApple.className}>
+            @ {userData.userProfile.display_name}
+          </div>
         </div>
       </foreignObject>
     </svg>

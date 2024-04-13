@@ -2,12 +2,6 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-.font-homemade-apple {
-  font-family: var(--font-homemade-apple), cursive;
-  font-weight: 400;
-  font-style: normal;
-}
-
 .circle-row {
   display: flex;
   justify-content: center;
