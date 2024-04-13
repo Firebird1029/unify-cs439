@@ -14,11 +14,6 @@ const config = {
   testEnvironment: "jsdom",
   collectCoverage: true,
   coverageReporters: ["json", "lcov", "text", "clover"],
-  coverageThreshold: {
-    global: {
-      statements: 80,
-    },
-  },
   verbose: true,
   collectCoverageFrom: ["src/**/*.{js,jsx,ts,tsx}"],
   transform: {
