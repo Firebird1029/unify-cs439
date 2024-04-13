@@ -7,9 +7,9 @@ import { ResponsiveRadar } from "@nivo/radar";
 import PropTypes from "prop-types";
 import "@/app/globals.css";
 import GenrePieChart from "@/shared/GenrePieChart";
-import Boombox from "@/components/svg-art/boombox";
-import Cassette from "@/app/user/[slug]/cassette";
-import PaperTitle from "@/components/svg-art/paper_title";
+import Boombox from "@/app/user/[slug]/Boombox";
+import Cassette from "@/app/user/[slug]/Cassette";
+import PaperTitle from "@/app/user/[slug]/PaperTitle";
 
 function UserContent({ userData, shareCassette }) {
   // Convert object to array of { id: genre, value: frequency } objects

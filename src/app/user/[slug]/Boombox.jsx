@@ -3,8 +3,10 @@
  * Requires userData (profile img, top artist)
  * and takes the sharecassette function from parent
  */
+
+import PropTypes from "prop-types";
+
 export default function Boombox({ userData, shareCassetteFunc }) {
-  // console.log(userData);
   return (
     <svg
       width="90%"
@@ -255,3 +257,27 @@ export default function Boombox({ userData, shareCassetteFunc }) {
     </svg>
   );
 }
+
+Boombox.propTypes = {
+  userData: PropTypes.shape({
+    topArtists: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        images: PropTypes.arrayOf(
+          PropTypes.shape({
+            url: PropTypes.string.isRequired,
+          }),
+        ).isRequired,
+      }),
+    ),
+    userProfile: PropTypes.shape({
+      display_name: PropTypes.string.isRequired,
+      images: PropTypes.arrayOf(
+        PropTypes.shape({
+          url: PropTypes.string.isRequired,
+        }),
+      ).isRequired,
+    }),
+  }).isRequired,
+  shareCassetteFunc: PropTypes.func.isRequired,
+};

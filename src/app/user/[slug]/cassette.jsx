@@ -4,6 +4,7 @@
  * side (A or B)
  * and userColors (color scheme)
  */
+import PropTypes from "prop-types";
 import { homemadeApple } from "@/fonts";
 
 export default function Cassette({ userData, side, userColors }) {
@@ -198,3 +199,21 @@ export default function Cassette({ userData, side, userColors }) {
     </svg>
   );
 }
+
+Cassette.propTypes = {
+  userColors: PropTypes.shape({
+    light: PropTypes.string.isRequired,
+    bg: PropTypes.string.isRequired,
+  }).isRequired,
+  side: PropTypes.string,
+  userData: PropTypes.shape({
+    topArtists: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string.isRequired,
+      }),
+    ),
+    userProfile: PropTypes.shape({
+      display_name: PropTypes.string.isRequired,
+    }),
+  }).isRequired,
+};
