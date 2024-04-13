@@ -10,7 +10,7 @@ jest.mock("../src/utils/supabase/client", () => ({
 }));
 
 jest.mock(
-  "../src/components/UserContent",
+  "../src/app/user/[slug]/UserContent",
   () =>
     function Test() {
       return <div>UserContent Component</div>;

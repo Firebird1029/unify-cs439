@@ -8,8 +8,8 @@ import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import ReactDOMServer from "react-dom/server";
 import createClient from "@/utils/supabase/client";
-import UserContent from "@/components/UserContent";
-import ShareCassette from "@/components/ShareCassette";
+import UserContent from "@/app/user/[slug]/UserContent";
+import ShareCassette from "@/app/user/[slug]/ShareCassette";
 import ErrorAlert from "@/app/error/error";
 
 export default function UserPage({ params: { slug } }) {

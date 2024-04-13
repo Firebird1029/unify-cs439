@@ -7,7 +7,7 @@ import { ResponsivePie } from "@nivo/pie";
 import { useState, useEffect, useRef } from "react";
 import ReactDOMServer from "react-dom/server";
 import PropTypes from "prop-types";
-import ShareUnify from "@/components/ShareUnify";
+import ShareUnify from "@/app/unify/[users]/ShareUnify";
 import "@/app/globals.css";
 
 // Find percent match between two lists

@@ -3,7 +3,7 @@ import { render } from "@testing-library/react";
 import UserContent, {
   VinylCircle,
   GenrePieChart,
-} from "@/components/UserContent";
+} from "@/app/user/[slug]/UserContent";
 
 import userData from "./userData.json";
 
