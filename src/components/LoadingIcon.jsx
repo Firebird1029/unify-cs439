@@ -1,5 +1,5 @@
 /*
-LoadingIcon: General purpose loading icon (simple SVG cassette animation).
+General purpose loading icon (simple SVG cassette animation).
 */
 import React from "react";
 

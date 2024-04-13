@@ -1,3 +1,8 @@
+/*
+The content of the /user/[slug] page.
+Contains info about a user's top genres, top artists, top songs, and song analysis.
+*/
+
 import { ResponsiveRadar } from "@nivo/radar";
 import { ResponsivePie } from "@nivo/pie";
 import { useState, useEffect, useRef } from "react";
