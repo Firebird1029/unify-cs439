@@ -73,7 +73,7 @@ function percentMatch(user1, user2) {
 }
 
 // function to create vinyl circle svg that is displayed on top of pie chart to form vinyl graphic
-function VinylCircle({ centerCircleColor, width }) {
+function VinylCircle({ centerCircleColor = "#1d40af", width = 0 }) {
   const newWidth = Math.min((width - 280) / 2, 160);
   const radii = [];
   if (newWidth > 0) {
@@ -116,7 +116,7 @@ function VinylCircle({ centerCircleColor, width }) {
 }
 
 // combining vinyl graphic and pie chart to form genre pie chart graphic
-function GenrePieChart({ data, centerCircleColor }) {
+function GenrePieChart({ data, centerCircleColor = "#1d40af" }) {
   const [divWidth, setDivWidth] = useState(0); // Step 1: State for storing div width
   const divRef = useRef(null); // Step 2: Ref for the div
 
@@ -204,7 +204,7 @@ function UnifyContent({ user1Data, user2Data }) {
       const ctx = canvas.getContext("2d");
 
       if (!ctx) {
-        // TODO console.error("Unable to obtain 2D context for canvas.");
+        // Unable to obtain 2D context for canvas.
         return;
       }
 
@@ -259,22 +259,18 @@ function UnifyContent({ user1Data, user2Data }) {
       // Convert canvas to blob
       canvas.toBlob((blob) => {
         if (navigator.share) {
-          navigator
-            .share({
-              title: "Unify with me!",
-              text: `Compare our stats on Unify`,
-              url: "",
-              files: [
-                new File([blob], "file.png", {
-                  type: blob.type,
-                }),
-              ],
-            })
-            .catch(() => {
-              // TODO console.error("Error sharing:", error);
-            });
-        } else {
-          // TODO console.log("Web Share API not supported");
+          // Web Share API is supported
+
+          navigator.share({
+            title: "Unify with me!",
+            text: `Compare our stats on Unify`,
+            url: "",
+            files: [
+              new File([blob], "file.png", {
+                type: blob.type,
+              }),
+            ],
+          });
         }
       }, "image/png");
     };
@@ -564,10 +560,6 @@ VinylCircle.propTypes = {
   centerCircleColor: PropTypes.string,
   width: PropTypes.number,
 };
-VinylCircle.defaultProps = {
-  centerCircleColor: "#1d40af",
-  width: PropTypes.number,
-};
 
 GenrePieChart.propTypes = {
   data: PropTypes.arrayOf(
@@ -577,10 +569,6 @@ GenrePieChart.propTypes = {
     }),
   ).isRequired,
   centerCircleColor: PropTypes.string,
-};
-
-GenrePieChart.defaultProps = {
-  centerCircleColor: "#1d40af", // Default color value
 };
 
 export {

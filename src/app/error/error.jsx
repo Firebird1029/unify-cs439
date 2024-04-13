@@ -8,7 +8,7 @@ Can have title, message, and option to redirect the user when they click the x b
 import React from "react";
 import PropTypes from "prop-types";
 
-function ErrorAlert({ Title, Message, RedirectTo }) {
+function ErrorAlert({ Title, Message, RedirectTo = null }) {
   const handleClose = () => {
     if (RedirectTo) {
       // Redirect to the specified page on close of alert
@@ -46,10 +46,6 @@ ErrorAlert.propTypes = {
   Title: PropTypes.string.isRequired,
   Message: PropTypes.string.isRequired,
   RedirectTo: PropTypes.string,
-};
-
-ErrorAlert.defaultProps = {
-  RedirectTo: null, // Set RedirectTo prop default value to null
 };
 
 export default ErrorAlert;

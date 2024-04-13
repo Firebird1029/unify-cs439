@@ -293,11 +293,6 @@ VinylCircle.propTypes = {
   centerCircleColor: PropTypes.string,
   width: PropTypes.number,
 };
-VinylCircle.defaultProps = {
-  centerCircleColor: "#1d40af",
-  width: PropTypes.number,
-};
-
 GenrePieChart.propTypes = {
   data: PropTypes.arrayOf(
     PropTypes.shape({
@@ -306,10 +301,6 @@ GenrePieChart.propTypes = {
     }),
   ).isRequired,
   centerCircleColor: PropTypes.string,
-};
-
-GenrePieChart.defaultProps = {
-  centerCircleColor: "#1d40af", // Default color value
 };
 
 export { VinylCircle, GenrePieChart };
