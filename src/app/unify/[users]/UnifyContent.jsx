@@ -1,3 +1,7 @@
+/*
+This file contains the content that is displayed on the unify page
+*/
+
 import { ResponsiveRadar } from "@nivo/radar";
 import { ResponsivePie } from "@nivo/pie";
 import { useState, useEffect, useRef } from "react";
@@ -6,6 +10,7 @@ import PropTypes from "prop-types";
 import ShareUnify from "@/components/svg-art/share_unify";
 import "@/app/globals.css";
 
+// Find percent match between two lists
 function calculateGenreSimilarity(list1, list2) {
   const intersection = Object.keys(list1).filter((key) =>
     Object.prototype.hasOwnProperty.call(list2, key),
@@ -15,38 +20,39 @@ function calculateGenreSimilarity(list1, list2) {
   return Math.round(similarity * 100); // Convert to percentage
 }
 
-// check how far away matching top artists are from each other in top artists list
+// check how far away matching top artists are from each other in top artists list to compute artist similarity
 function calculateArtistSimilarity(list1, list2) {
   const maxLength = Math.max(list1.length, list2.length);
   let Similarity = 0;
+  // loop through artists in list1 and check if the artist is contained in list 2
   for (let i = 0; i < maxLength; i++) {
     if (list2.includes(list1[i])) {
       const j = list2.indexOf(list1[i]);
+      // increase simililarity score based on how close artists are in the two lists
+      // ex. same top 1 artist gives higher score than same 25th top artist
       Similarity += 1 / (Math.abs(i - j) + 1) / 5;
-      // console.log(i, j, Similarity);
     }
-    // if (list1[i] === list2[i]) {
-    //   Similarity += maxLength - i;
-    // }
   }
   return Math.min(Similarity * 100, 100);
 }
 
+// calculates the similarities between the song features for two users,
+// where feature1 and feature2 are just an array of objects with feature and value
 function featureDataSimilarity(features1, features2) {
-  // console.log(features1, features2);
   if (features1.length !== features2.length) {
     throw new Error("Arrays must have the same length");
   }
   let totalDifference = 0;
   for (let i = 0; i < features1.length; i++) {
+    // get difference between two scores for each feature
     totalDifference += Math.abs(features1[i].value - features2[i].value);
   }
 
   // calculate song feature similarity by squaring average difference in song feaure
-  // console.log(totalDifference / features1.length / 100);
   return Math.round((1 - totalDifference / features1.length / 100) ** 2 * 100);
 }
 
+// calculate percent match between the two users by combining gere similarity, feature similarity, and artist similarity
 function percentMatch(user1, user2) {
   const genreSimilarity = calculateGenreSimilarity(
     user1.topGenres,
@@ -60,11 +66,13 @@ function percentMatch(user1, user2) {
     user1.topArtists.map((artist) => artist.name),
     user2.topArtists.map((artist) => artist.name),
   );
+  // get average of the three scores
   return Math.round(
     (genreSimilarity + featureSimilarity + artistSimilarity) / 3,
   );
 }
 
+// function to create vinyl circle svg that is displayed on top of pie chart to form vinyl graphic
 function VinylCircle({ centerCircleColor, width }) {
   const newWidth = Math.min((width - 280) / 2, 160);
   const radii = [];
@@ -107,6 +115,7 @@ function VinylCircle({ centerCircleColor, width }) {
   );
 }
 
+// combining vinyl graphic and pie chart to form genre pie chart graphic
 function GenrePieChart({ data, centerCircleColor }) {
   const [divWidth, setDivWidth] = useState(0); // Step 1: State for storing div width
   const divRef = useRef(null); // Step 2: Ref for the div
@@ -176,8 +185,9 @@ function GenrePieChart({ data, centerCircleColor }) {
   );
 }
 
+// main function of page which returns the content of unifying the data of two users
 function UnifyContent({ user1Data, user2Data }) {
-  // Function to handle sharing
+  // Function to handle sharing, allows you to share your results when you click the share results button
   const shareUnify = async () => {
     // Use Web Share API to share the default image
     const svgString = ReactDOMServer.renderToString(<ShareUnify />);
@@ -270,14 +280,18 @@ function UnifyContent({ user1Data, user2Data }) {
     };
   };
 
+  // get names for the two users
   const user1Name = user1Data.userProfile.display_name;
   const user2Name = user2Data.userProfile.display_name;
 
+  // combining the feature data for the two users to display in the radar chart
+  // nivo requires the data for a chart to be in a specific format, so just converting to that format
   const map = {};
   user1Data.featuresData.forEach((item) => {
     map[item.feature] = item.value;
   });
 
+  // this is what is actually combining the feature data from the two users
   const combinedFeaturesData = user2Data.featuresData.map((item) => {
     const userData = {};
     userData[user1Name] =
@@ -287,16 +301,19 @@ function UnifyContent({ user1Data, user2Data }) {
     return userData;
   });
 
+  // get top genres for user 1 from their data
   const user1topGenres = Object.entries(user1Data.topGenres)
     .sort((a, b) => b[1] - a[1]) // Sort genres by frequency in descending order
     .slice(0, 5) // Get the top 5 genres
     .map(([id, value]) => ({ id, value })); // Map to { id: genre, value: frequency } objects
 
+  // get top genres for user 2 from their data
   const user2topGenres = Object.entries(user2Data.topGenres)
     .sort((a, b) => b[1] - a[1]) // Sort genres by frequency in descending order
     .slice(0, 5) // Get the top 5 genres
     .map(([id, value]) => ({ id, value })); // Map to { id: genre, value: frequency } objects
 
+  // calculate genre similarity between the two users
   const genreSimilarity = Math.round(
     calculateGenreSimilarity(user1Data.topGenres, user2Data.topGenres),
   );

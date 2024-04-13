@@ -1,3 +1,7 @@
+/* 
+contains some graphics for the home page that are displayed along side the ipod graphic
+*/
+
 export default function LeftPanel() {
   return (
     <svg

@@ -1,3 +1,8 @@
+/* 
+template svg that gets converted to image when a user clicks share on the unify page
+contains a graphic showing a summary of the unified data between two users
+*/
+
 function ShareCassette() {
   return (
     <svg

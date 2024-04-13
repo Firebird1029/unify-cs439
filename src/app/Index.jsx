@@ -1,3 +1,7 @@
+/* 
+Home/Index page of application, contains buttons to login in with spotify and sign out
+*/
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -28,7 +32,6 @@ export default function IndexContent() {
         setLoggedIn(true);
       }
     })().catch(() => {
-      // TODO display error message to user (param)
       router.push("/error");
     });
   }, []);

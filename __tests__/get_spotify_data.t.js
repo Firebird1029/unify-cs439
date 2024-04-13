@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getSpotifyData } from "../src/spotify"; // Replace with the correct path to your module
+import { getSpotifyData } from "../src/spotify";
 
 jest.mock("axios");
 
@@ -63,7 +63,7 @@ describe("getSpotifyData", () => {
     // Spy on getAudioFeatures
     const getAudioFeaturesSpy = jest.spyOn(axios, "get");
 
-    // Mock the implementation of axios.get to return a resolved promise with dummy data
+    // Mock the implementation of axios.get
     getAudioFeaturesSpy.mockResolvedValueOnce({
       data: {
         audio_features: [
