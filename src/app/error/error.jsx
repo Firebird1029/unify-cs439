@@ -1,6 +1,6 @@
 /*
-Error alert message that is used on other pages to display an error
-Can have title, message, and option to redirect a user when the click the x button on the error
+Error alert message that is used on other pages to display an error.
+Can have title, message, and option to redirect the user when they click the x button on the error.
 */
 
 "use client";

@@ -1,6 +1,5 @@
 /*
-default error page using the error alert popup from /app/error/error
-just displays a red box that says an error occured
+Default error page that displays a red box that says an error occurred.
 */
 
 "use client";

@@ -1,5 +1,5 @@
 /*
-This file contains the content that is displayed on the unify page
+This file contains the content that is displayed on the Unify page.
 */
 
 import { ResponsiveRadar } from "@nivo/radar";

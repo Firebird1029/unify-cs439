@@ -1,5 +1,5 @@
 /*
-Signs the user out using supabase
+Signs the user out using Supabase.
 */
 
 // https://supabase.com/docs/guides/auth/server-side/nextjs

@@ -1,3 +1,7 @@
+/*
+The user gets redirected to this page after logging in.
+*/
+
 "use client";
 
 import { useEffect, useState } from "react";

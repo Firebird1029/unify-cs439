@@ -1,3 +1,7 @@
+/*
+This page redirects to /user/[slug]. TODO could probably just be a Next.js configuration item.
+*/
+
 "use client";
 
 // redirect the user to their user page if they get redirected to /user

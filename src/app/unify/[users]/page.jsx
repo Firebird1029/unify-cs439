@@ -1,7 +1,9 @@
-/* this page loads the two user's data to display the unify content
-it is designed to redirect a user from the link that gets generated from the user page
-to bring them to the unify page with them and the other user, or show the data for the
-two users if two were given in the url, separated by an '&' */
+/*
+This page loads the two user's data to display the Unify content.
+It is designed to redirect a user from the link that gets generated from the user page
+to bring them to the Unify page with them and the other user, or show the data for the
+two users if two were given in the url, separated by an '&'.
+*/
 
 "use client";
 
@@ -104,8 +106,6 @@ export default function UnifyPage({ params: { users } }) {
           } else {
             setLoading(true);
           }
-
-          // console.log(loading, user1Data, user2Data);
         });
     }
   }, []);
@@ -128,7 +128,6 @@ export default function UnifyPage({ params: { users } }) {
   );
 }
 
-// props defining that a slug is required for the page
 UnifyPage.propTypes = {
   params: PropTypes.shape({
     users: PropTypes.string.isRequired,

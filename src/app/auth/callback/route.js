@@ -1,5 +1,5 @@
 /*
-Route user gets redirected to after signing in with Spotify
+Route that the user gets redirected to after signing in with Spotify.
 */
 
 import { NextResponse } from "next/server";

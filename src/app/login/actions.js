@@ -1,8 +1,8 @@
 /*
-Action to log user in with Spotify using supabase's signInWithOAuth functionality
-This gets called from the index page when a user clicks on the "log in with spotify"/"get data" button
-The general flow is to redirect the user to spotify, which will then redirect them back to /auth/callback after they sign in using Spotify
-refer to this documentation on how to use supabase with nextJs: https://supabase.com/docs/guides/getting-started/tutorials/with-nextjs
+Action to log user in with Spotify using Supabase's signInWithOAuth functionality.
+This gets called from the index page when a user clicks on the "log in with spotify"/"get data" button.
+The general flow is to redirect the user to spotify, which will then redirect them back to /auth/callback after they sign in using Spotify.
+Documentation on how to use Supabase with Next.js: https://supabase.com/docs/guides/getting-started/tutorials/with-nextjs.
 */
 
 "use server";
