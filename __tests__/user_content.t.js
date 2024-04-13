@@ -1,9 +1,7 @@
 import { render } from "@testing-library/react";
 
-import UserContent, {
-  VinylCircle,
-  GenrePieChart,
-} from "@/app/user/[slug]/UserContent";
+import UserContent from "@/app/user/[slug]/UserContent";
+import GenrePieChart, { VinylCircle } from "@/shared/GenrePieChart";
 
 import userData from "./userData.json";
 

@@ -147,7 +147,7 @@ exports[`Index Component matches the snapshot 1`] = `
         </svg>
       </div>
       <p
-        class="mt-3 text-2xl font-koulen"
+        class="mt-3 text-2xl"
       >
         Getting things set up...
       </p>
@@ -714,13 +714,13 @@ exports[`Index Component matches the snapshot 1`] = `
                   class="flex flex-col justify-center items-center text-center pt-10 space-y-10"
                 >
                   <button
-                    class="border rounded-full bg-white px-5 py-3 text-3xl font-koulen \\ transition hover:scale-110"
+                    class="border rounded-full bg-white px-5 py-3 text-3xl \\ transition hover:scale-110"
                     type="button"
                   >
                     Log in with Spotify
                   </button>
                   <button
-                    class="border rounded-full bg-white px-5 py-3 text-3xl font-koulen \\ transition hover:scale-110"
+                    class="border rounded-full bg-white px-5 py-3 text-3xl \\ transition hover:scale-110"
                     type="button"
                   >
                     Logout

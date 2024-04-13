@@ -4,10 +4,9 @@ import {
   calculateGenreSimilarity,
   calculateArtistSimilarity,
   featureDataSimilarity,
-  VinylCircle,
-  GenrePieChart,
   UnifyContent,
 } from "@/app/unify/[users]/UnifyContent";
+import GenrePieChart, { VinylCircle } from "@/shared/GenrePieChart";
 
 import userData from "./userData.json";
 
