@@ -1,6 +1,3 @@
-/* eslint-disable react/jsx-filename-extension */
-
-// Import necessary utilities from React Testing Library
 import React from "react";
 import { render } from "@testing-library/react";
 

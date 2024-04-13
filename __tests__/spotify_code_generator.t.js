@@ -63,7 +63,7 @@ describe("GetSpotifyCode", () => {
   it("retrieves and modifies an SVG correctly", async () => {
     const fakeSVG = "<svg>...</svg>"; // Simplified SVG for testing
     const expectedURI = "track:6rqhFgbbKwnb9MLmUQDhG6";
-    const modifiedSVG = modifySvg(fakeSVG, expectedURI);
+    modifySvg(fakeSVG, expectedURI);
 
     // Mock axios response
     axios.get.mockResolvedValue({

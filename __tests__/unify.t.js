@@ -1,6 +1,4 @@
-/* eslint-disable react/jsx-filename-extension */
-
-import { render, fireEvent, waitFor } from "@testing-library/react";
+import { render } from "@testing-library/react";
 
 import {
   calculateGenreSimilarity,
@@ -104,8 +102,6 @@ describe("GenrePieChart Component", () => {
 
 describe("UnifyContent", () => {
   it("renders UnifyContent correctly with provided data", () => {
-    const { getByText } = render(
-      <UnifyContent user1Data={userData} user2Data={userData} />,
-    );
+    render(<UnifyContent user1Data={userData} user2Data={userData} />);
   });
 });

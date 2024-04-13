@@ -1,6 +1,4 @@
-/* eslint-disable react/jsx-filename-extension */
-
-import { render, fireEvent, waitFor } from "@testing-library/react";
+import { render } from "@testing-library/react";
 
 import UserContent, {
   VinylCircle,
@@ -66,7 +64,7 @@ const mockShareCassette = jest.fn();
 
 describe("UnifyContent", () => {
   it("renders UnifyContent correctly with provided data", () => {
-    const { getByText } = render(
+    render(
       <UserContent userData={userData} shareCassette={mockShareCassette} />,
     );
   });
