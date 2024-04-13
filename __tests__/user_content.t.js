@@ -45,12 +45,13 @@ describe("VinylCircle Component", () => {
 });
 
 describe("GenrePieChart Component", () => {
-  const mockData = {
-    topGenres: [
-      { id: "rock", value: 10 },
-      { id: "jazz", value: 20 },
-    ],
-  };
+  const mockData = [
+    { id: "pov: indie", value: 21 },
+    { id: "modern rock", value: 16 },
+    { id: "pop", value: 12 },
+    { id: "gen z singer-songwriter", value: 7 },
+    { id: "bedroom pop", value: 6 },
+  ];
 
   test("renders correctly with given props", () => {
     const { getByTestId } = render(
@@ -61,8 +62,12 @@ describe("GenrePieChart Component", () => {
   });
 });
 
+const mockShareCassette = jest.fn();
+
 describe("UnifyContent", () => {
   it("renders UnifyContent correctly with provided data", () => {
-    const { getByText } = render(<UserContent userData={userData} />);
+    const { getByText } = render(
+      <UserContent userData={userData} shareCassette={mockShareCassette} />,
+    );
   });
 });
