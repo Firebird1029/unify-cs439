@@ -5,7 +5,7 @@ import {
   getColorFromSeed,
   modifySvg,
   GetSpotifyCode,
-} from "@/components/SpotifyCodeGenerator";
+} from "@/utils/misc/SpotifyCodeGenerator";
 
 jest.mock("axios");
 
