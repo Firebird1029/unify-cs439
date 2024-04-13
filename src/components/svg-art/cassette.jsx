@@ -1,3 +1,9 @@
+/**
+ * General purpose cassette
+ * Uses user profile display name,
+ * side (A or B)
+ * and userColors (color scheme)
+ */
 export default function Cassette({ userData, side, userColors }) {
   return (
     <svg

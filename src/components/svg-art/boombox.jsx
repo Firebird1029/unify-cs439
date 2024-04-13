@@ -1,6 +1,7 @@
 /*
  * SVG Boombox
  * Requires userData (profile img, top artist)
+ * and takes the sharecassette function from parent
  */
 export default function Boombox({ userData, shareCassetteFunc }) {
   console.log(userData);

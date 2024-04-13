@@ -5,6 +5,7 @@ import "@/app/globals.css";
 import PropTypes from "prop-types";
 import Boombox from "@/components/svg-art/boombox";
 import Cassette from "@/components/svg-art/cassette";
+import PaperTitle from "@/components/svg-art/paper_title";
 
 function VinylCircle({ centerCircleColor, width }) {
   const newWidth = Math.min((width - 280) / 2, 160);
@@ -206,18 +207,12 @@ function UserContent({ userData, shareCassette }) {
         </div>
       </div>
 
-      {/* Bg takes on spotlight color afterwards */}
+      {/* Bg takes on spotlight color afterwards, Main Body content */}
       <div style={{ backgroundColor: userColors.light }} className="">
         <div className="rounded-lg p-4 mt-4 ml-4 justify-center">
-          <div
-            className="text-l font-koulen"
-            style={{
-              fontSize: 45,
-            }}
-          >
-            {" "}
-            TOP GENRES:{" "}
-          </div>
+          <PaperTitle>
+            <div className="text-5xl font-koulen">TOP GENRES:</div>
+          </PaperTitle>
           {top5Genres ? (
             <GenrePieChart data={top5Genres} centerCircleColor="#39466B" />
           ) : (
