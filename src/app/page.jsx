@@ -68,7 +68,7 @@ export default function IndexPage() {
         }`}
       >
         <LoadingIcon />
-        <p className="mt-3 text-2xl font-koulen">Getting things set up...</p>
+        <p className="mt-3 text-2xl">Getting things set up...</p>
       </div>
       <div
         className={`space-x-0 pt-12 px-12 border-10 border-red \
@@ -92,7 +92,7 @@ export default function IndexPage() {
           <Ipod>
             <div className="flex flex-col justify-center items-center text-center pt-10 space-y-10">
               <button
-                className="border rounded-full bg-white px-5 py-3 text-3xl font-koulen \
+                className="border rounded-full bg-white px-5 py-3 text-3xl \
                               transition hover:scale-110"
                 type="button"
                 onClick={() => {
@@ -103,7 +103,7 @@ export default function IndexPage() {
                 {loggedIn ? "Continue to Account" : "Log in with Spotify"}
               </button>
               <button
-                className="border rounded-full bg-white px-5 py-3 text-3xl font-koulen \
+                className="border rounded-full bg-white px-5 py-3 text-3xl \
                               transition hover:scale-110"
                 type="button"
                 onClick={() => handleSignOut()}

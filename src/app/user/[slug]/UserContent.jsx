@@ -138,7 +138,7 @@ function UserContent({ userData, shareCassette }) {
       </style> */}
 
       <div className="bg-[#39466B] rounded-lg p-4 flex flex-col">
-        <p className="text-white text-5xl font-koulen mb-24 mr-4 mt-4 ml-4">
+        <p className="text-white text-5xl mb-24 mr-4 mt-4 ml-4">
           @{userData.userProfile.display_name}
         </p>
         <div className="flex flex-row justify-center">
@@ -164,16 +164,14 @@ function UserContent({ userData, shareCassette }) {
             }}
             onClick={shareCassette}
           >
-            <span className="font-koulen text-[#273049] mr-2">
-              Share Cassette
-            </span>
+            <span className="text-[#273049]">Share Cassette</span>
           </button>
         </div>
       </div>
       <div className="bg-gray-100 rounded-lg p-4 ml-4 flex"> </div>
       <div className="rounded-lg p-4 mt-4 ml-4 justify-center">
         <div
-          className="text-black text-l font-koulen"
+          className="text-black text-l"
           style={{
             fontSize: 45,
           }}
@@ -188,7 +186,7 @@ function UserContent({ userData, shareCassette }) {
         )}
       </div>
       <div className="bg-gray-100 rounded-lg p-4 mt-4 ml-4 flex">
-        <div className="text-black text-l font-koulen" style={{ fontSize: 50 }}>
+        <div className="text-black text-l" style={{ fontSize: 50 }}>
           Top Artists:
           <div className="mt-2" />
           {userData.topArtists.slice(0, 8).map((artist) => (
@@ -199,7 +197,7 @@ function UserContent({ userData, shareCassette }) {
         </div>
       </div>
       <div className="bg-gray-100 rounded-lg p-4 mt-4 ml-4 flex">
-        <div className="text-black text-l font-koulen" style={{ fontSize: 50 }}>
+        <div className="text-black text-l" style={{ fontSize: 50 }}>
           Top Songs:
           <div className="mt-2" />
           {userData.topSongs.slice(0, 8).map((song) => (
@@ -211,7 +209,7 @@ function UserContent({ userData, shareCassette }) {
       </div>
       <div className="rounded-lg p-4 mt-4 ml-4 justify-center">
         <div
-          className="text-black text-l font-koulen"
+          className="text-black text-l"
           style={{
             fontSize: 45,
           }}

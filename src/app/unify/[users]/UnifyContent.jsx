@@ -320,10 +320,7 @@ function UnifyContent({ user1Data, user2Data }) {
 
   return (
     <>
-      <div
-        className="font-koulen"
-        style={{ fontSize: 100, textAlign: "center" }}
-      >
+      <div style={{ fontSize: 100, textAlign: "center" }}>
         {percentMatch(user1Data, user2Data)}% Match!
       </div>
       <div className="grid grid-cols-2 p-8 flex">
@@ -333,7 +330,7 @@ function UnifyContent({ user1Data, user2Data }) {
     </style> */}
         <div className="bg-blue-800 rounded-lg p-4 mb-4 flex flex-col">
           <p
-            className="text-white text-xl font-koulen mb-24 mr-4 mt-4 ml-4"
+            className="text-white text-xl mb-24 mr-4 mt-4 ml-4"
             style={{
               fontSize: 60,
             }}
@@ -343,7 +340,7 @@ function UnifyContent({ user1Data, user2Data }) {
         </div>
         <div className="bg-red-800 rounded-lg p-4 ml-4 mb-4 flex flex-col">
           <p
-            className="text-white text-xl font-koulen mb-24 mr-4 mt-4 ml-4"
+            className="text-white text-xl mb-24 mr-4 mt-4 ml-4"
             style={{
               fontSize: 60,
             }}
@@ -383,7 +380,7 @@ function UnifyContent({ user1Data, user2Data }) {
       <div style={{ display: "flex", justifyContent: "center" }}>
         <button
           type="button"
-          className="bg-gray-300 font-koulen rounded-full py-2.5 px-4 flex items-center mr-4"
+          className="bg-gray-300 rounded-full py-2.5 px-4 flex items-center mr-4"
           style={{
             cursor: "pointer",
             backgroundColor: "#d1d5db",
@@ -396,10 +393,7 @@ function UnifyContent({ user1Data, user2Data }) {
       </div>
       <div className="grid grid-cols-2 p-8 flex">
         <div className="bg-gray-300 rounded-lg p-4 mt-4 flex">
-          <div
-            className="text-black text-l font-koulen"
-            style={{ fontSize: 50 }}
-          >
+          <div className="text-black text-l" style={{ fontSize: 50 }}>
             Top Artists:
             <div className="mt-2" />
             {user1Data.topArtists.slice(0, 8).map((artist) => (
@@ -410,10 +404,7 @@ function UnifyContent({ user1Data, user2Data }) {
           </div>
         </div>
         <div className="bg-gray-300 rounded-lg p-4 mt-4 ml-4 flex">
-          <div
-            className="text-black text-l font-koulen"
-            style={{ fontSize: 50 }}
-          >
+          <div className="text-black text-l" style={{ fontSize: 50 }}>
             Top Artists:
             <div className="mt-2" />
             {user2Data.topArtists.slice(0, 8).map((artist) => (
@@ -434,10 +425,7 @@ function UnifyContent({ user1Data, user2Data }) {
           <div>Loading...</div>
         )}
         <div className="bg-gray-300 rounded-lg p-4 mt-4 flex">
-          <div
-            className="text-black text-l font-koulen"
-            style={{ fontSize: 50 }}
-          >
+          <div className="text-black text-l" style={{ fontSize: 50 }}>
             Top Songs:
             <div className="mt-2" />
             {user1Data.topSongs.slice(0, 8).map((song) => (
@@ -448,10 +436,7 @@ function UnifyContent({ user1Data, user2Data }) {
           </div>
         </div>
         <div className="bg-gray-300 rounded-lg p-4 mt-4 ml-4 flex">
-          <div
-            className="text-black text-l font-koulen"
-            style={{ fontSize: 50 }}
-          >
+          <div className="text-black text-l" style={{ fontSize: 50 }}>
             Top Songs:
             <div className="mt-2" />
             {user2Data.topSongs.slice(0, 8).map((song) => (
