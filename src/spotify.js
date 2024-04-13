@@ -1,10 +1,10 @@
 /*
-Backend api used to get user data from spotify and store it in supabase during log in 
+Backend API used to get user data from Spotify and store it in Supabase after logging in.
 */
 
 import axios from "axios";
 
-// function to call the spotify api using the token and enpoint passed to the function
+// Call the spotify API using the token and endpoint passed to the function.
 async function callSpotifyApi(token, endpoint) {
   if (!token) {
     throw new Error("Token not provided.");
@@ -29,15 +29,15 @@ async function callSpotifyApi(token, endpoint) {
   }
 }
 
-// getting user data object from spotify from /me endpoint
+// Get the user data object from Spotify from /me Spotify API endpoint.
 async function getUserData(token) {
   return callSpotifyApi(token, "/me");
 }
 
-// gets the top items for the user
-// options for type are tracks and artists
-// options for time range are short_term (1 month), medium_term (6 months), and long_term (1 year)
-// limit can be from 1 to 50, and sets the number of items returned
+// Get the top items for the user.
+// Type options: "tracks", "artists"
+// Time range options: "short_term" (1 month), "medium_term" (6 months), "long_term" (1 year)
+// Limit: sets the number of items returned, can be 1-50
 async function getTopItems(
   token,
   type = "tracks",
@@ -50,7 +50,7 @@ async function getTopItems(
   );
 }
 
-// calculates the frequency of each genre listed for the user's top artists to get the top genres for the user
+// Calculates the frequency of each genre listed for the user's top artists to get the top genres for the user.
 function getTopGenres(topArtists) {
   const genreFrequencies = {};
 
@@ -73,7 +73,7 @@ function getTopGenres(topArtists) {
   return genreFrequencies;
 }
 
-// Get the audio features of tracks based on their ids
+// Get the audio features of tracks based on their track IDs.
 async function getAudioFeatures(token, ids) {
   if (!ids) {
     throw new Error("Ids must be provided.");
@@ -131,7 +131,7 @@ async function getAverageAudioFeatures(token, topSongs) {
   return featuresAvg;
 }
 
-// constructs the user data object
+// Constructs the user data object.
 async function getSpotifyData(token) {
   // User Profile
   const userProfile = await getUserData(token);
@@ -195,7 +195,7 @@ async function getSpotifyData(token) {
     value: averageAudioFeatures[key],
   }));
 
-  // top Genres (across all terms)
+  // Top Genres (across all terms)
   const combinedArtists = [
     ...topArtists,
     ...topArtistsMedium,
