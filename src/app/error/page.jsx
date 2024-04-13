@@ -8,13 +8,17 @@ import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import ErrorAlert from "@/app/error/error";
 
-export default function ErrorPage() {
+function SuspendedErrorAlert() {
   const searchParams = useSearchParams();
   const error = searchParams.get("error");
 
+  return <ErrorAlert Title={"Error"} Message={error || "An error occured."} />;
+}
+
+export default function ErrorPage() {
   return (
     <Suspense>
-      <ErrorAlert Title={"Error"} Message={error || "An error occured."} />
+      <SuspendedErrorAlert />
     </Suspense>
   );
 }
