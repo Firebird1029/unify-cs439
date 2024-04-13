@@ -7,9 +7,9 @@ Home/Index page of application, contains buttons to log in in with Spotify and s
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import loginWithSpotify from "@/app/login/actions";
-import Ipod from "@/components/svg-art/ipod";
+import Ipod from "@/components/IPod";
 import "@/app/globals.css";
-import LeftPanel from "@/components/svg-art/left_panel";
+import LeftPanel from "@/components/LeftPanel";
 import LoadingIcon from "@/components/LoadingIcon";
 import createClient from "@/utils/supabase/client";
 

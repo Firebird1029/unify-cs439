@@ -1,8 +1,8 @@
 import React from "react";
 import { render } from "@testing-library/react";
 
-import ShareCassette from "@/components/svg-art/share_cassette";
-import ShareUnify from "@/components/svg-art/share_unify";
+import ShareCassette from "@/components/ShareCassette";
+import ShareUnify from "@/components/ShareUnify";
 
 describe("ShareCassette", () => {
   it("should import SVG content as a module", () => {
