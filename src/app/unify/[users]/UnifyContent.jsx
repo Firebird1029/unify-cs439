@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 /*
 This file contains the content that is displayed on the unify page
 */
@@ -257,7 +258,7 @@ function UnifyContent({ user1Data, user2Data }) {
       );
 
       // Convert canvas to blob
-      canvas.toBlob((blob) => {
+      canvas.toBlob(async (blob) => {
         if (navigator.share) {
           navigator
             .share({
@@ -274,7 +275,16 @@ function UnifyContent({ user1Data, user2Data }) {
               // TODO console.error("Error sharing:", error);
             });
         } else {
-          // TODO console.log("Web Share API not supported");
+          try {
+            await navigator.clipboard.write([
+              new ClipboardItem({
+                "image/png": blob,
+              }),
+            ]);
+            alert("Image copied to clipboard!");
+          } catch (error) {
+            alert("Failed to copy to clipboard.");
+          }
         }
       }, "image/png");
     };
