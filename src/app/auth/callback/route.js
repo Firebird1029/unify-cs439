@@ -1,3 +1,7 @@
+/*
+Route user gets redirected to after signing in with Spotify
+*/
+
 import { NextResponse } from "next/server";
 
 import createClient from "@/utils/supabase/server";
@@ -13,6 +17,7 @@ export async function GET(request) {
   if (code) {
     const supabase = createClient();
 
+    // logs the user in using supabase using the code that gets issued when returning from spotify
     const { data, error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (error) {

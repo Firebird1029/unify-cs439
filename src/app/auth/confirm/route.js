@@ -1,3 +1,7 @@
+/*
+route the user gets sent to from the confirmation email from supabase
+*/
+
 // https://supabase.com/docs/guides/auth/server-side/nextjs
 
 // TODO fix broken redirect -- prob need to add token_hash param to Supabase email template

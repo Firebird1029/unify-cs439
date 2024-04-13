@@ -50,7 +50,7 @@ describe("Spotify API functions", () => {
 
       // Assert that getAudioFeatures was called with the correct parameters
       expect(getAudioFeaturesSpy).toHaveBeenCalledWith(
-        expect.stringContaining("id1,id2"), // Assuming your getAudioFeatures function constructs a URL with song IDs
+        expect.stringContaining("id1,id2"),
         expect.objectContaining({
           headers: { Authorization: `Bearer ${token}` },
         }),

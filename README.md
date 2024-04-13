@@ -18,7 +18,7 @@ To test the application:
 npm test
 ```
 
-We have achieved 77% statement coverage.
+We have achieved 81% statement coverage.
 
 ## Linting
 
