@@ -46,7 +46,7 @@ function getColorFromSeed(seed) {
 }
 
 // function to modify the svg returned by spotify to remove background
-const modifySvg = (svgString, uri) => {
+const modifySvg = (svgString) => {
   // console.log(uri);
   // console.log(hashCode(uri));
   const parser = new DOMParser();

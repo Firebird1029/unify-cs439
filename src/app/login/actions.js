@@ -7,7 +7,6 @@ refer to this documentation on how to use supabase with nextJs: https://supabase
 
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import createClient from "@/utils/supabase/server";
