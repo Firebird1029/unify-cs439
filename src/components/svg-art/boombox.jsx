@@ -3,7 +3,7 @@
  * Requires userData (profile img, top artist)
  */
 export default function Boombox({ userData, shareCassetteFunc }) {
-  console.log(userData);
+  // console.log(userData);
   return (
     <svg
       width="90%"
