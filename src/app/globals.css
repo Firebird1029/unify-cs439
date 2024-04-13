@@ -1,11 +1,17 @@
 /* TODO switch to Next.js font system */
 @import url("https://fonts.googleapis.com/css2?family=Koulen&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Homemade+Apple&display=swap');
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
 .font-koulen {
   font-family: "Koulen", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+.font-homemade-apple{
+  font-family: "Homemade Apple", cursive;
   font-weight: 400;
   font-style: normal;
 }
