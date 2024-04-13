@@ -146,3 +146,5 @@ export default async function GetSpotifyCode(SpotifyURL) {
 
 //   return `#${pastelColor}`;
 // }
+
+export { hashCode, getColorFromSeed, modifySvg, GetSpotifyCode };

@@ -14,7 +14,7 @@ function VinylCircle({ centerCircleColor, width }) {
   }
 
   return (
-    <svg width={Math.min(400, width)} height="400">
+    <svg width={Math.min(400, width)} height="400" data-testid="VinylCircle">
       {radii.map((radius) => (
         <circle
           key={radius}
@@ -66,7 +66,11 @@ function GenrePieChart({ data, centerCircleColor }) {
   }, []);
 
   return (
-    <div ref={divRef} style={{ height: 440, position: "relative" }}>
+    <div
+      ref={divRef}
+      style={{ height: 440, position: "relative" }}
+      data-testid="GenrePieChart"
+    >
       <ResponsivePie
         data={data}
         margin={{ top: 70, right: 140, bottom: 50, left: 140 }}
@@ -183,7 +187,9 @@ function UserContent({ userData, shareCassette }) {
           Top Artists:
           <div className="mt-2" />
           {userData.topArtists.slice(0, 8).map((artist) => (
-            <div style={{ fontSize: 35 }}>{artist.name}</div>
+            <div key={artist.id} style={{ fontSize: 35 }}>
+              {artist.name}
+            </div>
           ))}
         </div>
       </div>
@@ -192,7 +198,9 @@ function UserContent({ userData, shareCassette }) {
           Top Songs:
           <div className="mt-2" />
           {userData.topSongs.slice(0, 8).map((song) => (
-            <div style={{ fontSize: 35 }}>{song.name}</div>
+            <div key={song.id} style={{ fontSize: 35 }}>
+              {song.name}
+            </div>
           ))}
         </div>
       </div>
@@ -288,10 +296,17 @@ VinylCircle.defaultProps = {
 };
 
 GenrePieChart.propTypes = {
-  data: PropTypes.shape({}),
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      value: PropTypes.number.isRequired,
+    }),
+  ).isRequired,
   centerCircleColor: PropTypes.string,
 };
+
 GenrePieChart.defaultProps = {
-  data: PropTypes.shape({}),
-  centerCircleColor: "#1d40af",
+  centerCircleColor: "#1d40af", // Default color value
 };
+
+export { VinylCircle, GenrePieChart };
