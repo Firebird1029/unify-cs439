@@ -72,7 +72,6 @@ export default function UnifyPage({ params: { users } }) {
       .select("spotify_data")
       .eq("username", user1)
       .then(({ data, error }) => {
-        // console.log(data, error);
         if (error) {
           setError("User not found.");
         }
@@ -95,7 +94,6 @@ export default function UnifyPage({ params: { users } }) {
         .select("spotify_data")
         .eq("username", user2)
         .then(({ data, error }) => {
-          // console.log(data, error);
           if (error) {
             setError("User not found.");
           }

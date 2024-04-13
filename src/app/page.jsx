@@ -39,18 +39,19 @@ export default function IndexPage() {
   function handleSignOut() {
     // Perform sign-out actions here, e.g., make an API request to sign the user out
 
-    fetch("/auth/signout", { method: "POST" }).then((response) => {
-      if (response.ok) {
-        // Handle successful sign-out, e.g., redirect to login page
-        window.location.href = "/";
-      } else {
-        // Handle sign-out failure
-        // console.error("Sign-out failed");
-      }
-    });
-    // .catch((error) => {
-    //   // console.error("Error occurred during sign-out:", error);
-    // });
+    fetch("/auth/signout", { method: "POST" })
+      .then((response) => {
+        if (response.ok) {
+          // Handle successful sign-out, e.g., redirect to login page
+          window.location.href = "/";
+        } else {
+          // Handle sign-out failure
+          router.push(`/error?message=${response.statusText}`);
+        }
+      })
+      .catch((error) => {
+        router.push(`/error?message=${error.message}`);
+      });
   }
 
   if (loggedIn === undefined) {
