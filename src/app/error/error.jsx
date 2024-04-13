@@ -21,7 +21,7 @@ function ErrorAlert({ Title, Message, RedirectTo = null }) {
       className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 m-4 rounded relative"
       role="alert"
     >
-      <strong className="font-bold">{Title}</strong>
+      <h2 className="font-bold">{Title}</h2>
       <span className="block sm:inline">{Message}</span>
       {RedirectTo && (
         <span className="absolute top-0 bottom-0 right-0 px-4 py-3">

@@ -35,8 +35,7 @@ export default async function loginWithSpotify() {
   });
 
   if (error) {
-    // TODO display error message to user error.message
-    redirect("/error");
+    redirect(`/error?message=${error.message}`);
   } else {
     redirect(data.url);
   }
