@@ -5,20 +5,28 @@ async function callSpotifyApi(token, endpoint) {
     throw new Error("Token not provided.");
   }
 
-  const { data } = await axios.get(`https://api.spotify.com/v1${endpoint}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  try {
+    const response = await axios.get(`https://api.spotify.com/v1${endpoint}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-  return data;
+    // Check if response is valid
+    if (!response.data) {
+      throw new Error("Unable to fetch data from Spotify API.");
+    }
+
+    return response.data;
+  } catch (error) {
+    throw new Error(`Error fetching data from Spotify API: ${error.message}`);
+  }
 }
 
 async function getUserData(token) {
   return callSpotifyApi(token, "/me");
 }
 
-// EXAMPLE
 async function getTopItems(
   token,
   type = "tracks",
@@ -65,12 +73,12 @@ async function getAudioFeatures(token, ids) {
 async function getAverageAudioFeatures(token, topSongs) {
   const trackIds = topSongs.items.map((track) => track.id).join(",");
 
-  const popularitySum = topSongs.items.reduce(
-    (acc, song) => acc + song.popularity,
-    0,
-  );
-
   const audioFeatureData = await getAudioFeatures(token, trackIds);
+
+  // Check if audioFeatureData is undefined or audio_features is undefined
+  if (!audioFeatureData || !audioFeatureData.audio_features) {
+    throw new Error("Unable to fetch audio features.");
+  }
 
   const audioFeatures = audioFeatureData.audio_features;
 
@@ -99,7 +107,9 @@ async function getAverageAudioFeatures(token, topSongs) {
     return acc;
   }, {});
 
-  featuresAvg.popularity = popularitySum / audioFeatures.length;
+  featuresAvg.popularity =
+    topSongs.items.reduce((acc, song) => acc + song.popularity, 0) /
+    topSongs.items.length;
 
   return featuresAvg;
 }
@@ -191,8 +201,12 @@ async function getSpotifyData(token) {
   return userData;
 }
 
-function anotherSpotifyFunction() {
-  // TODO this can be replaced with anything
-}
-
-export { getSpotifyData, anotherSpotifyFunction };
+export {
+  getSpotifyData,
+  callSpotifyApi,
+  getUserData,
+  getTopGenres,
+  getAudioFeatures,
+  getAverageAudioFeatures,
+  getTopItems,
+};

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { loginWithSpotify } from "@/app/login/actions";
+import loginWithSpotify from "@/app/login/actions";
 import Ipod from "@/components/svg-art/ipod";
 import "@/app/globals.css";
 import LeftPanel from "@/components/svg-art/left_panel";

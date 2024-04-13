@@ -75,7 +75,7 @@ function VinylCircle({ centerCircleColor, width }) {
   }
 
   return (
-    <svg width="400" height="400">
+    <svg width="400" height="400" data-testid="VinylCircle">
       {radii.map((radius) => (
         <circle
           key={radius}
@@ -127,7 +127,11 @@ function GenrePieChart({ data, centerCircleColor }) {
   }, []);
 
   return (
-    <div ref={divRef} style={{ height: 440, position: "relative" }}>
+    <div
+      ref={divRef}
+      style={{ height: 440, position: "relative" }}
+      data-testid="GenrePieChart"
+    >
       <ResponsivePie
         data={data}
         margin={{ top: 70, right: 140, bottom: 50, left: 140 }}
@@ -172,7 +176,7 @@ function GenrePieChart({ data, centerCircleColor }) {
   );
 }
 
-export default function UnifyContent({ user1Data, user2Data }) {
+function UnifyContent({ user1Data, user2Data }) {
   // Function to handle sharing
   const shareUnify = async () => {
     // Use Web Share API to share the default image
@@ -382,7 +386,9 @@ export default function UnifyContent({ user1Data, user2Data }) {
             Top Artists:
             <div className="mt-2" />
             {user1Data.topArtists.slice(0, 8).map((artist) => (
-              <div style={{ fontSize: 35 }}>{artist.name}</div>
+              <div key={artist.id} style={{ fontSize: 35 }}>
+                {artist.name}
+              </div>
             ))}
           </div>
         </div>
@@ -394,7 +400,9 @@ export default function UnifyContent({ user1Data, user2Data }) {
             Top Artists:
             <div className="mt-2" />
             {user2Data.topArtists.slice(0, 8).map((artist) => (
-              <div style={{ fontSize: 35 }}>{artist.name}</div>
+              <div key={artist.id} style={{ fontSize: 35 }}>
+                {artist.name}
+              </div>
             ))}
           </div>
         </div>
@@ -416,7 +424,9 @@ export default function UnifyContent({ user1Data, user2Data }) {
             Top Songs:
             <div className="mt-2" />
             {user1Data.topSongs.slice(0, 8).map((song) => (
-              <div style={{ fontSize: 35 }}>{song.name}</div>
+              <div key={song.id} style={{ fontSize: 35 }}>
+                {song.name}
+              </div>
             ))}
           </div>
         </div>
@@ -428,7 +438,9 @@ export default function UnifyContent({ user1Data, user2Data }) {
             Top Songs:
             <div className="mt-2" />
             {user2Data.topSongs.slice(0, 8).map((song) => (
-              <div style={{ fontSize: 35 }}>{song.name}</div>
+              <div key={song.id} style={{ fontSize: 35 }}>
+                {song.name}
+              </div>
             ))}
           </div>
         </div>
@@ -556,10 +568,26 @@ VinylCircle.defaultProps = {
 };
 
 GenrePieChart.propTypes = {
-  data: PropTypes.shape({}),
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      value: PropTypes.number.isRequired,
+    }),
+  ).isRequired,
   centerCircleColor: PropTypes.string,
 };
+
 GenrePieChart.defaultProps = {
-  data: PropTypes.shape({}),
-  centerCircleColor: "#1d40af",
+  centerCircleColor: "#1d40af", // Default color value
 };
+
+export {
+  calculateArtistSimilarity,
+  calculateGenreSimilarity,
+  featureDataSimilarity,
+  VinylCircle,
+  GenrePieChart,
+  UnifyContent,
+};
+
+export default UnifyContent;
