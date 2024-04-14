@@ -2,6 +2,8 @@
 The user gets redirected to this page after logging in.
 */
 
+/* eslint-disable no-alert */
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -80,9 +82,7 @@ export default function UserPage({ params: { slug } }) {
                 }),
               ],
             })
-            .catch((err) => {
-              setError(`Error sharing: ${err}`);
-            });
+            .catch(); // prevent cancelation of share from being error
         } else {
           try {
             await navigator.clipboard.write([
@@ -92,7 +92,7 @@ export default function UserPage({ params: { slug } }) {
                 }),
               }),
             ]);
-            alert("Link copied to clipboard!");
+            alert("Link copied to clipboard");
           } catch (error) {
             alert("Failed to copy to clipboard.");
           }

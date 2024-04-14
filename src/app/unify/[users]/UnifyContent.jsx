@@ -1,7 +1,8 @@
-/* eslint-disable no-alert */
 /*
 This file contains the content that is displayed on the Unify page.
 */
+
+/* eslint-disable no-alert */
 
 import { ResponsiveRadar } from "@nivo/radar";
 import ReactDOMServer from "react-dom/server";
@@ -142,16 +143,18 @@ function UnifyContent({ user1Data, user2Data }) {
         if (navigator.share) {
           // Web Share API is supported
 
-          navigator.share({
-            title: "Unify with me!",
-            text: `Compare our stats on Unify`,
-            url: "",
-            files: [
-              new File([blob], "file.png", {
-                type: blob.type,
-              }),
-            ],
-          });
+          navigator
+            .share({
+              title: "Unify with me!",
+              text: `Compare our stats on Unify`,
+              url: "",
+              files: [
+                new File([blob], "file.png", {
+                  type: blob.type,
+                }),
+              ],
+            })
+            .catch(); // prevent cancelation of share from being error
         } else {
           try {
             await navigator.clipboard.write([
@@ -159,7 +162,7 @@ function UnifyContent({ user1Data, user2Data }) {
                 "image/png": blob,
               }),
             ]);
-            alert("Image copied to clipboard!");
+            alert("Image copied to clipboard");
           } catch (error) {
             alert("Failed to copy to clipboard.");
           }
