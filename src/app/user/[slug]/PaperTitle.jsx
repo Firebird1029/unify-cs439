@@ -1,4 +1,7 @@
-export default function PaperTitle({ children }) {
+// import PropTypes from "prop-types";
+
+// export default function PaperTitle({ children }) {
+export default function PaperTitle() {
   return (
     <svg
       width="380"
@@ -14,3 +17,7 @@ export default function PaperTitle({ children }) {
     </svg>
   );
 }
+
+// PaperTitle.propTypes = {
+//   children: PropTypes.node.isRequired,
+// };

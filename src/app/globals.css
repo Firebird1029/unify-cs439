@@ -1,20 +1,6 @@
-/* TODO switch to Next.js font system */
-@import url("https://fonts.googleapis.com/css2?family=Koulen&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Homemade+Apple&display=swap");
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
-
-.font-koulen {
-  font-family: "Koulen", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-}
-.font-homemade-apple {
-  font-family: "Homemade Apple", cursive;
-  font-weight: 400;
-  font-style: normal;
-}
 
 .circle-row {
   display: flex;
@@ -40,13 +26,13 @@
 .circle-text-large {
   font-size: 58px;
   color: black;
-  font-family: "Koulen", sans-serif;
+  font-family: var(--font-koulen), sans-serif;
 }
 
 .circle-text-small {
   font-size: 36px;
   color: black;
-  font-family: "Koulen", sans-serif;
+  font-family: var(--font-koulen), sans-serif;
 }
 
 /* Fixes issue with lists not numbering */

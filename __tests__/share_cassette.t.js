@@ -1,5 +1,3 @@
-/* eslint-disable react/jsx-filename-extension */
-
 import React from "react";
 import { render, fireEvent, waitFor, screen } from "@testing-library/react";
 import UserPage from "@/app/user/[slug]/page";
@@ -52,7 +50,7 @@ HTMLCanvasElement.prototype.getContext = () => ({
   clearRect: jest.fn(),
 });
 
-HTMLCanvasElement.prototype.toBlob = jest.fn((callback, type, quality) => {
+HTMLCanvasElement.prototype.toBlob = jest.fn((callback, type) => {
   setTimeout(() => {
     callback(new Blob(["test"], { type }));
   }, 0);

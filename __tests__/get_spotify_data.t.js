@@ -87,7 +87,7 @@ describe("getSpotifyData", () => {
       },
     });
 
-    const result = await getSpotifyData(mockToken);
+    await getSpotifyData(mockToken);
 
     expect(axios.get).toHaveBeenCalledTimes(8);
     expect(axios.get).toHaveBeenCalledWith("https://api.spotify.com/v1/me", {

@@ -4,6 +4,9 @@
  * side (A or B)
  * and userColors (color scheme)
  */
+import PropTypes from "prop-types";
+import { homemadeApple } from "@/fonts";
+
 export default function Cassette({ userData, side, userColors }) {
   return (
     <svg
@@ -186,11 +189,31 @@ export default function Cassette({ userData, side, userColors }) {
       <foreignObject x="129.5" y="55" width="365" height="35">
         <div
           id="username"
-          className="w-full h-full flex justify-center items-center font-homemade-apple text-xl"
+          className="w-full h-full flex justify-center items-center text-xl"
         >
-          @ {userData.userProfile.display_name}
+          <div className={homemadeApple.className}>
+            @ {userData.userProfile.display_name}
+          </div>
         </div>
       </foreignObject>
     </svg>
   );
 }
+
+Cassette.propTypes = {
+  userColors: PropTypes.shape({
+    light: PropTypes.string.isRequired,
+    bg: PropTypes.string.isRequired,
+  }).isRequired,
+  side: PropTypes.string,
+  userData: PropTypes.shape({
+    topArtists: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string.isRequired,
+      }),
+    ),
+    userProfile: PropTypes.shape({
+      display_name: PropTypes.string.isRequired,
+    }),
+  }).isRequired,
+};

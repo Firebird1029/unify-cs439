@@ -1,15 +1,12 @@
-/* eslint-disable react/jsx-filename-extension */
-
-import { render, fireEvent, waitFor } from "@testing-library/react";
+import { render } from "@testing-library/react";
 
 import {
   calculateGenreSimilarity,
   calculateArtistSimilarity,
   featureDataSimilarity,
-  VinylCircle,
-  GenrePieChart,
   UnifyContent,
 } from "@/app/unify/[users]/UnifyContent";
+import GenrePieChart, { VinylCircle } from "@/shared/GenrePieChart";
 
 import userData from "./userData.json";
 
@@ -104,8 +101,6 @@ describe("GenrePieChart Component", () => {
 
 describe("UnifyContent", () => {
   it("renders UnifyContent correctly with provided data", () => {
-    const { getByText } = render(
-      <UnifyContent user1Data={userData} user2Data={userData} />,
-    );
+    render(<UnifyContent user1Data={userData} user2Data={userData} />);
   });
 });

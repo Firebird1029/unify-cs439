@@ -1,12 +1,15 @@
-/* this page loads the two user's data to display the unify content
-it is designed to redirect a user from the link that gets generated from the user page
-to bring them to the unify page with them and the other user, or show the data for the
-two users if two were given in the url, separated by an '&' */
+/*
+This page loads the two user's data to display the Unify content.
+It is designed to redirect a user from the link that gets generated from the user page
+to bring them to the Unify page with them and the other user, or show the data for the
+two users if two were given in the url, separated by an '&'.
+*/
 
 "use client";
 
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import { useRouter } from "next/navigation";
 import createClient from "@/utils/supabase/client";
 import { UnifyContent } from "./UnifyContent";
 import ErrorAlert from "@/app/error/error";
@@ -15,6 +18,7 @@ export default function UnifyPage({ params: { users } }) {
   // split the slug (users) on & (gets replaced as %26 automatically) to get user1 and user2 usernames
   const [user1, user2] = users.split("%26");
 
+  const router = useRouter();
   const supabase = createClient();
 
   const [loading, setLoading] = useState(true);
@@ -51,9 +55,14 @@ export default function UnifyPage({ params: { users } }) {
                 const redirectURL = `${users}&${data[0].username}`;
 
                 // Redirect to the generated URL
-                window.location.href = redirectURL;
+                router.replace(redirectURL);
               }
             });
+        }
+
+        if (user1 === user2) {
+          // if the two users are the same, you cannot unify the same user, so redirect to logged in user content
+          router.replace(`/user/${user1}`);
         }
       } catch (error) {
         setError("Could not fetch data.");
@@ -70,7 +79,6 @@ export default function UnifyPage({ params: { users } }) {
       .select("spotify_data")
       .eq("username", user1)
       .then(({ data, error }) => {
-        // console.log(data, error);
         if (error) {
           setError("User not found.");
         }
@@ -86,14 +94,13 @@ export default function UnifyPage({ params: { users } }) {
   }, []);
 
   useEffect(() => {
-    if (users.includes("%26")) {
+    if (users.includes("%26") && user1 !== user2) {
       // find second user by username (given as URL slug) in DB
       supabase
         .from("profiles")
         .select("spotify_data")
         .eq("username", user2)
         .then(({ data, error }) => {
-          // console.log(data, error);
           if (error) {
             setError("User not found.");
           }
@@ -104,8 +111,6 @@ export default function UnifyPage({ params: { users } }) {
           } else {
             setLoading(true);
           }
-
-          // console.log(loading, user1Data, user2Data);
         });
     }
   }, []);
@@ -128,7 +133,6 @@ export default function UnifyPage({ params: { users } }) {
   );
 }
 
-// props defining that a slug is required for the page
 UnifyPage.propTypes = {
   params: PropTypes.shape({
     users: PropTypes.string.isRequired,
