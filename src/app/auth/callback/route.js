@@ -1,5 +1,5 @@
 /*
-Route user gets redirected to after signing in with Spotify
+Route that the user gets redirected to after signing in with Spotify.
 */
 
 import { NextResponse } from "next/server";
@@ -21,8 +21,8 @@ export async function GET(request) {
     const { data, error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (error) {
-      // TODO display error message to user error.message
       redirectTo.pathname = "/error";
+      redirectTo.searchParams.set("message", error.message);
       return NextResponse.redirect(redirectTo);
     }
 
@@ -37,8 +37,8 @@ export async function GET(request) {
     try {
       spotifyUserData = await getSpotifyData(data.session.provider_token);
     } catch (e) {
-      // TODO display error message to user e
       redirectTo.pathname = "/error";
+      redirectTo.searchParams.set("message", e.message || e);
       return NextResponse.redirect(redirectTo);
     }
 
@@ -52,8 +52,8 @@ export async function GET(request) {
       .eq("id", data.user.id);
 
     if (dbError) {
-      // TODO display error message to user dbError.message
       redirectTo.pathname = "/error";
+      redirectTo.searchParams.set("message", dbError.message || dbError);
       return NextResponse.redirect(redirectTo);
     }
 

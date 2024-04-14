@@ -1,6 +1,5 @@
-/* eslint-disable react/jsx-filename-extension */
-
 import React from "react";
+import PropTypes from "prop-types";
 import { render, waitFor } from "@testing-library/react";
 import UserPage from "@/app/user/[slug]/page";
 import createClient from "@/utils/supabase/client";
@@ -11,23 +10,27 @@ jest.mock("../src/utils/supabase/client", () => ({
 }));
 
 jest.mock(
-  "../src/components/svg-art/user_content",
+  "../src/app/user/[slug]/UserContent",
   () =>
-    function () {
+    function Test() {
       return <div>UserContent Component</div>;
     },
 );
-jest.mock(
-  "../src/app/error/error",
-  () =>
-    function ({ Title, Message }) {
-      return (
-        <div>
-          {Title}
-          {Message}
-        </div>
-      );
-    },
+
+function Test2({ Title, Message }) {
+  return (
+    <div>
+      {Title}
+      {Message}
+    </div>
+  );
+}
+Test2.propTypes = {
+  Message: PropTypes.string.isRequired,
+  Title: PropTypes.string.isRequired,
+};
+jest.mock("../src/app/error/error", () =>
+  Test2({ Title: "Title", Message: "Message" }),
 );
 
 global.navigator.share = jest.fn();

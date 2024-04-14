@@ -1,11 +1,7 @@
-/* eslint-disable react/jsx-filename-extension */
+import { render } from "@testing-library/react";
 
-import { render, fireEvent, waitFor } from "@testing-library/react";
-
-import UserContent, {
-  VinylCircle,
-  GenrePieChart,
-} from "@/components/svg-art/user_content";
+import UserContent from "@/app/user/[slug]/UserContent";
+import GenrePieChart, { VinylCircle } from "@/shared/GenrePieChart";
 
 import userData from "./userData.json";
 
@@ -66,7 +62,7 @@ const mockShareCassette = jest.fn();
 
 describe("UnifyContent", () => {
   it("renders UnifyContent correctly with provided data", () => {
-    const { getByText } = render(
+    render(
       <UserContent userData={userData} shareCassette={mockShareCassette} />,
     );
   });

@@ -1,3 +1,7 @@
+/*
+This page redirects to /user/[slug]. TODO could probably just be a Next.js configuration item.
+*/
+
 "use client";
 
 // redirect the user to their user page if they get redirected to /user
@@ -33,13 +37,9 @@ export default function DefaultUserPage() {
               setError("You must log in to view your user data.");
             }
 
-            // console.log(data);
-
             if (data && data.length > 0) {
               // Concatenate paramValue with currentUser's ID
               const redirectURL = `/user/${data[0].username}`;
-
-              // console.log(redirectURL);
 
               // Redirect to the generated URL
               window.location.href = redirectURL;

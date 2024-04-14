@@ -1,6 +1,6 @@
 /*
-Error alert message that is used on other pages to display an error
-Can have title, message, and option to redirect a user when the click the x button on the error
+Error alert message that is used on other pages to display an error.
+Can have title, message, and option to redirect the user when they click the x button on the error.
 */
 
 "use client";
@@ -8,7 +8,7 @@ Can have title, message, and option to redirect a user when the click the x butt
 import React from "react";
 import PropTypes from "prop-types";
 
-function ErrorAlert({ Title, Message, RedirectTo }) {
+function ErrorAlert({ Title, Message, RedirectTo = null }) {
   const handleClose = () => {
     if (RedirectTo) {
       // Redirect to the specified page on close of alert
@@ -21,7 +21,7 @@ function ErrorAlert({ Title, Message, RedirectTo }) {
       className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 m-4 rounded relative"
       role="alert"
     >
-      <strong className="font-bold">{Title}</strong>
+      <h2 className="font-bold">{Title}</h2>
       <span className="block sm:inline">{Message}</span>
       {RedirectTo && (
         <span className="absolute top-0 bottom-0 right-0 px-4 py-3">
@@ -46,10 +46,6 @@ ErrorAlert.propTypes = {
   Title: PropTypes.string.isRequired,
   Message: PropTypes.string.isRequired,
   RedirectTo: PropTypes.string,
-};
-
-ErrorAlert.defaultProps = {
-  RedirectTo: null, // Set RedirectTo prop default value to null
 };
 
 export default ErrorAlert;

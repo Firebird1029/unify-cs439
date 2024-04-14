@@ -1,15 +1,12 @@
-/* eslint-disable react/jsx-filename-extension */
-
-import { render, fireEvent, waitFor } from "@testing-library/react";
+import { render } from "@testing-library/react";
 
 import {
   calculateGenreSimilarity,
   calculateArtistSimilarity,
   featureDataSimilarity,
-  VinylCircle,
-  GenrePieChart,
   UnifyContent,
 } from "@/app/unify/[users]/UnifyContent";
+import GenrePieChart, { VinylCircle } from "@/shared/GenrePieChart";
 
 import userData from "./userData.json";
 
@@ -74,6 +71,16 @@ describe("featureDataSimilarity", () => {
   });
 });
 
+describe("featureDataSimilarity", () => {
+  test("throws an error when the arrays have different lengths", () => {
+    const features1 = [{ value: 10 }, { value: 30 }, { value: 50 }];
+    const features2 = [{ value: 10 }, { value: 40 }];
+    expect(() => featureDataSimilarity(features1, features2)).toThrow(
+      "Arrays must have the same length",
+    );
+  });
+});
+
 describe("VinylCircle Component", () => {
   test("renders correctly with given props", () => {
     const { getByTestId } = render(
@@ -104,8 +111,6 @@ describe("GenrePieChart Component", () => {
 
 describe("UnifyContent", () => {
   it("renders UnifyContent correctly with provided data", () => {
-    const { getByText } = render(
-      <UnifyContent user1Data={userData} user2Data={userData} />,
-    );
+    render(<UnifyContent user1Data={userData} user2Data={userData} />);
   });
 });

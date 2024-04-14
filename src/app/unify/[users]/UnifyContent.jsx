@@ -1,14 +1,13 @@
 /* eslint-disable no-alert */
 /*
-This file contains the content that is displayed on the unify page
+This file contains the content that is displayed on the Unify page.
 */
 
 import { ResponsiveRadar } from "@nivo/radar";
-import { ResponsivePie } from "@nivo/pie";
-import { useState, useEffect, useRef } from "react";
 import ReactDOMServer from "react-dom/server";
 import PropTypes from "prop-types";
-import ShareUnify from "@/components/svg-art/share_unify";
+import GenrePieChart from "@/shared/GenrePieChart";
+import ShareUnify from "@/app/unify/[users]/ShareUnify";
 import "@/app/globals.css";
 
 // Find percent match between two lists
@@ -73,119 +72,6 @@ function percentMatch(user1, user2) {
   );
 }
 
-// function to create vinyl circle svg that is displayed on top of pie chart to form vinyl graphic
-function VinylCircle({ centerCircleColor, width }) {
-  const newWidth = Math.min((width - 280) / 2, 160);
-  const radii = [];
-  if (newWidth > 0) {
-    for (let i = newWidth - 1; i > 10; i -= 3) {
-      radii.push(i);
-    }
-  }
-
-  return (
-    <svg width="400" height="400" data-testid="VinylCircle">
-      {radii.map((radius) => (
-        <circle
-          key={radius}
-          r={radius}
-          cx="200"
-          cy="200"
-          fill="none"
-          stroke="black"
-          strokeWidth="1.35"
-        />
-      ))}
-      <circle
-        r={Math.round(newWidth * 0.15625)}
-        cx="200"
-        cy="200"
-        fill="none"
-        stroke={centerCircleColor}
-        strokeWidth={Math.round(newWidth * 0.2)}
-      />
-      <circle
-        r={Math.round(newWidth * 0.275)}
-        cx="200"
-        cy="200"
-        fill="none"
-        stroke="black"
-        strokeWidth={Math.round(newWidth * 0.05)}
-      />
-    </svg>
-  );
-}
-
-// combining vinyl graphic and pie chart to form genre pie chart graphic
-function GenrePieChart({ data, centerCircleColor }) {
-  const [divWidth, setDivWidth] = useState(0); // Step 1: State for storing div width
-  const divRef = useRef(null); // Step 2: Ref for the div
-
-  // Step 3: Effect hook for setting and updating div width
-  useEffect(() => {
-    // Function to update div width
-    const updateWidth = () => {
-      if (divRef.current) {
-        setDivWidth(divRef.current.offsetWidth); // Update div width
-      }
-    };
-
-    window.addEventListener("resize", updateWidth); // Add resize event listener
-    updateWidth(); // Initial update
-
-    return () => window.removeEventListener("resize", updateWidth); // Cleanup
-  }, []);
-
-  return (
-    <div
-      ref={divRef}
-      style={{ height: 440, position: "relative" }}
-      data-testid="GenrePieChart"
-    >
-      <ResponsivePie
-        data={data}
-        margin={{ top: 70, right: 140, bottom: 50, left: 140 }}
-        innerRadius={0.3}
-        keys={["value"]}
-        colors={["#444444", "#888888", "#cccccc", "#444444", "#cccccc"]}
-        arcLinkLabelsTextColor="#333333"
-        arcLinkLabelsThickness={2}
-        arcLinkLabelsColor={{ from: "color" }}
-        enableArcLabels={false}
-        arcLabelsTextColor={{ from: "color", modifiers: [["darker", 2]] }}
-        isInteractive={false}
-        animate={false}
-        legends={[]}
-        theme={{
-          text: {
-            fontSize: 25,
-            fill: "#333333",
-            outlineWidth: 0,
-            outlineColor: "transparent",
-            fontFamily: "Koulen",
-          },
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          top: 20,
-          right: 0,
-          bottom: 0,
-          left: Math.min(0, divWidth - 400),
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          textAlign: "center",
-        }}
-      >
-        <VinylCircle centerCircleColor={centerCircleColor} width={divWidth} />
-      </div>
-    </div>
-  );
-}
-
 // main function of page which returns the content of unifying the data of two users
 function UnifyContent({ user1Data, user2Data }) {
   // Function to handle sharing, allows you to share your results when you click the share results button
@@ -203,12 +89,6 @@ function UnifyContent({ user1Data, user2Data }) {
       // Create a canvas element
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
-
-      if (!ctx) {
-        // TODO console.error("Unable to obtain 2D context for canvas.");
-        return;
-      }
-
       canvas.width = img.width;
       canvas.height = img.height;
 
@@ -260,20 +140,18 @@ function UnifyContent({ user1Data, user2Data }) {
       // Convert canvas to blob
       canvas.toBlob(async (blob) => {
         if (navigator.share) {
-          navigator
-            .share({
-              title: "Unify with me!",
-              text: `Compare our stats on Unify`,
-              url: "",
-              files: [
-                new File([blob], "file.png", {
-                  type: blob.type,
-                }),
-              ],
-            })
-            .catch(() => {
-              // TODO console.error("Error sharing:", error);
-            });
+          // Web Share API is supported
+
+          navigator.share({
+            title: "Unify with me!",
+            text: `Compare our stats on Unify`,
+            url: "",
+            files: [
+              new File([blob], "file.png", {
+                type: blob.type,
+              }),
+            ],
+          });
         } else {
           try {
             await navigator.clipboard.write([
@@ -330,10 +208,7 @@ function UnifyContent({ user1Data, user2Data }) {
 
   return (
     <>
-      <div
-        className="font-koulen"
-        style={{ fontSize: 100, textAlign: "center" }}
-      >
+      <div style={{ fontSize: 100, textAlign: "center" }}>
         {percentMatch(user1Data, user2Data)}% Match!
       </div>
       <div className="grid grid-cols-2 p-8 flex">
@@ -343,7 +218,7 @@ function UnifyContent({ user1Data, user2Data }) {
     </style> */}
         <div className="bg-blue-800 rounded-lg p-4 mb-4 flex flex-col">
           <p
-            className="text-white text-xl font-koulen mb-24 mr-4 mt-4 ml-4"
+            className="text-white text-xl mb-24 mr-4 mt-4 ml-4"
             style={{
               fontSize: 60,
             }}
@@ -353,7 +228,7 @@ function UnifyContent({ user1Data, user2Data }) {
         </div>
         <div className="bg-red-800 rounded-lg p-4 ml-4 mb-4 flex flex-col">
           <p
-            className="text-white text-xl font-koulen mb-24 mr-4 mt-4 ml-4"
+            className="text-white text-xl mb-24 mr-4 mt-4 ml-4"
             style={{
               fontSize: 60,
             }}
@@ -393,7 +268,7 @@ function UnifyContent({ user1Data, user2Data }) {
       <div style={{ display: "flex", justifyContent: "center" }}>
         <button
           type="button"
-          className="bg-gray-300 font-koulen rounded-full py-2.5 px-4 flex items-center mr-4"
+          className="bg-gray-300 rounded-full py-2.5 px-4 flex items-center mr-4"
           style={{
             cursor: "pointer",
             backgroundColor: "#d1d5db",
@@ -406,10 +281,7 @@ function UnifyContent({ user1Data, user2Data }) {
       </div>
       <div className="grid grid-cols-2 p-8 flex">
         <div className="bg-gray-300 rounded-lg p-4 mt-4 flex">
-          <div
-            className="text-black text-l font-koulen"
-            style={{ fontSize: 50 }}
-          >
+          <div className="text-black text-l" style={{ fontSize: 50 }}>
             Top Artists:
             <div className="mt-2" />
             {user1Data.topArtists.slice(0, 8).map((artist) => (
@@ -420,10 +292,7 @@ function UnifyContent({ user1Data, user2Data }) {
           </div>
         </div>
         <div className="bg-gray-300 rounded-lg p-4 mt-4 ml-4 flex">
-          <div
-            className="text-black text-l font-koulen"
-            style={{ fontSize: 50 }}
-          >
+          <div className="text-black text-l" style={{ fontSize: 50 }}>
             Top Artists:
             <div className="mt-2" />
             {user2Data.topArtists.slice(0, 8).map((artist) => (
@@ -444,10 +313,7 @@ function UnifyContent({ user1Data, user2Data }) {
           <div>Loading...</div>
         )}
         <div className="bg-gray-300 rounded-lg p-4 mt-4 flex">
-          <div
-            className="text-black text-l font-koulen"
-            style={{ fontSize: 50 }}
-          >
+          <div className="text-black text-l" style={{ fontSize: 50 }}>
             Top Songs:
             <div className="mt-2" />
             {user1Data.topSongs.slice(0, 8).map((song) => (
@@ -458,10 +324,7 @@ function UnifyContent({ user1Data, user2Data }) {
           </div>
         </div>
         <div className="bg-gray-300 rounded-lg p-4 mt-4 ml-4 flex">
-          <div
-            className="text-black text-l font-koulen"
-            style={{ fontSize: 50 }}
-          >
+          <div className="text-black text-l" style={{ fontSize: 50 }}>
             Top Songs:
             <div className="mt-2" />
             {user2Data.topSongs.slice(0, 8).map((song) => (
@@ -493,7 +356,7 @@ function UnifyContent({ user1Data, user2Data }) {
                   fill: "#333333",
                   outlineWidth: 10,
                   outlineColor: "transparent",
-                  fontFamily: "Koulen",
+                  fontFamily: "var(--font-koulen)",
                 },
               }}
             />
@@ -585,35 +448,10 @@ UnifyContent.propTypes = {
   }).isRequired,
 };
 
-VinylCircle.propTypes = {
-  centerCircleColor: PropTypes.string,
-  width: PropTypes.number,
-};
-VinylCircle.defaultProps = {
-  centerCircleColor: "#1d40af",
-  width: PropTypes.number,
-};
-
-GenrePieChart.propTypes = {
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      value: PropTypes.number.isRequired,
-    }),
-  ).isRequired,
-  centerCircleColor: PropTypes.string,
-};
-
-GenrePieChart.defaultProps = {
-  centerCircleColor: "#1d40af", // Default color value
-};
-
 export {
   calculateArtistSimilarity,
   calculateGenreSimilarity,
   featureDataSimilarity,
-  VinylCircle,
-  GenrePieChart,
   UnifyContent,
 };
 

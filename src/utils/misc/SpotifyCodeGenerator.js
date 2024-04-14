@@ -46,9 +46,7 @@ function getColorFromSeed(seed) {
 }
 
 // function to modify the svg returned by spotify to remove background
-const modifySvg = (svgString, uri) => {
-  // console.log(uri);
-  // console.log(hashCode(uri));
+const modifySvg = (svgString) => {
   const parser = new DOMParser();
   const doc = parser.parseFromString(svgString, "image/svg+xml");
 
@@ -76,19 +74,11 @@ export default async function GetSpotifyCode(SpotifyURL) {
 
   const type = SpotifyURL.match(URIRegex)[2].split("/")[0];
 
-  // console.log(`${type}`);
-
-  // console.log(`${URIString}`);
-
   const FullURI = `spotify:${type}:${URIString}`;
 
   const url = `https://scannables.scdn.co/uri/plain/${format}/${backgroundColor}/${textColor}/${imageWidth}/${FullURI}`;
 
   try {
-    // console.log(`${url}`);
-
-    // console.log("Start image creation");
-
     const response = await axios.get(url, { responseType: "arraybuffer" });
 
     const svgString = new TextDecoder("utf-8").decode(
@@ -97,10 +87,9 @@ export default async function GetSpotifyCode(SpotifyURL) {
 
     return svgString;
   } catch (error) {
-    // console.error(`Error saving Spotify code: ${error.message}`);
+    // Error saving Spotify code
   }
 
-  // console.log("Created image");
   return null;
 }
 
