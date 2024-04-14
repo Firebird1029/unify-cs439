@@ -1,11 +1,15 @@
+/*
+The user gets redirected to this page after logging in.
+*/
+
 "use client";
 
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import ReactDOMServer from "react-dom/server";
 import createClient from "@/utils/supabase/client";
-import UserContent from "@/components/svg-art/user_content";
-import ShareCassette from "@/components/svg-art/share_cassette";
+import UserContent from "@/app/user/[slug]/UserContent";
+import ShareCassette from "@/app/user/[slug]/ShareCassette";
 import ErrorAlert from "@/app/error/error";
 
 export default function UserPage({ params: { slug } }) {

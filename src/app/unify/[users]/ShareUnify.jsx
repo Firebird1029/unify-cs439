@@ -1,3 +1,8 @@
+/* 
+Template svg that gets converted to image when a user wants to unify with someone.
+Generated when they click the Unify/Share button on their user page.
+*/
+
 function ShareUnify() {
   return (
     <svg

@@ -1,3 +1,7 @@
+/*
+Signs the user out using Supabase.
+*/
+
 // https://supabase.com/docs/guides/auth/server-side/nextjs
 
 import { revalidatePath } from "next/cache";
@@ -12,6 +16,7 @@ export async function POST(req) {
     data: { user },
   } = await supabase.auth.getUser();
 
+  // if the user is logged in, log them out
   if (user) {
     await supabase.auth.signOut();
   }

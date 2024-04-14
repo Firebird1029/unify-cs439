@@ -1,6 +1,8 @@
-// https://supabase.com/docs/guides/auth/server-side/nextjs
+/*
+Route that the user gets sent to after clicking the link from the Supabase confirmation email.
+*/
 
-// TODO fix broken redirect -- prob need to add token_hash param to Supabase email template
+// https://supabase.com/docs/guides/auth/server-side/nextjs
 
 import { NextResponse } from "next/server";
 
@@ -28,7 +30,7 @@ export async function GET(request) {
       redirectTo.searchParams.delete("next");
       return NextResponse.redirect(redirectTo);
     }
-    // TODO display error message to user error.message
+    redirectTo.searchParams.set("error", error.message);
   }
 
   // return the user to an error page with some instructions

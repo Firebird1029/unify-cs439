@@ -1,10 +1,15 @@
+/*
+This file contains the content that is displayed on the Unify page.
+*/
+
 import { ResponsiveRadar } from "@nivo/radar";
-import { ResponsivePie } from "@nivo/pie";
 import ReactDOMServer from "react-dom/server";
 import PropTypes from "prop-types";
-import ShareUnify from "@/components/svg-art/share_unify";
+import GenrePieChart from "@/shared/GenrePieChart";
+import ShareUnify from "@/app/unify/[users]/ShareUnify";
 import "@/app/globals.css";
 
+// Find percent match between two lists
 function calculateGenreSimilarity(list1, list2) {
   const intersection = Object.keys(list1).filter((key) =>
     Object.prototype.hasOwnProperty.call(list2, key),
@@ -14,38 +19,39 @@ function calculateGenreSimilarity(list1, list2) {
   return Math.round(similarity * 100); // Convert to percentage
 }
 
-// check how far away matching top artists are from each other in top artists list
+// check how far away matching top artists are from each other in top artists list to compute artist similarity
 function calculateArtistSimilarity(list1, list2) {
   const maxLength = Math.max(list1.length, list2.length);
   let Similarity = 0;
+  // loop through artists in list1 and check if the artist is contained in list 2
   for (let i = 0; i < maxLength; i++) {
     if (list2.includes(list1[i])) {
       const j = list2.indexOf(list1[i]);
+      // increase simililarity score based on how close artists are in the two lists
+      // ex. same top 1 artist gives higher score than same 25th top artist
       Similarity += 1 / (Math.abs(i - j) + 1) / 5;
-      // console.log(i, j, Similarity);
     }
-    // if (list1[i] === list2[i]) {
-    //   Similarity += maxLength - i;
-    // }
   }
   return Math.min(Similarity * 100, 100);
 }
 
+// calculates the similarities between the song features for two users,
+// where feature1 and feature2 are just an array of objects with feature and value
 function featureDataSimilarity(features1, features2) {
-  // console.log(features1, features2);
   if (features1.length !== features2.length) {
     throw new Error("Arrays must have the same length");
   }
   let totalDifference = 0;
   for (let i = 0; i < features1.length; i++) {
+    // get difference between two scores for each feature
     totalDifference += Math.abs(features1[i].value - features2[i].value);
   }
 
   // calculate song feature similarity by squaring average difference in song feaure
-  // console.log(totalDifference / features1.length / 100);
   return Math.round((1 - totalDifference / features1.length / 100) ** 2 * 100);
 }
 
+// calculate percent match between the two users by combining gere similarity, feature similarity, and artist similarity
 function percentMatch(user1, user2) {
   const genreSimilarity = calculateGenreSimilarity(
     user1.topGenres,
@@ -59,90 +65,15 @@ function percentMatch(user1, user2) {
     user1.topArtists.map((artist) => artist.name),
     user2.topArtists.map((artist) => artist.name),
   );
+  // get average of the three scores
   return Math.round(
     (genreSimilarity + featureSimilarity + artistSimilarity) / 3,
   );
 }
 
-function VinylCircle({ centerCircleColor }) {
-  const radii = [];
-  for (let i = 159; i > 41; i -= 3) {
-    radii.push(i);
-  }
-
-  return (
-    <svg width="400" height="400">
-      {radii.map((radius) => (
-        <circle
-          key={radius}
-          r={radius}
-          cx="200"
-          cy="200"
-          fill="none"
-          stroke="black"
-          strokeWidth="1.35"
-        />
-      ))}
-      <circle
-        r="25"
-        cx="200"
-        cy="200"
-        fill="none"
-        stroke={centerCircleColor}
-        strokeWidth="32"
-      />
-      <circle
-        r="44"
-        cx="200"
-        cy="200"
-        fill="none"
-        stroke="black"
-        strokeWidth="8"
-      />
-    </svg>
-  );
-}
-
-function GenrePieChart({ data, centerCircleColor }) {
-  return (
-    <div style={{ height: 400, position: "relative" }}>
-      <ResponsivePie
-        data={data}
-        margin={{ top: 40, right: 140, bottom: 40, left: 140 }}
-        innerRadius={0.3}
-        keys={["value"]}
-        colors={["#444444", "#888888", "#cccccc", "#444444", "#cccccc"]}
-        arcLinkLabelsTextColor="#333333"
-        arcLinkLabelsThickness={2}
-        arcLinkLabelsColor={{ from: "color" }}
-        enableArcLabels={false}
-        arcLabelsTextColor={{ from: "color", modifiers: [["darker", 2]] }}
-        isInteractive={false}
-        animate={false}
-        legends={[]}
-      />
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          right: 200,
-          bottom: 0,
-          left: 200,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          textAlign: "center",
-        }}
-      >
-        <VinylCircle centerCircleColor={centerCircleColor} />
-      </div>
-    </div>
-  );
-}
-
-export default function UnifyContent({ user1Data, user2Data }) {
-  // Function to handle sharing
+// main function of page which returns the content of unifying the data of two users
+function UnifyContent({ user1Data, user2Data }) {
+  // Function to handle sharing, allows you to share your results when you click the share results button
   const shareUnify = async () => {
     // Use Web Share API to share the default image
     const svgString = ReactDOMServer.renderToString(<ShareUnify />);
@@ -159,7 +90,7 @@ export default function UnifyContent({ user1Data, user2Data }) {
       const ctx = canvas.getContext("2d");
 
       if (!ctx) {
-        // TODO console.error("Unable to obtain 2D context for canvas.");
+        // Unable to obtain 2D context for canvas.
         return;
       }
 
@@ -214,35 +145,35 @@ export default function UnifyContent({ user1Data, user2Data }) {
       // Convert canvas to blob
       canvas.toBlob((blob) => {
         if (navigator.share) {
-          navigator
-            .share({
-              title: "Unify with me!",
-              text: `Compare our stats on Unify`,
-              url: "",
-              files: [
-                new File([blob], "file.png", {
-                  type: blob.type,
-                }),
-              ],
-            })
-            .catch(() => {
-              // TODO console.error("Error sharing:", error);
-            });
-        } else {
-          // TODO console.log("Web Share API not supported");
+          // Web Share API is supported
+
+          navigator.share({
+            title: "Unify with me!",
+            text: `Compare our stats on Unify`,
+            url: "",
+            files: [
+              new File([blob], "file.png", {
+                type: blob.type,
+              }),
+            ],
+          });
         }
       }, "image/png");
     };
   };
 
+  // get names for the two users
   const user1Name = user1Data.userProfile.display_name;
   const user2Name = user2Data.userProfile.display_name;
 
+  // combining the feature data for the two users to display in the radar chart
+  // nivo requires the data for a chart to be in a specific format, so just converting to that format
   const map = {};
   user1Data.featuresData.forEach((item) => {
     map[item.feature] = item.value;
   });
 
+  // this is what is actually combining the feature data from the two users
   const combinedFeaturesData = user2Data.featuresData.map((item) => {
     const userData = {};
     userData[user1Name] =
@@ -252,26 +183,26 @@ export default function UnifyContent({ user1Data, user2Data }) {
     return userData;
   });
 
+  // get top genres for user 1 from their data
   const user1topGenres = Object.entries(user1Data.topGenres)
     .sort((a, b) => b[1] - a[1]) // Sort genres by frequency in descending order
     .slice(0, 5) // Get the top 5 genres
     .map(([id, value]) => ({ id, value })); // Map to { id: genre, value: frequency } objects
 
+  // get top genres for user 2 from their data
   const user2topGenres = Object.entries(user2Data.topGenres)
     .sort((a, b) => b[1] - a[1]) // Sort genres by frequency in descending order
     .slice(0, 5) // Get the top 5 genres
     .map(([id, value]) => ({ id, value })); // Map to { id: genre, value: frequency } objects
 
+  // calculate genre similarity between the two users
   const genreSimilarity = Math.round(
     calculateGenreSimilarity(user1Data.topGenres, user2Data.topGenres),
   );
 
   return (
     <>
-      <div
-        className="font-koulen"
-        style={{ fontSize: 100, textAlign: "center" }}
-      >
+      <div style={{ fontSize: 100, textAlign: "center" }}>
         {percentMatch(user1Data, user2Data)}% Match!
       </div>
       <div className="grid grid-cols-2 p-8 flex">
@@ -281,7 +212,7 @@ export default function UnifyContent({ user1Data, user2Data }) {
     </style> */}
         <div className="bg-blue-800 rounded-lg p-4 mb-4 flex flex-col">
           <p
-            className="text-white text-xl font-koulen mb-24 mr-4 mt-4 ml-4"
+            className="text-white text-xl mb-24 mr-4 mt-4 ml-4"
             style={{
               fontSize: 60,
             }}
@@ -291,7 +222,7 @@ export default function UnifyContent({ user1Data, user2Data }) {
         </div>
         <div className="bg-red-800 rounded-lg p-4 ml-4 mb-4 flex flex-col">
           <p
-            className="text-white text-xl font-koulen mb-24 mr-4 mt-4 ml-4"
+            className="text-white text-xl mb-24 mr-4 mt-4 ml-4"
             style={{
               fontSize: 60,
             }}
@@ -325,13 +256,13 @@ export default function UnifyContent({ user1Data, user2Data }) {
             )}
             %
           </span>
-          <span className="circle-text-small">Song Similarity</span>
+          <span className="circle-text-small">Vibe Similarity</span>
         </div>
       </div>
       <div style={{ display: "flex", justifyContent: "center" }}>
         <button
           type="button"
-          className="bg-gray-300 font-koulen rounded-full py-2.5 px-4 flex items-center mr-4"
+          className="bg-gray-300 rounded-full py-2.5 px-4 flex items-center mr-4"
           style={{
             cursor: "pointer",
             backgroundColor: "#d1d5db",
@@ -344,30 +275,24 @@ export default function UnifyContent({ user1Data, user2Data }) {
       </div>
       <div className="grid grid-cols-2 p-8 flex">
         <div className="bg-gray-300 rounded-lg p-4 mt-4 flex">
-          <div
-            className="text-black text-l font-koulen"
-            style={{
-              fontSize: 40,
-            }}
-          >
+          <div className="text-black text-l" style={{ fontSize: 50 }}>
             Top Artists:
-            <div className="mt-4" />
-            {user1Data.topArtists.slice(0, 5).map((artist) => (
-              <div>{artist.name}</div>
+            <div className="mt-2" />
+            {user1Data.topArtists.slice(0, 8).map((artist) => (
+              <div key={artist.id} style={{ fontSize: 35 }}>
+                {artist.name}
+              </div>
             ))}
           </div>
         </div>
         <div className="bg-gray-300 rounded-lg p-4 mt-4 ml-4 flex">
-          <div
-            className="text-black text-l font-koulen"
-            style={{
-              fontSize: 40,
-            }}
-          >
+          <div className="text-black text-l" style={{ fontSize: 50 }}>
             Top Artists:
-            <div className="mt-4" />
-            {user2Data.topArtists.slice(0, 5).map((artist) => (
-              <div>{artist.name}</div>
+            <div className="mt-2" />
+            {user2Data.topArtists.slice(0, 8).map((artist) => (
+              <div key={artist.id} style={{ fontSize: 35 }}>
+                {artist.name}
+              </div>
             ))}
           </div>
         </div>
@@ -382,30 +307,24 @@ export default function UnifyContent({ user1Data, user2Data }) {
           <div>Loading...</div>
         )}
         <div className="bg-gray-300 rounded-lg p-4 mt-4 flex">
-          <div
-            className="text-black text-l font-koulen"
-            style={{
-              fontSize: 40,
-            }}
-          >
+          <div className="text-black text-l" style={{ fontSize: 50 }}>
             Top Songs:
-            <div className="mt-4" />
-            {user1Data.topSongs.slice(0, 5).map((song) => (
-              <div>{song.name}</div>
+            <div className="mt-2" />
+            {user1Data.topSongs.slice(0, 8).map((song) => (
+              <div key={song.id} style={{ fontSize: 35 }}>
+                {song.name}
+              </div>
             ))}
           </div>
         </div>
         <div className="bg-gray-300 rounded-lg p-4 mt-4 ml-4 flex">
-          <div
-            className="text-black text-l font-koulen"
-            style={{
-              fontSize: 40,
-            }}
-          >
+          <div className="text-black text-l" style={{ fontSize: 50 }}>
             Top Songs:
-            <div className="mt-4" />
-            {user2Data.topSongs.slice(0, 5).map((song) => (
-              <div>{song.name}</div>
+            <div className="mt-2" />
+            {user2Data.topSongs.slice(0, 8).map((song) => (
+              <div key={song.id} style={{ fontSize: 35 }}>
+                {song.name}
+              </div>
             ))}
           </div>
         </div>
@@ -424,12 +343,14 @@ export default function UnifyContent({ user1Data, user2Data }) {
               maxValue="100"
               colors={{ scheme: "set1" }}
               margin={{ top: 40, right: 60, bottom: 40, left: 60 }}
+              gridLabelOffset={25}
               theme={{
                 text: {
                   fontSize: 25,
                   fill: "#333333",
-                  outlineWidth: 0,
+                  outlineWidth: 10,
                   outlineColor: "transparent",
+                  fontFamily: "var(--font-koulen)",
                 },
               }}
             />
@@ -456,7 +377,27 @@ UnifyContent.propTypes = {
         name: PropTypes.string,
       }),
     ),
+    topSongsMedium: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+    topSongsLong: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
     topArtists: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+    topArtistsMedium: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+    topArtistsLong: PropTypes.arrayOf(
       PropTypes.shape({
         name: PropTypes.string,
       }),
@@ -473,7 +414,27 @@ UnifyContent.propTypes = {
         name: PropTypes.string,
       }),
     ),
+    topSongsMedium: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+    topSongsLong: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
     topArtists: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+    topArtistsMedium: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+    topArtistsLong: PropTypes.arrayOf(
       PropTypes.shape({
         name: PropTypes.string,
       }),
@@ -481,18 +442,11 @@ UnifyContent.propTypes = {
   }).isRequired,
 };
 
-VinylCircle.propTypes = {
-  centerCircleColor: PropTypes.string,
-};
-VinylCircle.defaultProps = {
-  centerCircleColor: "#1d40af",
+export {
+  calculateArtistSimilarity,
+  calculateGenreSimilarity,
+  featureDataSimilarity,
+  UnifyContent,
 };
 
-GenrePieChart.propTypes = {
-  data: PropTypes.shape({}),
-  centerCircleColor: PropTypes.string,
-};
-GenrePieChart.defaultProps = {
-  data: PropTypes.shape({}),
-  centerCircleColor: "#1d40af",
-};
+export default UnifyContent;
