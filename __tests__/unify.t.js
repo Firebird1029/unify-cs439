@@ -71,6 +71,16 @@ describe("featureDataSimilarity", () => {
   });
 });
 
+describe("featureDataSimilarity", () => {
+  test("throws an error when the arrays have different lengths", () => {
+    const features1 = [{ value: 10 }, { value: 30 }, { value: 50 }];
+    const features2 = [{ value: 10 }, { value: 40 }];
+    expect(() => featureDataSimilarity(features1, features2)).toThrow(
+      "Arrays must have the same length",
+    );
+  });
+});
+
 describe("VinylCircle Component", () => {
   test("renders correctly with given props", () => {
     const { getByTestId } = render(
