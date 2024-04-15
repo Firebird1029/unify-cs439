@@ -1,3 +1,5 @@
+<!-- eslint-disable -->
+
 # Unify
 
 ![test.yml on Master](https://img.shields.io/github/actions/workflow/status/firebird1029/unify-cs439/test.yml?branch=master)
@@ -81,7 +83,7 @@ Other supporting files in the root directory include configuration files for lin
 2. **Protected Branches**: There are two protected branches, `master` and `dev`. Both branches cannot have direct commits; instead, a pull request must be opened and approved by another contributor.
 3. **Branches & Pull Requests**: Contributors create a new branch specific to a feature. There is no branch naming convention. Once the feature is finished, `dev` is merged into the feature branch, and a new PR is opened to merge the feature branch into `dev`. Another contributor must approve the PR before it can be merged. Ideally, it should pass the Github Action test scripts as well.
 4. **CI/CD & Github Actions**: There are two Github Action scripts that get triggered upon a new pull request. The first is a test script that essentially runs `npm test`. The second is a lint script that checks for linting errors and warnings. For `dev`, all ESLint errors must be resolved for the test to pass. For `master`, all ESLint errors AND warnings must be resolved for the test to pass. Vercel also runs two integrated Github Action test scripts after a new pull request is created to check for Vercel preview deployment issues.
-5. **Vercel**: Vercel creates a new *preview* deployment after a new pull request is created. Vercel creates a new *production* deployment after a pull request is merged into the master branch.
+5. **Vercel**: Vercel creates a new _preview_ deployment after a new pull request is created. Vercel creates a new _production_ deployment after a pull request is merged into the master branch.
 
 ## Testing
 
