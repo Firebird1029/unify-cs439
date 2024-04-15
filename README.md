@@ -31,9 +31,9 @@ npm install
 
 ### Supabase Setup
 
-This project requires [Supabase](https://supabase.com/) in order to run. Inside the `.env` file, there exists the two Supabase keys required to run the application, `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`. The current values are tied to an existing Supabase project (and because these are public, client-exposed keys to a Supabase database protected with RLS, these two keys are safely tracked in Git). To connect the application with your own Supabase project instance,
+This project requires [Supabase](https://supabase.com/) in order to run. Inside the `.env` file, there exists the two Supabase keys required to run the application, `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`. The current values are tied to an existing Supabase project (and because these are public, client-exposed keys to a Supabase database protected with RLS, these two keys are safely tracked in Git). To connect the application with your own Supabase project instance:
 
-1. Create an account in [Supabase](https://supabase.com/).
+1. Create an account at [Supabase](https://supabase.com/).
 2. Follow the steps here to connect Supabase with Spotify: [https://supabase.com/docs/guides/auth/social-login/auth-spotify].
 3. Go to the [SQL Editor](https://supabase.com/dashboard/project/_/sql) page in the Supabase Dashboard. Click **User Management Starter**. Click Run. This step is from a tutorial [here](https://supabase.com/docs/guides/getting-started/tutorials/with-nextjs).
 4. [Optional] To ensure a working email confirmation redirect link, you need to change the Confirm signup email template link. In Supabase > Authentication > URL Configuration, change the Email Template link line to:
@@ -75,8 +75,13 @@ Other supporting files in the root directory include configuration files for lin
 | `middleware.js` | Used for Supabase authentication.                                                                                           |
 | `spotify.js`    | Backend used for communicating with Spotify API.                                                                            |
 
-
 ### Git Strategy
+
+1. **Pre-commit Hooks**: There is a pre-commit hook that lints the code files using ESLint and Prettier. This is done via the `lint-staged` package and configured in `package.json`.
+2. **Protected Branches**: There are two protected branches, `master` and `dev`. Both branches cannot have direct commits; instead, a pull request must be opened and approved by another contributor.
+3. **Branches & Pull Requests**: Contributors create a new branch specific to a feature. There is no branch naming convention. Once the feature is finished, `dev` is merged into the feature branch, and a new PR is opened to merge the feature branch into `dev`. Another contributor must approve the PR before it can be merged. Ideally, it should pass the Github Action test scripts as well.
+4. **CI/CD & Github Actions**: There are two Github Action scripts that get triggered upon a new pull request. The first is a test script that essentially runs `npm test`. The second is a lint script that checks for linting errors and warnings. For `dev`, all ESLint errors must be resolved for the test to pass. For `master`, all ESLint errors AND warnings must be resolved for the test to pass. Vercel also runs two integrated Github Action test scripts after a new pull request is created to check for Vercel preview deployment issues.
+5. **Vercel**: Vercel creates a new *preview* deployment after a new pull request is created. Vercel creates a new *production* deployment after a pull request is merged into the master branch.
 
 ## Testing
 
@@ -88,7 +93,7 @@ npm test
 
 We have achieved 87% statement coverage.
 
-Sachin/david todo -- how to add tests -- For tests, there should also be clear instructions on exactly the steps a developer should take to add a test, especially for the backend services.
+Sachin/david todo -- how to add tests -- "For tests, there should also be clear instructions on exactly the steps a developer should take to add a test, especially for the backend services."
 
 ## Linting
 
