@@ -85,15 +85,23 @@ Other supporting files in the root directory include configuration files for lin
 
 ## Testing
 
-To test the application:
+To test the application (run all tests):
 
 ```bash
 npm test
 ```
 
+To run a specific test:
+
+```bash
+npm test testName
+```
+
 We have achieved 87% statement coverage.
 
-Sachin/david todo -- how to add tests -- "For tests, there should also be clear instructions on exactly the steps a developer should take to add a test, especially for the backend services."
+To add a test, add a file to `__tests__/` with the file extension `.t.js`. This file will contain the tests themselves, and we are using Jest for testing — so any correctly formatted Jest test will work.
+
+In terms of specific backend tests, examples can be found in `get_spotify_data.t.js`. Using Jest, this file shows how one can mock a backend call to ensure that the correct number of calls are made with the needed requirements.
 
 ## Linting
 
