@@ -46,7 +46,24 @@ describe("IndexPage", () => {
     render(<IndexPage />);
 
     await waitFor(() => {
-      expect(useRouter().push).toHaveBeenCalledWith("/error");
+      expect(useRouter().push).toHaveBeenCalledWith(
+        "/error?message=Supabase error",
+      );
+    });
+  });
+
+  test("has log in button when user is not logged in", async () => {
+    const mockSupabase = {
+      auth: {
+        getUser: jest.fn().mockResolvedValue(null),
+      },
+    };
+    createClient.mockReturnValue(mockSupabase);
+
+    render(<IndexPage />);
+
+    await waitFor(() => {
+      expect(screen.getByText("Log in with Spotify")).toBeInTheDocument();
     });
   });
 
@@ -54,6 +71,9 @@ describe("IndexPage", () => {
     const mockSupabase = {
       auth: {
         getUser: jest.fn().mockResolvedValue({ data: { user: { id: 1 } } }),
+        getSession: jest
+          .fn()
+          .mockResolvedValue({ data: { session: { id: 1 } } }),
       },
     };
     createClient.mockReturnValue(mockSupabase);
