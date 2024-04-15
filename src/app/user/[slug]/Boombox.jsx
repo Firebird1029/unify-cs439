@@ -7,6 +7,11 @@
 import PropTypes from "prop-types";
 
 export default function Boombox({ userData, shareCassetteFunc }) {
+  // handle case where user does not have profile pciture
+  const imageUrl =
+    userData?.userProfile?.images[1]?.url ||
+    "https://upload.wikimedia.org/wikipedia/commons/a/af/Default_avatar_profile.jpg";
+
   return (
     <svg
       width="90%"
@@ -154,7 +159,7 @@ export default function Boombox({ userData, shareCassetteFunc }) {
         <img
           className="rounded-full shadow-inner"
           alt="User Profile"
-          src={userData.userProfile.images[1].url}
+          src={imageUrl}
           height="100%"
           width="100%"
         />
