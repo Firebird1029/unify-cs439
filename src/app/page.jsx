@@ -96,13 +96,15 @@ export default function IndexPage() {
               >
                 {loggedIn ? "Continue to Account" : "Log in with Spotify"}
               </button>
-              <button
-                className="border rounded-full bg-white px-5 py-3 text-3xl"
-                type="button"
-                onClick={() => handleSignOut()}
-              >
-                Logout
-              </button>
+              <div className={`${loggedIn ? "" : "hidden"}`}>
+                <button
+                  className="border rounded-full bg-white px-5 py-3 text-3xl"
+                  type="button"
+                  onClick={() => handleSignOut()}
+                >
+                  Logout
+                </button>
+              </div>
             </div>
           </Ipod>
         </div>
