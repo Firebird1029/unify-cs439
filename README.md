@@ -1,5 +1,3 @@
-<!-- eslint-disable -->
-
 # Unify
 
 ![test.yml on Master](https://img.shields.io/github/actions/workflow/status/firebird1029/unify-cs439/test.yml?branch=master)
@@ -36,13 +34,18 @@ npm install
 This project requires [Supabase](https://supabase.com/) in order to run. Inside the `.env` file, there exists the two Supabase keys required to run the application, `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`. The current values are tied to an existing Supabase project (and because these are public, client-exposed keys to a Supabase database protected with RLS, these two keys are safely tracked in Git). To connect the application with your own Supabase project instance:
 
 1. Create an account at [Supabase](https://supabase.com/).
-2. Follow the steps here to connect Supabase with Spotify: [https://supabase.com/docs/guides/auth/social-login/auth-spotify].
-3. Go to the [SQL Editor](https://supabase.com/dashboard/project/_/sql) page in the Supabase Dashboard. Click **User Management Starter**. Click Run. This step is from a tutorial [here](https://supabase.com/docs/guides/getting-started/tutorials/with-nextjs).
-4. [Optional] To ensure a working email confirmation redirect link, you need to change the Confirm signup email template link. In Supabase > Authentication > URL Configuration, change the Email Template link line to:
 
-```html
-<p><a href="{{ .ConfirmationURL }}">Confirm your mail</a></p>
-```
+2. Follow the steps here to connect Supabase with Spotify: [https://supabase.com/docs/guides/auth/social-login/auth-spotify].
+
+3. Go to the [SQL Editor](https://supabase.com/dashboard/project/_/sql) page in the Supabase Dashboard. Click **User Management Starter**. Click Run. This step is from a tutorial [here](https://supabase.com/docs/guides/getting-started/tutorials/with-nextjs).
+
+4. Optional - Update the email confirmation template in Supabase:
+   - Go to Authentication > URL Configuration
+   - Change the Email Template link to:
+
+     ```html
+     <p><a href="{{ .ConfirmationURL }}">Confirm your mail</a></p>
+     ```
 
 5. In `.env` in the root directory, change the values for `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
 
