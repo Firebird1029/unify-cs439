@@ -64,7 +64,10 @@ export default function IndexPage() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen lg:h-auto">
+    <div
+      className={`flex relative ${loading ? "h-screen" : ""}
+                    lg:h-screen`}
+    >
       <div
         className={`w-full flex flex-col justify-center items-center text-center ${
           loading ? "" : "hidden"
