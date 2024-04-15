@@ -40,6 +40,7 @@ This project requires [Supabase](https://supabase.com/) in order to run. Inside 
 3. Go to the [SQL Editor](https://supabase.com/dashboard/project/_/sql) page in the Supabase Dashboard. Click **User Management Starter**. Click Run. This step is from a tutorial [here](https://supabase.com/docs/guides/getting-started/tutorials/with-nextjs).
 
 4. Optional - Update the email confirmation template in Supabase:
+
    - Go to Authentication > URL Configuration
    - Change the Email Template link to:
 
