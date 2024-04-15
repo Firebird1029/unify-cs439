@@ -10,6 +10,7 @@ import GenrePieChart from "@/shared/GenrePieChart";
 import Boombox from "@/app/user/[slug]/Boombox";
 import Cassette from "@/app/user/[slug]/Cassette";
 import PaperTitle from "@/app/user/[slug]/PaperTitle";
+import CDStack from "@/app/user/[slug]/CDStack";
 
 function UserContent({ userData, shareCassette }) {
   // Convert object to array of { id: genre, value: frequency } objects
@@ -101,17 +102,71 @@ function UserContent({ userData, shareCassette }) {
       </div>
 
       {/* Bg takes on spotlight color afterwards, Main Body content */}
-      <div style={{ backgroundColor: userColors.light }} className="">
-        <div className="rounded-lg p-4 mt-4 ml-4 justify-center">
-          <PaperTitle>
-            <div className="text-5xl font-koulen">TOP GENRES:</div>
-          </PaperTitle>
+      <div
+        style={{ backgroundColor: userColors.light }}
+        className="lg:grid lg:grid-cols-2"
+      >
+        {/* Top Genres */}
+        <div className="rounded-lg p-4 mt-4 ml-4">
+          <div className="w-full flex flex-col items-center">
+            <div
+              className="w-80 \
+                            md:w-64"
+            >
+              <PaperTitle>TOP GENRES:</PaperTitle>
+            </div>
+          </div>
           {top5Genres ? (
             <GenrePieChart data={top5Genres} centerCircleColor="#39466B" />
           ) : (
             <div>Loading...</div>
           )}
         </div>
+        {/* Song Analysis */}
+        <div className="rounded-lg p-4 mt-4 ml-4 justify-center">
+          <div className="w-full flex flex-col items-center">
+            <div
+              className="w-80 \
+                            md:w-64"
+            >
+              <PaperTitle>SONG ANALYSIS:</PaperTitle>
+            </div>
+          </div>
+          {userData.featuresData ? (
+            <div style={{ height: 450 }}>
+              <ResponsiveRadar
+                data={userData.featuresData}
+                keys={["value"]}
+                indexBy="feature"
+                valueFormat=">-.1f"
+                maxValue="100"
+                margin={{ top: 65, right: 100, bottom: 35, left: 100 }}
+                gridLabelOffset={20}
+                theme={{
+                  text: {
+                    fontSize: 20,
+                    fill: "#333333",
+                    outlineWidth: 10,
+                    outlineColor: "transparent",
+                    fontFamily: "Koulen",
+                  },
+                }}
+                colors={"#39466B"}
+              />
+            </div>
+          ) : (
+            <div>Loading...</div>
+          )}
+        </div>
+        {/* CD Stacks Start Here */}
+        {/* Top Artists CD Stack */}
+        <div className="h-64">
+          <CDStack
+            topArtists={userData.topArtists.slice(0, 8)}
+            userColors={userColors}
+          />
+        </div>
+
         <div className="bg-gray-100 rounded-lg p-4 mt-4 ml-4 flex">
           <div
             className="text-black text-l font-koulen"
@@ -139,42 +194,6 @@ function UserContent({ userData, shareCassette }) {
               </div>
             ))}
           </div>
-        </div>
-        <div className="rounded-lg p-4 mt-4 ml-4 justify-center">
-          <div
-            className="text-black text-l font-koulen"
-            style={{
-              fontSize: 45,
-            }}
-          >
-            {" "}
-            SONG ANALYSIS:{" "}
-          </div>
-          {userData.featuresData ? (
-            <div style={{ height: 450 }}>
-              <ResponsiveRadar
-                data={userData.featuresData}
-                keys={["value"]}
-                indexBy="feature"
-                valueFormat=">-.1f"
-                maxValue="100"
-                margin={{ top: 65, right: 100, bottom: 35, left: 100 }}
-                gridLabelOffset={20}
-                theme={{
-                  text: {
-                    fontSize: 20,
-                    fill: "#333333",
-                    outlineWidth: 10,
-                    outlineColor: "transparent",
-                    fontFamily: "Koulen",
-                  },
-                }}
-                colors={"#39466B"}
-              />
-            </div>
-          ) : (
-            <div>Loading...</div>
-          )}
         </div>
       </div>
     </div>

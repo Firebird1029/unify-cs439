@@ -60,8 +60,8 @@ export default function IndexPage() {
 
   return (
     <div
-      className="flex relative \
-                    lg:h-screen"
+      className={`flex relative ${loading ? "h-screen" : ""}
+                    lg:h-screen`}
     >
       <div
         className={`w-[100%] flex flex-col justify-center items-center text-center ${
