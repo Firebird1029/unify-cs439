@@ -1,6 +1,9 @@
 # Unify
 
-![https://img.shields.io/github/actions/workflow/status/firebird1029/unify-cs439/test.yml?branch=master](https://img.shields.io/github/actions/workflow/status/firebird1029/unify-cs439/test.yml?branch=master)
+![test.yml on Master](https://img.shields.io/github/actions/workflow/status/firebird1029/unify-cs439/test.yml?branch=master)
+![lint-prod.yml on Dev](https://img.shields.io/github/actions/workflow/status/firebird1029/unify-cs439/lint-prod.yml?branch=dev&label=lint)
+![Deployed Website](https://img.shields.io/website?url=https%3A%2F%2Funify-cs439.vercel.app%2F&label=unify-cs439.vercel.app&link=https%3A%2F%2Funify-cs439.vercel.app%2F)
+[![All Contributors](https://img.shields.io/github/all-contributors/firebird1029/unify-cs439?color=ee8449&style=flat-square)](#contributors)
 
 ## Introduction
 
@@ -55,6 +58,8 @@ npm test
 
 We have achieved 87% statement coverage.
 
+Sachin/david todo -- how to add tests
+
 ## Linting
 
 To lint the application:
@@ -67,10 +72,19 @@ Note that the code must fully pass `npm run lint:prod` before being able to be m
 
 ## Production & Deployment
 
-The application is deployed at [http://unify-cs439.vercel.app](http://unify-cs439.vercel.app).  
-You can view an example of a user data page at [http://unify-cs439.vercel.app/user/testuser](http://unify-cs439.vercel.app/user/testuser)  
-You can view an example of a unify data page at [http://unify-cs439.vercel.app/unify/testuser&hoixw](http://unify-cs439.vercel.app/unify/testuser&hoixw)  
-To log in with Spotify, you must be a registered user, as the app is in development mode (on Spotify's end).  
-Contact <david.crair@yale.edu> to be added as a user.
+The application is currently deployed via Vercel at [http://unify-cs439.vercel.app](http://unify-cs439.vercel.app).
 
-## Credits
+> NOTE: To create an account in the existing deployment, you must be a registered user in our Spotify API application, as the application is currently in development mode (on Spotify's end). Contact <david.crair@yale.edu> to be added as a user.
+
+You can view an example of a User Profile page at [http://unify-cs439.vercel.app/user/testuser](http://unify-cs439.vercel.app/user/testuser). You can view an example of a Unify Results page at [http://unify-cs439.vercel.app/unify/testuser&hoixw](http://unify-cs439.vercel.app/unify/testuser&hoixw).
+
+## Contributors
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
