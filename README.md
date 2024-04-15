@@ -48,6 +48,36 @@ This project requires [Supabase](https://supabase.com/) in order to run. Inside 
 
 To start the application, simply run `npm run dev`. You can access the application from `localhost:3000`.
 
+### Code Structure
+
+#### Root
+
+| File/Folder           | Description                                     |
+| --------------------- | ----------------------------------------------- |
+| `__tests__/`          | Jest tests.                                     |
+| `.github/`            | Github Action scripts.                          |
+| `.husky/`             | Pre-commit hooks, as described in Git Strategy. |
+| `src/`                | Main code files.                                |
+| `.all-contributorsrc` | See <https://allcontributors.org>.              |
+| `.env`                | Non-secret environment variables.               |
+| `jsconfig.json`       | VS Code IntelliSense support file.              |
+
+Other supporting files in the root directory include configuration files for linting (ESLint + Prettier), testing (Jest), Next.js, and others.
+
+#### src Folder
+
+| File/Folder     | Description                                                                                                                 |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `app/`          | Main page files, following the [Next.js app routing system](https://nextjs.org/docs/app/building-your-application/routing). |
+| `shared/`       | Components shared across multiple pages.                                                                                    |
+| `utils/`        | Various backend utility functions, primarily Supabase authentication scripts.                                               |
+| `fonts.js`      | Optimized font face exports.                                                                                                |
+| `middleware.js` | Used for Supabase authentication.                                                                                           |
+| `spotify.js`    | Backend used for communicating with Spotify API.                                                                            |
+
+
+### Git Strategy
+
 ## Testing
 
 To test the application:
@@ -58,7 +88,7 @@ npm test
 
 We have achieved 87% statement coverage.
 
-Sachin/david todo -- how to add tests
+Sachin/david todo -- how to add tests -- For tests, there should also be clear instructions on exactly the steps a developer should take to add a test, especially for the backend services.
 
 ## Linting
 
