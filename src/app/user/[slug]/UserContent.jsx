@@ -11,6 +11,7 @@ import Boombox from "@/app/user/[slug]/Boombox";
 import Cassette from "@/app/user/[slug]/Cassette";
 import PaperTitle from "@/app/user/[slug]/PaperTitle";
 import CDStack from "@/app/user/[slug]/CDStack";
+import getPersonality from "@/shared/GetPersonality";
 
 function UserContent({ userData, shareCassette }) {
   // Convert object to array of { id: genre, value: frequency } objects
@@ -19,11 +20,7 @@ function UserContent({ userData, shareCassette }) {
     .slice(0, 5) // Get the top 5 genres
     .map(([id, value]) => ({ id, value })); // Map to { id: genre, value: frequency } objects
 
-  const userColors = {
-    bg: "#FF7448",
-    light: "#FFC556",
-    dark: "#7F5300",
-  };
+  const userColors = getPersonality(userData).colors;
 
   return (
     <div

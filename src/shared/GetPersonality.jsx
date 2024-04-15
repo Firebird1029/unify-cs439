@@ -51,8 +51,8 @@ const personalities = [
       instrumentalness: 5,
     },
     colors: {
-      bg: "#48ff5a",
-      light: "#94ff56",
+      bg: "#00cc30",
+      light: "#b0ff56",
       dark: "#157f00",
     },
   },
