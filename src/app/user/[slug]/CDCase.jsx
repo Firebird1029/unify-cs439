@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 export default function CDCase({
   title,
   ranking,
@@ -76,3 +78,16 @@ export default function CDCase({
     </g>
   );
 }
+
+CDCase.propTypes = {
+  yOffset: PropTypes.number,
+  xOffset: PropTypes.number,
+  userColors: PropTypes.shape({
+    dark: PropTypes.string,
+    light: PropTypes.string,
+  }),
+  dark: PropTypes.string,
+  light: PropTypes.string,
+  ranking: PropTypes.number,
+  title: PropTypes.string.isRequired,
+};

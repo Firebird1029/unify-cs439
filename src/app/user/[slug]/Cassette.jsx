@@ -205,6 +205,8 @@ Cassette.propTypes = {
   userColors: PropTypes.shape({
     light: PropTypes.string.isRequired,
     bg: PropTypes.string.isRequired,
+    cassetteBody: PropTypes.string.isRequired,
+    cassetteAccent: PropTypes.string.isRequired,
   }).isRequired,
   side: PropTypes.string,
   userData: PropTypes.shape({

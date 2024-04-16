@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 export default function PaperTitle({ children }) {
   return (
     <svg
@@ -49,3 +51,7 @@ export default function PaperTitle({ children }) {
     </svg>
   );
 }
+
+PaperTitle.propTypes = {
+  children: PropTypes.node.isRequired,
+};
