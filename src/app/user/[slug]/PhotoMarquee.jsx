@@ -10,7 +10,8 @@ export default function PhotoMarquee({ imageLinks }) {
         {imageLinks.map((link) => (
           <img
             key={link}
-            className="mx-8 inline-block rounded-lg w-[10%] md:w-[7%] h-auto object-cover"
+            // className="mx-8 inline-block rounded-lg w-[10%] md:w-[7%] h-auto object-cover"
+            className="mx-8 inline-block rounded-lg w-[128px] h-auto object-cover"
             src={link}
             alt="Artist"
           />
