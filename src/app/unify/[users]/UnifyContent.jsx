@@ -428,8 +428,8 @@ function UnifyContent({ user1Data, user2Data }) {
                 valueFormat=">-.1f"
                 maxValue="100"
                 colors={[
-                  user2personality.colors.bg,
-                  user1personality.colors.dark,
+                  user2personality.colors.cassetteAccent,
+                  user1personality.colors.cassetteBody,
                 ]}
                 margin={{ top: 40, right: 60, bottom: 40, left: 60 }}
                 gridLabelOffset={25}
