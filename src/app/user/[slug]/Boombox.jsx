@@ -8,8 +8,13 @@ import PropTypes from "prop-types";
 
 export default function Boombox({ userData, shareCassetteFunc }) {
   // handle case where user does not have profile pciture
-  const imageUrl =
+  const profilePictureURL =
     userData?.userProfile?.images[1]?.url ||
+    "https://upload.wikimedia.org/wikipedia/commons/a/af/Default_avatar_profile.jpg";
+
+  // handle case where top album does not have album image
+  const albumPictureURL =
+    userData?.topArtists[0]?.images[1]?.url ||
     "https://upload.wikimedia.org/wikipedia/commons/a/af/Default_avatar_profile.jpg";
 
   return (
@@ -146,23 +151,53 @@ export default function Boombox({ userData, shareCassetteFunc }) {
       {/* Boombox left and right speaker */}
       <circle cx="160" cy="333" r="103" fill="#D9D9D9" />
       <foreignObject x="57" y="230" width="206" height="206">
-        <img
-          className="rounded-full shadow-inner"
-          alt="User Top Artist"
-          src={userData.topArtists[0].images[1].url}
-          height="100%"
-          width="100%"
-        />
+        <div
+          className="rounded-full"
+          style={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            overflow: "hidden",
+          }}
+        >
+          <img
+            className="rounded-full shadow-inner"
+            alt="User Top Artist"
+            src={albumPictureURL}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+            }}
+          />
+        </div>
       </foreignObject>
       <circle cx="709" cy="332" r="103" fill="#D9D9D9" />
       <foreignObject x="606" y="229" width="206" height="206">
-        <img
-          className="rounded-full shadow-inner"
-          alt="User Profile"
-          src={imageUrl}
-          height="100%"
-          width="100%"
-        />
+        <div
+          className="rounded-full"
+          style={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            overflow: "hidden",
+          }}
+        >
+          <img
+            className="rounded-full shadow-inner"
+            alt="User Top Artist"
+            src={profilePictureURL}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+            }}
+          />
+        </div>
       </foreignObject>
       {/* End of boombox left/right speaker */}
       <defs>
