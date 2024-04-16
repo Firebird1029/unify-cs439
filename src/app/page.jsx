@@ -27,12 +27,21 @@ export default function IndexPage() {
         data: { user },
       } = await supabase.auth.getUser();
 
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
       if (user) {
         // already logged in
         setLoggedIn(true);
+      } else if (session && !user) {
+        // user created an account but did not verify email
+        // TODO
+      } else {
+        // user is not logged in
       }
-    })().catch(() => {
-      router.push("/error");
+    })().catch((err) => {
+      router.push(`/error?message=${err.message}`);
     });
   }, []);
 
@@ -60,37 +69,28 @@ export default function IndexPage() {
                     lg:h-screen`}
     >
       <div
-        className={`w-[100%] flex flex-col justify-center items-center text-center ${
+        className={`w-full flex flex-col justify-center items-center text-center ${
           loading ? "" : "hidden"
         }`}
+        style={{ height: "100vh" }} // Ensure the div takes full viewport height
       >
         <LoadingIcon />
         <p className="mt-3 text-2xl">Getting things set up...</p>
       </div>
       <div
-        className={`space-x-0 pt-12 px-12 border-10 border-red \
-                    flex flex-col justify-center \
-                    lg:flex-row lg:items-center lg:justify-end lg:space-x-12 lg:absolute lg:bottom-px ${
+        className={`flex flex-col justify-center items-center space-x-0 pt-12 px-12 border-10 border-red
+                    lg:flex-row lg:items-center lg:justify-end lg:space-x-12 ${
                       loading ? "hidden" : ""
                     }`}
       >
-        {" "}
-        {/* Keeps Ipod at Bottom for large screens */}
-        <div
-          className="w-[100%] self-end \
-                        lg:w-[50%]"
-        >
+        <div className="w-full lg:max-w-1/2 lg:flex-shrink">
           <LeftPanel />
         </div>
-        <div
-          className="w-[100%] self-end \
-                        lg:w-[50%]"
-        >
+        <div className="w-full lg:max-w-1/2 lg:flex-shrink">
           <Ipod>
             <div className="flex flex-col justify-center items-center text-center pt-10 space-y-10">
               <button
-                className="border rounded-full bg-white px-5 py-3 text-3xl \
-                              transition hover:scale-110"
+                className="border rounded-full bg-white px-5 py-3 text-3xl"
                 type="button"
                 onClick={() => {
                   setLoading(true);
@@ -99,14 +99,15 @@ export default function IndexPage() {
               >
                 {loggedIn ? "Continue to Account" : "Log in with Spotify"}
               </button>
-              <button
-                className="border rounded-full bg-white px-5 py-3 text-3xl \
-                              transition hover:scale-110"
-                type="button"
-                onClick={() => handleSignOut()}
-              >
-                Logout
-              </button>
+              <div className={`${loggedIn ? "" : "hidden"}`}>
+                <button
+                  className="border rounded-full bg-white px-5 py-3 text-3xl"
+                  type="button"
+                  onClick={() => handleSignOut()}
+                >
+                  Logout
+                </button>
+              </div>
             </div>
           </Ipod>
         </div>

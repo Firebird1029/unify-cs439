@@ -2,6 +2,8 @@
 The user gets redirected to this page after logging in.
 */
 
+/* eslint-disable no-alert */
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -63,25 +65,37 @@ export default function UserPage({ params: { slug } }) {
         389,
       );
 
+      // url to redirect user to, this brings up the unify page
+      const shareURL = `http://${process.env.NEXT_PUBLIC_FRONTEND_URL}/unify/${userData.userProfile.id}`;
+
       // Convert canvas to blob
-      canvas.toBlob((blob) => {
+      canvas.toBlob(async (blob) => {
         if (navigator.share) {
           navigator
             .share({
               title: "Unify with me!",
               text: `Compare our stats on Uni.fy`,
-              url: `http://${process.env.NEXT_PUBLIC_FRONTEND_URL}/unify/${userData.userProfile.id}`,
+              url: shareURL,
               files: [
                 new File([blob], "file.png", {
                   type: blob.type,
                 }),
               ],
             })
-            .catch((err) => {
-              setError(`Error sharing: ${err}`);
-            });
+            .catch(); // prevent cancelation of share from being error
         } else {
-          // Web share API not supported
+          try {
+            await navigator.clipboard.write([
+              new ClipboardItem({
+                "text/plain": new Blob([shareURL], {
+                  type: "text/plain",
+                }),
+              }),
+            ]);
+            alert("Link copied to clipboard");
+          } catch (error) {
+            alert("Failed to copy to clipboard.");
+          }
         }
       }, "image/png");
     };

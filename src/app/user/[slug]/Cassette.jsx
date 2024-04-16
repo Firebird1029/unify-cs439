@@ -6,6 +6,7 @@
  */
 import PropTypes from "prop-types";
 import { homemadeApple } from "@/fonts";
+import getPersonality from "@/shared/GetPersonality";
 
 export default function Cassette({ userData, side, userColors }) {
   return (
@@ -175,7 +176,7 @@ export default function Cassette({ userData, side, userColors }) {
           id="tagline"
           className="w-full h-full flex justify-center items-center font-koulen text-3xl"
         >
-          Listen to {userData.topArtists[0].name} much?
+          #{getPersonality(userData).name}
         </div>
       </foreignObject>
       <foreignObject x="83.5" y="55.5" width="35" height="65">
