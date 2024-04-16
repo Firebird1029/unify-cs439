@@ -24,15 +24,18 @@ function hashCode(str) {
 
 // uses a seed to get a random pastel color
 function getColorFromSeed(seed) {
+  // get base color using the seed and 1677215 which is FFFFFF in hex
   const baseColor = Math.floor(seed * 16777215).toString(16); // Generate a random base color
 
   // Convert the base color to RGB
   const rgb = parseInt(baseColor, 16);
+  // using bit shifts to get the correct hex
   const r = (rgb >> 16) & 255;
   const g = (rgb >> 8) & 255;
   const b = rgb & 255;
 
   // Adjust the brightness and saturation for a pastel effect
+  // this takes the mean of the color and white, to get a pastel
   const colorR = Math.floor((r + 255) / 2);
   const colorG = Math.floor((g + 255) / 2);
   const colorB = Math.floor((b + 255) / 2);
@@ -47,6 +50,7 @@ function getColorFromSeed(seed) {
 
 // function to modify the svg returned by spotify to remove background
 const modifySvg = (svgString) => {
+  // use dom Parser to parse svg string into doc
   const parser = new DOMParser();
   const doc = parser.parseFromString(svgString, "image/svg+xml");
 
@@ -63,34 +67,41 @@ const modifySvg = (svgString) => {
   return modifiedSvgString;
 };
 
+// function to get spotify code for a given spotify URI from the spotify website
 export default async function GetSpotifyCode(SpotifyURL) {
   const format = "svg";
-  const backgroundColor = "FFFFFF"; // Math.floor(Math.random()*16777215).toString(16);
+  // request background color to be white
+  const backgroundColor = "FFFFFF";
   const textColor = "black";
   const imageWidth = "400";
 
+  // process Spotify URL into just the URI part (uri is spotify id/code)
   const URIRegex = /\/([^/]+)\/([^?]+)/; /// \/([^\/?]+)\?/;
   const URIString = SpotifyURL.match(URIRegex)[2].split("/")[1];
 
+  // get which type of item it is (track, artist, playlist, user)
   const type = SpotifyURL.match(URIRegex)[2].split("/")[0];
 
+  // construct the full uri for the object
   const FullURI = `spotify:${type}:${URIString}`;
 
+  // this is the url that will contain the image of the spotify code with the uri as the input (and other parameters)
   const url = `https://scannables.scdn.co/uri/plain/${format}/${backgroundColor}/${textColor}/${imageWidth}/${FullURI}`;
 
+  // fetch the image at the url
   try {
     const response = await axios.get(url, { responseType: "arraybuffer" });
 
+    // decode the response into an svg
     const svgString = new TextDecoder("utf-8").decode(
       new Uint8Array(response.data),
     );
 
     return svgString;
   } catch (error) {
-    // Error saving Spotify code
+    // error if something went wrong getting the spotify code
+    throw error("Could not get spotify code");
   }
-
-  return null;
 }
 
 export { hashCode, getColorFromSeed, modifySvg, GetSpotifyCode };

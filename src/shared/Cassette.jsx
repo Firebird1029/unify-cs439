@@ -170,6 +170,7 @@ export default function Cassette({ userData, side, userColors }) {
       />
 
       {/* Text items */}
+      {/* Foreign object containing text for user personality name */}
       <foreignObject x="94.5" y="175.5" width="352" height="43">
         <div
           style={{ color: userColors.cassetteAccent }}
@@ -179,6 +180,7 @@ export default function Cassette({ userData, side, userColors }) {
           #{getPersonality(userData).name}
         </div>
       </foreignObject>
+      {/* Foreign object containing text showing what side of the cassette it is */}
       <foreignObject x="83.5" y="55.5" width="35" height="65">
         <div
           id="side"
@@ -187,6 +189,7 @@ export default function Cassette({ userData, side, userColors }) {
           {side || "A"}
         </div>
       </foreignObject>
+      {/* Foreign object containing text with the user's display name */}
       <foreignObject x="129.5" y="55" width="365" height="35">
         <div
           id="username"

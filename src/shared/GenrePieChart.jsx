@@ -1,10 +1,3 @@
-// Combines vinyl graphic and pie chart to form genre pie chart graphic.
-
-import { useState, useEffect, useRef } from "react";
-import PropTypes from "prop-types";
-import { ResponsivePie } from "@nivo/pie";
-import "@/app/globals.css";
-
 /* 
 Function that actually builds the Vinyl Circle overlay. It takes a width (ie a radius) 
 and a centreColor, and builds the correctly-sized svg overlay. 
@@ -12,6 +5,11 @@ This is then overlaid onto the pie chart. Note that the first svg builds the man
 circular lines across the pie chart, the second the 'color' portion in the middle, 
 and the third a thicker barrier between the color portion and the chart itself.
 */
+
+import { useState, useEffect, useRef } from "react";
+import PropTypes from "prop-types";
+import { ResponsivePie } from "@nivo/pie";
+import "@/app/globals.css";
 
 export function VinylCircle({ centerCircleColor = "#1d40af", width = 0 }) {
   const newWidth = Math.max(0, Math.min((width - 280) / 2, 160)); // make sure newWidth is not negative
@@ -92,11 +90,13 @@ export default function GenrePieChart({ data, centerCircleColor = "#1d40af" }) {
       style={{ height: 440, position: "relative" }}
       data-testid="GenrePieChart"
     >
+      {/* Underlying genre pie chart using nivo */}
       <ResponsivePie
         data={data}
         margin={{ top: 70, right: 140, bottom: 50, left: 140 }}
         innerRadius={0.3}
         keys={["value"]}
+        // set gray colors for the background of the pie chart
         colors={["#444444", "#888888", "#cccccc", "#444444", "#cccccc"]}
         arcLinkLabelsTextColor="#333333"
         arcLinkLabelsThickness={2}
@@ -130,6 +130,7 @@ export default function GenrePieChart({ data, centerCircleColor = "#1d40af" }) {
           textAlign: "center",
         }}
       >
+        {/* Overlay vinyl circle to turn pie chart into vinyl */}
         <VinylCircle centerCircleColor={centerCircleColor} width={divWidth} />
       </div>
     </div>

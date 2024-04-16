@@ -13,6 +13,7 @@ export default function CDStack({ topList, userColors }) {
     // of CDs in the stack
     <svg width="100%" height="100%" viewBox={`0 0 500 ${80 * topList.length}`}>
       {topList.map((val, rank) => {
+        // have random x offset for cd case to give stacking effect
         const xOffset = Math.floor(Math.random() * 80);
         const yOffset = rank * 80;
         return (
