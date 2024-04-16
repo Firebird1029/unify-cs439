@@ -67,6 +67,7 @@ To start the application, simply run `npm run dev`. You can access the applicati
 | `.all-contributorsrc` | See <https://allcontributors.org>.              |
 | `.env`                | Non-secret environment variables.               |
 | `jsconfig.json`       | VS Code IntelliSense support file.              |
+| `public/`             | Public assets (fonts)                           |
 
 Other supporting files in the root directory include configuration files for linting (ESLint + Prettier), testing (Jest), Next.js, and others.
 

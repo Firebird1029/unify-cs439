@@ -4,7 +4,7 @@ Contains a graphic showing a summary of the unified data between two users.
 */
 
 import PropTypes from "prop-types";
-import Cassette from "@/app/user/[slug]/Cassette";
+import Cassette from "@/shared/Cassette";
 import getPersonality from "@/shared/GetPersonality";
 
 function ShareCassette({ userData }) {

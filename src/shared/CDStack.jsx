@@ -5,7 +5,7 @@ Params:
 - userColors: color scheme
  */
 import PropTypes from "prop-types";
-import CDCase from "@/app/user/[slug]/CDCase";
+import CDCase from "@/shared/CDCase";
 
 export default function CDStack({ topList, userColors }) {
   return (

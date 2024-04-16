@@ -10,10 +10,10 @@ import PropTypes from "prop-types";
 import GenrePieChart from "@/shared/GenrePieChart";
 import ShareUnify from "@/app/unify/[users]/ShareUnify";
 import "@/app/globals.css";
-import Cassette from "@/app/user/[slug]/Cassette";
+import Cassette from "@/shared/Cassette";
 import getPersonality from "@/shared/GetPersonality";
 import Boombox from "@/app/unify/[users]/Boombox";
-import CDStack from "@/app/user/[slug]/CDStack";
+import CDStack from "@/shared/CDStack";
 
 // Find percent match between two lists
 function calculateGenreSimilarity(list1, list2) {

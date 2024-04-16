@@ -5,7 +5,7 @@ Generated when they click the Unify/Share button on their user page.
 
 import PropTypes from "prop-types";
 import getPersonality from "@/shared/GetPersonality";
-import Cassette from "@/app/user/[slug]/Cassette";
+import Cassette from "@/shared/Cassette";
 
 function ShareUnify({ user1Data, user2Data }) {
   const user1Personality = getPersonality(user1Data); // get personality for user 1
