@@ -114,7 +114,10 @@ function UserContent({ userData, shareCassette }) {
             </div>
           </div>
           {top5Genres ? (
-            <GenrePieChart data={top5Genres} centerCircleColor="#39466B" />
+            <GenrePieChart
+              data={top5Genres}
+              centerCircleColor={userColors.dark}
+            />
           ) : (
             <div>Loading...</div>
           )}
@@ -148,7 +151,7 @@ function UserContent({ userData, shareCassette }) {
                     fontFamily: "Koulen",
                   },
                 }}
-                colors={"#39466B"}
+                colors={userColors.dark}
               />
             </div>
           ) : (

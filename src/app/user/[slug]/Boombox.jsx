@@ -5,6 +5,7 @@
  */
 
 import PropTypes from "prop-types";
+import getPersonality from "@/shared/GetPersonality";
 
 export default function Boombox({ userData, shareCassetteFunc }) {
   // handle case where user does not have profile pciture
@@ -16,6 +17,8 @@ export default function Boombox({ userData, shareCassetteFunc }) {
   const albumPictureURL =
     userData?.topArtists[0]?.images[1]?.url ||
     "https://upload.wikimedia.org/wikipedia/commons/a/af/Default_avatar_profile.jpg";
+
+  const userColors = getPersonality(userData).colors;
 
   return (
     <svg
@@ -108,7 +111,7 @@ export default function Boombox({ userData, shareCassetteFunc }) {
         <foreignObject x="309.321" y="339.536" width="249.851" height="73.6315">
           <button
             type="button"
-            onClick={shareCassetteFunc}
+            onClick={() => shareCassetteFunc(userData)}
             className="rounded-lg h-full w-full bg-[#ECECEC] font-koulen text-4xl"
           >
             Share Cassette
@@ -174,7 +177,7 @@ export default function Boombox({ userData, shareCassetteFunc }) {
           />
         </div>
       </foreignObject>
-      <circle cx="709" cy="332" r="103" fill="#D9D9D9" />
+      <circle cx="709" cy="332" r="103" fill={userColors.light} />
       <foreignObject x="606" y="229" width="206" height="206">
         <div
           className="rounded-full"

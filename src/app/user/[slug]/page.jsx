@@ -9,10 +9,14 @@ The user gets redirected to this page after logging in.
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import ReactDOMServer from "react-dom/server";
+import { Koulen } from "next/font/google";
 import createClient from "@/utils/supabase/client";
 import UserContent from "@/app/user/[slug]/UserContent";
 import ShareCassette from "@/app/user/[slug]/ShareCassette";
 import ErrorAlert from "@/app/error/error";
+import Cassette from "./Cassette";
+import getPersonality from "@/shared/GetPersonality";
+import "@/app/globals.css";
 
 export default function UserPage({ params: { slug } }) {
   const supabase = createClient();
@@ -24,12 +28,20 @@ export default function UserPage({ params: { slug } }) {
   // Function to handle sharing
   const shareCassette = async () => {
     // Use Web Share API to share the default image
-    const svgString = ReactDOMServer.renderToString(<ShareCassette />);
+    const svgString = ReactDOMServer.renderToString(
+      <ShareCassette userData={userData} />,
+    );
 
     const img = new Image();
 
+    const personality = getPersonality(userData);
+
     // Set the source of the image
     img.src = `data:image/svg+xml;utf8,${encodeURIComponent(svgString)}`;
+
+    // img.src = `data:image/svg+xml;base64,${window.btoa(svgString)}`;
+
+    // document.body.appendChild(img);
 
     // Wait for the image to load
     img.onload = () => {
@@ -57,13 +69,21 @@ export default function UserPage({ params: { slug } }) {
       ctx.textAlign = "center";
 
       // Render the text onto the canvas
-      ctx.font = "20px Koulen";
+      ctx.font = `16px HomemadeApple`;
       ctx.fillStyle = "black";
       ctx.fillText(
         `@${userData.userProfile.display_name}`,
         canvas.width / 2,
-        389,
+        375,
       );
+
+      ctx.font = `20px Koulen`;
+      ctx.fillStyle = `${personality.colors.light}`;
+      ctx.fillText(`#${personality.name}`, canvas.width / 2, 460);
+
+      ctx.font = `35px Koulen`;
+      ctx.fillStyle = "black";
+      ctx.fillText("A", canvas.width / 2 - 110, 393);
 
       // url to redirect user to, this brings up the unify page
       const shareURL = `http://${process.env.NEXT_PUBLIC_FRONTEND_URL}/unify/${userData.userProfile.id}`;
