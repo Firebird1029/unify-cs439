@@ -10,6 +10,10 @@ import PropTypes from "prop-types";
 import GenrePieChart from "@/shared/GenrePieChart";
 import ShareUnify from "@/app/unify/[users]/ShareUnify";
 import "@/app/globals.css";
+import Cassette from "@/app/user/[slug]/Cassette";
+import getPersonality from "@/shared/GetPersonality";
+import Boombox from "@/app/unify/[users]/Boombox";
+import CDStack from "@/app/user/[slug]/CDStack";
 
 // Find percent match between two lists
 function calculateGenreSimilarity(list1, list2) {
@@ -75,6 +79,10 @@ function percentMatch(user1, user2) {
 
 // main function of page which returns the content of unifying the data of two users
 function UnifyContent({ user1Data, user2Data }) {
+  const user1personality = getPersonality(user1Data); // get user1personality
+
+  const user2personality = getPersonality(user2Data); // get user2personality
+
   // Function to handle sharing, allows you to share your results when you click the share results button
   const shareUnify = async () => {
     // Use Web Share API to share the default image
@@ -212,33 +220,38 @@ function UnifyContent({ user1Data, user2Data }) {
 
   return (
     <>
-      <div style={{ fontSize: 100, textAlign: "center" }}>
+      <div className="mt-8" style={{ fontSize: 100, textAlign: "center" }}>
         {percentMatch(user1Data, user2Data)}% Match!
+      </div>
+      <div className="w-[70%] mx-auto flex justify-center items-end mt-12">
+        <Boombox
+          user1Data={user1Data}
+          user2Data={user2Data}
+          shareFunc={shareUnify}
+        />
       </div>
       <div className="grid grid-cols-2 p-8 flex">
         {/* <style>
       @import
       url('https://fonts.googleapis.com/css2?family=Koulen&display=swap');
     </style> */}
-        <div className="bg-blue-800 rounded-lg p-4 mb-4 flex flex-col">
-          <p
-            className="text-white text-xl mb-24 mr-4 mt-4 ml-4"
-            style={{
-              fontSize: 60,
-            }}
-          >
-            @{user1Data.userProfile.display_name}
-          </p>
+        <div className="mb-4 mr-4 flex flex-col">
+          <div className="lg:w-full">
+            <Cassette
+              userData={user1Data}
+              userColors={user1personality.colors}
+              side={"A"}
+            />
+          </div>
         </div>
-        <div className="bg-red-800 rounded-lg p-4 ml-4 mb-4 flex flex-col">
-          <p
-            className="text-white text-xl mb-24 mr-4 mt-4 ml-4"
-            style={{
-              fontSize: 60,
-            }}
-          >
-            @{user2Data.userProfile.display_name}
-          </p>
+        <div className=" ml-4 mb-4 flex flex-col">
+          <div className="lg:w-full">
+            <Cassette
+              userData={user2Data}
+              userColors={user2personality.colors}
+              side={"B"}
+            />
+          </div>
         </div>
       </div>
       <div className="circle-row mt-8">
@@ -269,105 +282,109 @@ function UnifyContent({ user1Data, user2Data }) {
           <span className="circle-text-small">Vibe Similarity</span>
         </div>
       </div>
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <button
-          type="button"
-          className="bg-gray-300 rounded-full py-2.5 px-4 flex items-center mr-4"
-          style={{
-            cursor: "pointer",
-            backgroundColor: "#d1d5db",
-            fontSize: 30,
-          }}
-          onClick={shareUnify}
-        >
-          SHARE RESULTS
-        </button>
-      </div>
       <div className="grid grid-cols-2 p-8 flex">
-        <div className="bg-gray-300 rounded-lg p-4 mt-4 flex">
-          <div className="text-black text-l" style={{ fontSize: 50 }}>
-            Top Artists:
-            <div className="mt-2" />
-            {user1Data.topArtists.slice(0, 8).map((artist) => (
-              <div key={artist.id} style={{ fontSize: 35 }}>
-                {artist.name}
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="bg-gray-300 rounded-lg p-4 mt-4 ml-4 flex">
-          <div className="text-black text-l" style={{ fontSize: 50 }}>
-            Top Artists:
-            <div className="mt-2" />
-            {user2Data.topArtists.slice(0, 8).map((artist) => (
-              <div key={artist.id} style={{ fontSize: 35 }}>
-                {artist.name}
-              </div>
-            ))}
-          </div>
-        </div>
-        {user1topGenres ? (
-          <GenrePieChart data={user1topGenres} centerCircleColor="#1d40b0" />
-        ) : (
-          <div>Loading...</div>
-        )}
-        {user2topGenres ? (
-          <GenrePieChart data={user2topGenres} centerCircleColor="#9c1c1c" />
-        ) : (
-          <div>Loading...</div>
-        )}
-        <div className="bg-gray-300 rounded-lg p-4 mt-4 flex">
-          <div className="text-black text-l" style={{ fontSize: 50 }}>
-            Top Songs:
-            <div className="mt-2" />
-            {user1Data.topSongs.slice(0, 8).map((song) => (
-              <div key={song.id} style={{ fontSize: 35 }}>
-                {song.name}
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="bg-gray-300 rounded-lg p-4 mt-4 ml-4 flex">
-          <div className="text-black text-l" style={{ fontSize: 50 }}>
-            Top Songs:
-            <div className="mt-2" />
-            {user2Data.topSongs.slice(0, 8).map((song) => (
-              <div key={song.id} style={{ fontSize: 35 }}>
-                {song.name}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-      <div className="rounded-lg p-4 mt-4 ml-4 justify-center">
-        {combinedFeaturesData ? (
-          <div style={{ height: 500 }}>
-            <ResponsiveRadar
-              data={combinedFeaturesData}
-              keys={[
-                user2Data.userProfile.display_name,
-                user1Data.userProfile.display_name,
-              ]}
-              indexBy="feature"
-              valueFormat=">-.1f"
-              maxValue="100"
-              colors={{ scheme: "set1" }}
-              margin={{ top: 40, right: 60, bottom: 40, left: 60 }}
-              gridLabelOffset={25}
-              theme={{
-                text: {
-                  fontSize: 25,
-                  fill: "#333333",
-                  outlineWidth: 10,
-                  outlineColor: "transparent",
-                  fontFamily: "var(--font-koulen)",
-                },
-              }}
+        <div className="text-black text-l" style={{ fontSize: 50 }}>
+          Top Artists:
+          <div className="mt-2" />
+          <div className="w-2/3  mx-auto">
+            <CDStack
+              topList={user1Data.topArtists
+                .slice(0, 8)
+                .map((artist) => artist.name)}
+              userColors={user1personality.colors}
             />
           </div>
-        ) : (
-          <div>Loading...</div>
-        )}
+        </div>
+        <div className="text-black text-l" style={{ fontSize: 50 }}>
+          Top Artists:
+          <div className="mt-2" />
+          <div className="w-2/3  mx-auto">
+            <CDStack
+              topList={user2Data.topArtists
+                .slice(0, 8)
+                .map((artist) => artist.name)}
+              userColors={user2personality.colors}
+            />
+          </div>
+        </div>
+        <div className="text-black text-l mt-8" style={{ fontSize: 50 }}>
+          Top Genres:
+          {user1topGenres ? (
+            <GenrePieChart
+              data={user1topGenres}
+              centerCircleColor={user1personality.colors.dark}
+            />
+          ) : (
+            <div>Loading...</div>
+          )}
+        </div>
+        <div className="text-black text-l mt-8" style={{ fontSize: 50 }}>
+          Top Genres:
+          {user2topGenres ? (
+            <GenrePieChart
+              data={user2topGenres}
+              centerCircleColor={user2personality.colors.dark}
+            />
+          ) : (
+            <div>Loading...</div>
+          )}
+        </div>
+        <div className="text-black text-l" style={{ fontSize: 50 }}>
+          Top Songs:
+          <div className="mt-2" />
+          <div className="w-2/3  mx-auto">
+            <CDStack
+              topList={user1Data.topSongs.slice(0, 8).map((song) => song.name)}
+              userColors={user1personality.colors}
+            />
+          </div>
+        </div>
+        <div className="text-black text-l" style={{ fontSize: 50 }}>
+          Top Songs:
+          <div className="mt-2" />
+          <div className="w-2/3  mx-auto">
+            <CDStack
+              topList={user2Data.topSongs.slice(0, 8).map((song) => song.name)}
+              userColors={user2personality.colors}
+            />
+          </div>
+        </div>
+      </div>
+      <div className="text-black text-l ml-12" style={{ fontSize: 50 }}>
+        Song Features:
+        <div className="rounded-lg p-4 mt-4 ml-4 justify-center">
+          {combinedFeaturesData ? (
+            <div style={{ height: 500 }}>
+              <ResponsiveRadar
+                data={combinedFeaturesData}
+                keys={[
+                  user2Data.userProfile.display_name,
+                  user1Data.userProfile.display_name,
+                ]}
+                indexBy="feature"
+                valueFormat=">-.1f"
+                maxValue="100"
+                colors={[
+                  user2personality.colors.dark,
+                  user1personality.colors.dark,
+                ]}
+                margin={{ top: 40, right: 60, bottom: 40, left: 60 }}
+                gridLabelOffset={25}
+                theme={{
+                  text: {
+                    fontSize: 25,
+                    fill: "#333333",
+                    outlineWidth: 10,
+                    outlineColor: "transparent",
+                    fontFamily: "var(--font-koulen)",
+                  },
+                }}
+              />
+            </div>
+          ) : (
+            <div>Loading...</div>
+          )}
+        </div>
       </div>
     </>
   );
