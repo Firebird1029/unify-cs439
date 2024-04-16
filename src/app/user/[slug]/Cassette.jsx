@@ -23,7 +23,7 @@ export default function Cassette({ userData, side, userColors }) {
         width="549.545"
         height="212.727"
         rx="14.1818"
-        fill={userColors.bg}
+        fill={userColors.cassetteBody}
       />
       {/* End of main color - dark */}
 
@@ -95,7 +95,7 @@ export default function Cassette({ userData, side, userColors }) {
         y="49.6364"
         width="549.545"
         height="70.9091"
-        fill={userColors.light}
+        fill={userColors.cassetteAccent}
       />
       {/* End of Light color band */}
 
@@ -172,7 +172,7 @@ export default function Cassette({ userData, side, userColors }) {
       {/* Text items */}
       <foreignObject x="94.5" y="175.5" width="352" height="43">
         <div
-          style={{ color: userColors.light }}
+          style={{ color: userColors.cassetteAccent }}
           id="tagline"
           className="w-full h-full flex justify-center items-center font-koulen text-3xl"
         >
