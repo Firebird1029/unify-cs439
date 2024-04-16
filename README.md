@@ -103,7 +103,7 @@ To run a specific test:
 npm test testName
 ```
 
-We have achieved 87% statement coverage.
+We have achieved 89% statement coverage.
 
 To add a test, add a file to `__tests__/` with the file extension `.t.js`. This file will contain the tests themselves, and we are using Jest for testing — so any correctly formatted Jest test will work.
 
