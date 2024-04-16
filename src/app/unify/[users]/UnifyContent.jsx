@@ -252,9 +252,6 @@ function UnifyContent({ user1Data, user2Data }) {
 
   return (
     <>
-      <div className="mt-8" style={{ fontSize: 100, textAlign: "center" }}>
-        {percentMatch(user1Data, user2Data)}% Match!
-      </div>
       <div className="w-[70%] mx-auto flex justify-center items-end mt-12">
         <Boombox
           user1Data={user1Data}
@@ -267,7 +264,7 @@ function UnifyContent({ user1Data, user2Data }) {
       @import
       url('https://fonts.googleapis.com/css2?family=Koulen&display=swap');
     </style> */}
-        <div className="mb-4 mr-4 flex flex-col">
+        <div className="mb-2 mr-4 flex flex-col">
           <div className="lg:w-full">
             <Cassette
               userData={user1Data}
@@ -276,7 +273,7 @@ function UnifyContent({ user1Data, user2Data }) {
             />
           </div>
         </div>
-        <div className=" ml-4 mb-4 flex flex-col">
+        <div className=" ml-4 mb-2 flex flex-col">
           <div className="lg:w-full">
             <Cassette
               userData={user2Data}
@@ -285,6 +282,12 @@ function UnifyContent({ user1Data, user2Data }) {
             />
           </div>
         </div>
+      </div>
+      <div
+        className="mt-2 mb-12"
+        style={{ fontSize: 100, textAlign: "center" }}
+      >
+        {percentMatch(user1Data, user2Data)}% Match!
       </div>
       <div className="circle-row mt-8">
         <div className="circle">
