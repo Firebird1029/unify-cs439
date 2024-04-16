@@ -4,10 +4,10 @@ Params:
 - topList: The ranking to be displayed through the stack
 - userColors: color scheme
  */
+import PropTypes from "prop-types";
 import CDCase from "@/app/user/[slug]/CDCase";
 
 export default function CDStack({ topList, userColors }) {
-  console.log(topList);
   return (
     // note that the viewbox height is set dependent on the number
     // of CDs in the stack
@@ -28,3 +28,11 @@ export default function CDStack({ topList, userColors }) {
     </svg>
   );
 }
+
+CDStack.propTypes = {
+  userColors: PropTypes.shape({
+    dark: PropTypes.string,
+    light: PropTypes.string,
+  }),
+  topList: PropTypes.arrayOf(PropTypes.string).isRequired,
+};
