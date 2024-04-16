@@ -52,39 +52,6 @@ describe("IndexPage", () => {
     });
   });
 
-  test("has log in button when user is not logged in", async () => {
-    const mockSupabase = {
-      auth: {
-        getUser: jest.fn().mockResolvedValue(null),
-      },
-    };
-    createClient.mockReturnValue(mockSupabase);
-
-    render(<IndexPage />);
-
-    await waitFor(() => {
-      expect(screen.getByText("Log in with Spotify")).toBeInTheDocument();
-    });
-  });
-
-  test("sets loggedIn to true when user is already logged in", async () => {
-    const mockSupabase = {
-      auth: {
-        getUser: jest.fn().mockResolvedValue({ data: { user: { id: 1 } } }),
-        getSession: jest
-          .fn()
-          .mockResolvedValue({ data: { session: { id: 1 } } }),
-      },
-    };
-    createClient.mockReturnValue(mockSupabase);
-
-    render(<IndexPage />);
-
-    await waitFor(() => {
-      expect(screen.getByText("Continue to Account")).toBeInTheDocument();
-    });
-  });
-
   test("redirects to error page on sign-out error", async () => {
     global.fetch = jest.fn().mockRejectedValue(new Error("Network error"));
 

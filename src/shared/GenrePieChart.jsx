@@ -5,6 +5,14 @@ import PropTypes from "prop-types";
 import { ResponsivePie } from "@nivo/pie";
 import "@/app/globals.css";
 
+/* 
+Function that actually builds the Vinyl Circle overlay. It takes a width (ie a radius) 
+and a centreColor, and builds the correctly-sized svg overlay. 
+This is then overlaid onto the pie chart. Note that the first svg builds the many 
+circular lines across the pie chart, the second the 'color' portion in the middle, 
+and the third a thicker barrier between the color portion and the chart itself.
+*/
+
 export function VinylCircle({ centerCircleColor = "#1d40af", width = 0 }) {
   const newWidth = Math.min((width - 280) / 2, 160);
   const radii = [];
@@ -52,23 +60,26 @@ VinylCircle.propTypes = {
   width: PropTypes.number,
 };
 
-export default function GenrePieChart({ data, centerCircleColor = "#1d40af" }) {
-  const [divWidth, setDivWidth] = useState(0); // Step 1: State for storing div width
-  const divRef = useRef(null); // Step 2: Ref for the div
+/* Builds nivo pie chart, and overlays the SVG above on top of it */
 
-  // Step 3: Effect hook for setting and updating div width
+export default function GenrePieChart({ data, centerCircleColor = "#1d40af" }) {
+  const [divWidth, setDivWidth] = useState(0);
+  const divRef = useRef(null);
+
+  // Effect hook for setting and updating div width
+  // Allows for the vinyl 'overlay' to dynamically scale
   useEffect(() => {
-    // Function to update div width
     const updateWidth = () => {
       if (divRef.current) {
-        setDivWidth(divRef.current.offsetWidth); // Update div width
+        setDivWidth(divRef.current.offsetWidth);
       }
     };
 
-    window.addEventListener("resize", updateWidth); // Add resize event listener
-    updateWidth(); // Initial update
+    // Add resize event listener
+    window.addEventListener("resize", updateWidth);
+    updateWidth();
 
-    return () => window.removeEventListener("resize", updateWidth); // Cleanup
+    return () => window.removeEventListener("resize", updateWidth);
   }, []);
 
   return (
