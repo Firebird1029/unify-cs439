@@ -42,11 +42,11 @@ ol li {
 }
 
 @font-face {
-  font-family: 'Koulen';
-  src: url('https://github.com/danhhong/Koulen/raw/master/Release/ttf/Koulen-Regular.ttf');
+  font-family: "Koulen";
+  src: url("https://github.com/danhhong/Koulen/raw/master/Release/ttf/Koulen-Regular.ttf");
 }
 
 @font-face {
-  font-family: 'HomemadeApple';
-  src: url('https://github.com/d3y4n/fonterator/raw/master/static/fonts/Homemade%20Apple.ttf');
+  font-family: "HomemadeApple";
+  src: url("https://github.com/d3y4n/fonterator/raw/master/static/fonts/Homemade%20Apple.ttf");
 }
