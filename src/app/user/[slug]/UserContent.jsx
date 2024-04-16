@@ -24,8 +24,6 @@ function UserContent({ userData, shareCassette }) {
 
   const userColors = getPersonality(userData).colors;
 
-  console.log(userData.topSongs);
-
   return (
     <div
       style={{ backgroundColor: userColors.bg } /* Custom personality bg */}
