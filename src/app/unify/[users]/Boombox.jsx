@@ -5,20 +5,17 @@
  */
 
 import PropTypes from "prop-types";
-import getPersonality from "@/shared/GetPersonality";
 
-export default function Boombox({ userData, shareCassetteFunc }) {
-  // handle case where user does not have profile pciture
-  const profilePictureURL =
-    userData?.userProfile?.images[1]?.url ||
+export default function Boombox({ user1Data, user2Data, shareFunc }) {
+  // handle case where user1 does not have profile picture
+  const user1ProfilePictureURL =
+    user1Data?.userProfile?.images[1]?.url ||
     "https://upload.wikimedia.org/wikipedia/commons/a/af/Default_avatar_profile.jpg";
 
-  // handle case where top album does not have album image
-  const albumPictureURL =
-    userData?.topArtists[0]?.images[1]?.url ||
+  // handle case where user2 does not have profile picture
+  const user2ProfilePictureURL =
+    user2Data?.userProfile?.images[1]?.url ||
     "https://upload.wikimedia.org/wikipedia/commons/a/af/Default_avatar_profile.jpg";
-
-  const userColors = getPersonality(userData).colors;
 
   return (
     <svg
@@ -111,10 +108,10 @@ export default function Boombox({ userData, shareCassetteFunc }) {
         <foreignObject x="309.321" y="339.536" width="249.851" height="73.6315">
           <button
             type="button"
-            onClick={() => shareCassetteFunc(userData)}
+            onClick={() => shareFunc(user1Data, user2Data)}
             className="rounded-lg h-full w-full bg-[#ECECEC] font-koulen text-4xl"
           >
-            Share Cassette
+            Share Results
           </button>
         </foreignObject>
       </g>
@@ -130,7 +127,8 @@ export default function Boombox({ userData, shareCassetteFunc }) {
         <foreignObject x="13.9673" y="98.7856" width="827.321" height="91.0053">
           <div className="flex flex-row justify-center items-center h-full">
             <p className="text-6xl font-koulen">
-              @ {userData.userProfile.display_name}
+              @{user1Data.userProfile.display_name} & @
+              {user2Data.userProfile.display_name}
             </p>
           </div>
         </foreignObject>
@@ -167,8 +165,8 @@ export default function Boombox({ userData, shareCassetteFunc }) {
         >
           <img
             className="rounded-full shadow-inner"
-            alt="User Top Artist"
-            src={albumPictureURL}
+            alt="User 1 Profile"
+            src={user1ProfilePictureURL}
             style={{
               width: "100%",
               height: "100%",
@@ -177,7 +175,7 @@ export default function Boombox({ userData, shareCassetteFunc }) {
           />
         </div>
       </foreignObject>
-      <circle cx="709" cy="332" r="103" fill={userColors.light} />
+      <circle cx="709" cy="332" r="103" fill="black" />
       <foreignObject x="606" y="229" width="206" height="206">
         <div
           className="rounded-full"
@@ -192,8 +190,8 @@ export default function Boombox({ userData, shareCassetteFunc }) {
         >
           <img
             className="rounded-full shadow-inner"
-            alt="User Top Artist"
-            src={profilePictureURL}
+            alt="User 2 Profile"
+            src={user2ProfilePictureURL}
             style={{
               width: "100%",
               height: "100%",
@@ -302,7 +300,7 @@ export default function Boombox({ userData, shareCassetteFunc }) {
 }
 
 Boombox.propTypes = {
-  userData: PropTypes.shape({
+  user1Data: PropTypes.shape({
     topArtists: PropTypes.arrayOf(
       PropTypes.shape({
         name: PropTypes.string.isRequired,
@@ -322,5 +320,25 @@ Boombox.propTypes = {
       ).isRequired,
     }),
   }).isRequired,
-  shareCassetteFunc: PropTypes.func.isRequired,
+  user2Data: PropTypes.shape({
+    topArtists: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        images: PropTypes.arrayOf(
+          PropTypes.shape({
+            url: PropTypes.string.isRequired,
+          }),
+        ).isRequired,
+      }),
+    ),
+    userProfile: PropTypes.shape({
+      display_name: PropTypes.string.isRequired,
+      images: PropTypes.arrayOf(
+        PropTypes.shape({
+          url: PropTypes.string.isRequired,
+        }),
+      ).isRequired,
+    }),
+  }).isRequired,
+  shareFunc: PropTypes.func.isRequired,
 };

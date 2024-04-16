@@ -104,7 +104,7 @@ export default function GenrePieChart({ data, centerCircleColor = "#1d40af" }) {
         legends={[]}
         theme={{
           text: {
-            fontSize: 25,
+            fontSize: 20,
             fill: "#333333",
             outlineWidth: 0,
             outlineColor: "transparent",
