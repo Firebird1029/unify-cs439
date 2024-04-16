@@ -79,6 +79,20 @@ function percentMatch(user1, user2) {
 
 // main function of page which returns the content of unifying the data of two users
 function UnifyContent({ user1Data, user2Data }) {
+  // preload fonts to fix bug
+  async function loadFonts() {
+    try {
+      await Promise.all([
+        document.fonts.load("20px Koulen"),
+        document.fonts.load("16px HomemadeApple"),
+      ]);
+    } catch (error) {
+      // console.error("Error loading fonts", error);
+    }
+  }
+
+  loadFonts();
+
   const user1personality = getPersonality(user1Data); // get user1personality
 
   const user2personality = getPersonality(user2Data); // get user2personality
@@ -86,7 +100,9 @@ function UnifyContent({ user1Data, user2Data }) {
   // Function to handle sharing, allows you to share your results when you click the share results button
   const shareUnify = async () => {
     // Use Web Share API to share the default image
-    const svgString = ReactDOMServer.renderToString(<ShareUnify />);
+    const svgString = ReactDOMServer.renderToString(
+      <ShareUnify user1Data={user1Data} user2Data={user2Data} />,
+    );
 
     const img = new Image();
 
@@ -116,18 +132,34 @@ function UnifyContent({ user1Data, user2Data }) {
       ctx.textAlign = "center";
 
       // Render the text onto the canvas
-      ctx.font = "20px Koulen";
+      ctx.font = "16px HomemadeApple";
       ctx.fillStyle = "black";
       ctx.fillText(
         `@${user2Data.userProfile.display_name}`,
         canvas.width / 2,
-        302,
+        300,
       );
       ctx.fillText(
         `@${user1Data.userProfile.display_name}`,
         canvas.width / 2,
-        501,
+        502,
       );
+
+      ctx.font = `20px Koulen`;
+      ctx.fillStyle = `${user1personality.colors.cassetteAccent}`;
+      ctx.fillText(`#${user1personality.name}`, canvas.width / 2, 378);
+
+      ctx.font = `35px Koulen`;
+      ctx.fillStyle = "black";
+      ctx.fillText("A", canvas.width / 2 - 97, 318);
+
+      ctx.font = `20px Koulen`;
+      ctx.fillStyle = `${user2personality.colors.cassetteAccent}`;
+      ctx.fillText(`#${user1personality.name}`, canvas.width / 2, 580);
+
+      ctx.font = `35px Koulen`;
+      ctx.fillStyle = "black";
+      ctx.fillText("B", canvas.width / 2 - 97, 520);
 
       // draw percent match to canvas
       ctx.font = "70px Koulen";
@@ -283,7 +315,14 @@ function UnifyContent({ user1Data, user2Data }) {
         </div>
       </div>
       <div className="grid grid-cols-2 p-8 flex">
-        <div className="text-black text-l" style={{ fontSize: 50 }}>
+        <div
+          className="text-black text-l p-3 mr-4"
+          style={{
+            fontSize: 50,
+            backgroundColor: `${user1personality.colors.cassetteAccent}`,
+            borderRadius: "10px",
+          }}
+        >
           Top Artists:
           <div className="mt-2" />
           <div className="w-2/3  mx-auto">
@@ -295,7 +334,14 @@ function UnifyContent({ user1Data, user2Data }) {
             />
           </div>
         </div>
-        <div className="text-black text-l" style={{ fontSize: 50 }}>
+        <div
+          className="text-black text-l p-3 ml-4"
+          style={{
+            fontSize: 50,
+            backgroundColor: `${user2personality.colors.cassetteAccent}`,
+            borderRadius: "10px",
+          }}
+        >
           Top Artists:
           <div className="mt-2" />
           <div className="w-2/3  mx-auto">
@@ -329,7 +375,14 @@ function UnifyContent({ user1Data, user2Data }) {
             <div>Loading...</div>
           )}
         </div>
-        <div className="text-black text-l" style={{ fontSize: 50 }}>
+        <div
+          className="text-black text-l p-3 mr-4"
+          style={{
+            fontSize: 50,
+            backgroundColor: `${user1personality.colors.cassetteAccent}`,
+            borderRadius: "10px",
+          }}
+        >
           Top Songs:
           <div className="mt-2" />
           <div className="w-2/3  mx-auto">
@@ -339,7 +392,14 @@ function UnifyContent({ user1Data, user2Data }) {
             />
           </div>
         </div>
-        <div className="text-black text-l" style={{ fontSize: 50 }}>
+        <div
+          className="text-black text-l p-3 ml-4"
+          style={{
+            fontSize: 50,
+            backgroundColor: `${user2personality.colors.cassetteAccent}`,
+            borderRadius: "10px",
+          }}
+        >
           Top Songs:
           <div className="mt-2" />
           <div className="w-2/3  mx-auto">
@@ -354,7 +414,7 @@ function UnifyContent({ user1Data, user2Data }) {
         Song Features:
         <div className="rounded-lg p-4 mt-4 ml-4 justify-center">
           {combinedFeaturesData ? (
-            <div style={{ height: 500 }}>
+            <div style={{ height: 400, fontSize: 20 }}>
               <ResponsiveRadar
                 data={combinedFeaturesData}
                 keys={[

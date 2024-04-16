@@ -95,7 +95,7 @@ export default function UserPage({ params: { slug } }) {
           );
 
           ctx.font = `20px Koulen`;
-          ctx.fillStyle = `${personality.colors.light}`;
+          ctx.fillStyle = `${personality.colors.cassetteAccent}`;
           ctx.fillText(`#${personality.name}`, canvas.width / 2, 460);
 
           ctx.font = `35px Koulen`;
