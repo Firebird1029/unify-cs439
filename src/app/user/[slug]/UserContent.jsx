@@ -160,7 +160,7 @@ function UserContent({ userData, shareCassette }) {
         </div>
         {/* CD Stacks Start Here */}
         {/* Top Artists CD Stack */}
-        <div className="h-64">
+        <div className="h-96 w-fit">
           <CDStack
             topArtists={userData.topArtists.slice(0, 8)}
             userColors={userColors}
