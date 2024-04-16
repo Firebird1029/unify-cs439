@@ -14,16 +14,18 @@ and the third a thicker barrier between the color portion and the chart itself.
 */
 
 export function VinylCircle({ centerCircleColor = "#1d40af", width = 0 }) {
-  const newWidth = Math.min((width - 280) / 2, 160);
+  const newWidth = Math.max(0, Math.min((width - 280) / 2, 160)); // make sure newWidth is not negative
   const radii = [];
   if (newWidth > 0) {
+    // add a bunch of radii to a list to then turn into circles that make up vinyl graphic
     for (let i = newWidth - 1; i > 10; i -= 3) {
-      radii.push(i);
+      radii.push(i); // add radii to list of radii
     }
   }
 
   return (
     <svg width="400" height="400" data-testid="VinylCircle">
+      {/* Add all of the vinyl circles/grooves */}
       {radii.map((radius) => (
         <circle
           key={radius}
@@ -35,6 +37,7 @@ export function VinylCircle({ centerCircleColor = "#1d40af", width = 0 }) {
           strokeWidth="1.35"
         />
       ))}
+      {/* Add the center circle */}
       <circle
         r={Math.round(newWidth * 0.15625)}
         cx="200"
@@ -43,6 +46,7 @@ export function VinylCircle({ centerCircleColor = "#1d40af", width = 0 }) {
         stroke={centerCircleColor}
         strokeWidth={Math.round(newWidth * 0.2)}
       />
+      {/* Add a band of black around the center circle */}
       <circle
         r={Math.round(newWidth * 0.275)}
         cx="200"
