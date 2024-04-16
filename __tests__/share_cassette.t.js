@@ -20,6 +20,10 @@ jest.mock("../src/utils/supabase/client", () => {
   }));
 });
 
+global.document.fonts = {
+  load: jest.fn(() => Promise.resolve([])), // Mock a resolved promise with an empty array
+};
+
 jest.mock("@nivo/radar", () => ({
   ResponsiveRadar: () => (
     <div data-testid="mockResponsiveRadar">Mock Responsive Radar</div>

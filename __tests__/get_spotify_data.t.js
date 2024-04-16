@@ -51,10 +51,6 @@ describe("getSpotifyData", () => {
     topSongsShortDataSpy.mockResolvedValueOnce({
       data: {},
     });
-    const topSongsMediumDataSpy = jest.spyOn(axios, "get");
-    topSongsMediumDataSpy.mockResolvedValueOnce({
-      data: {},
-    });
     const topSongsLongDataSpy = jest.spyOn(axios, "get");
     topSongsLongDataSpy.mockResolvedValueOnce({
       data: { items: Array(50).fill(0) },
@@ -89,7 +85,7 @@ describe("getSpotifyData", () => {
 
     await getSpotifyData(mockToken);
 
-    expect(axios.get).toHaveBeenCalledTimes(8);
+    expect(axios.get).toHaveBeenCalledTimes(7);
     expect(axios.get).toHaveBeenCalledWith("https://api.spotify.com/v1/me", {
       headers: { Authorization: `Bearer ${mockToken}` },
     });

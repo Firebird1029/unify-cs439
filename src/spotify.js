@@ -167,12 +167,12 @@ async function getSpotifyData(token) {
     "short_term",
     "25",
   );
-  const topSongsMediumData = await getTopItems(
+  /* const topSongsMediumData = await getTopItems(
     token,
     "tracks",
     "medium_term",
     "25",
-  );
+  ); */
   const topSongsLongData = await getTopItems(
     token,
     "tracks",
@@ -181,8 +181,8 @@ async function getSpotifyData(token) {
   );
 
   const topSongs = topSongsShortData.items;
-  const topSongsMedium = topSongsMediumData.items;
-  const topSongsLong = topSongsLongData.items.slice(0, 25);
+  // const topSongsMedium = topSongsMediumData.items;
+  // const topSongsLong = topSongsLongData.items.slice(0, 25);
 
   // Audio Features
   const averageAudioFeatures = await getAverageAudioFeatures(
@@ -208,11 +208,7 @@ async function getSpotifyData(token) {
     userProfile,
     featuresData,
     topArtists,
-    topArtistsMedium,
-    topArtistsLong,
     topSongs,
-    topSongsMedium,
-    topSongsLong,
     topGenres,
   };
 
