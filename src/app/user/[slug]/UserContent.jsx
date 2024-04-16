@@ -203,12 +203,9 @@ function UserContent({ userData, shareCassette }) {
           </div>
         </div>
         {/* TOP SONGS CD Stack */}
-        <div className="lg:col-span-2">
+        <div className="lg:col-span-2 mb-20">
           <div className="w-full flex flex-col items-center">
-            <div
-              className="w-80 \
-                            md:w-64"
-            >
+            <div className="w-80 md:w-64 mt-20">
               <PaperTitle>
                 TOP <br />
                 SONGS:
