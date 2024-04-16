@@ -188,9 +188,7 @@ function UserContent({ userData, shareCassette }) {
             </div>
             <div className="h-96 lg:h-full lg:w-1/3 lg:mt-12">
               <CDStack
-                topList={userData.topArtists
-                  .slice(0, 8)
-                  .map((artist) => artist.name)}
+                topList={userData.topArtists.slice(0, 8)}
                 userColors={userColors}
               />
             </div>
@@ -227,7 +225,7 @@ function UserContent({ userData, shareCassette }) {
             </div>
             <div className="h-96 lg:h-full lg:w-1/3 lg:mt-12">
               <CDStack
-                topList={userData.topSongs.slice(0, 8).map((song) => song.name)}
+                topList={userData.topSongs.slice(0, 8)}
                 userColors={userColors}
               />
             </div>

@@ -17,11 +17,12 @@ export default function CDStack({ topList, userColors }) {
         const yOffset = rank * 80;
         return (
           <CDCase
-            title={val}
+            title={val.name}
             ranking={rank + 1}
             userColors={userColors}
             yOffset={yOffset}
             xOffset={xOffset}
+            key={val.id}
           />
         );
       })}
@@ -31,8 +32,13 @@ export default function CDStack({ topList, userColors }) {
 
 CDStack.propTypes = {
   userColors: PropTypes.shape({
-    dark: PropTypes.string,
-    light: PropTypes.string,
-  }),
-  topList: PropTypes.arrayOf(PropTypes.string).isRequired,
+    dark: PropTypes.string.isRequired,
+    light: PropTypes.string.isRequired,
+  }).isRequired,
+  topList: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
 };

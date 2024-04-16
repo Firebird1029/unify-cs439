@@ -330,9 +330,7 @@ function UnifyContent({ user1Data, user2Data }) {
           <div className="mt-2" />
           <div className="w-2/3  mx-auto">
             <CDStack
-              topList={user1Data.topArtists
-                .slice(0, 8)
-                .map((artist) => artist.name)}
+              topList={user1Data.topArtists.slice(0, 8)}
               userColors={user1personality.colors}
             />
           </div>
@@ -349,9 +347,7 @@ function UnifyContent({ user1Data, user2Data }) {
           <div className="mt-2" />
           <div className="w-2/3  mx-auto">
             <CDStack
-              topList={user2Data.topArtists
-                .slice(0, 8)
-                .map((artist) => artist.name)}
+              topList={user2Data.topArtists.slice(0, 8)}
               userColors={user2personality.colors}
             />
           </div>
@@ -390,7 +386,7 @@ function UnifyContent({ user1Data, user2Data }) {
           <div className="mt-2" />
           <div className="w-2/3  mx-auto">
             <CDStack
-              topList={user1Data.topSongs.slice(0, 8).map((song) => song.name)}
+              topList={user1Data.topSongs.slice(0, 8)}
               userColors={user1personality.colors}
             />
           </div>
@@ -407,7 +403,7 @@ function UnifyContent({ user1Data, user2Data }) {
           <div className="mt-2" />
           <div className="w-2/3  mx-auto">
             <CDStack
-              topList={user2Data.topSongs.slice(0, 8).map((song) => song.name)}
+              topList={user2Data.topSongs.slice(0, 8)}
               userColors={user2personality.colors}
             />
           </div>
