@@ -35,7 +35,6 @@ export default function UserPage({ params: { slug } }) {
     }
   }
 
-  // Call loadFonts at the start of your application
   loadFonts();
 
   // Function to handle sharing
