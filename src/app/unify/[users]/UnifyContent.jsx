@@ -142,9 +142,8 @@ function UnifyContent({ user1Data, user2Data }) {
       canvas.toBlob(async (blob) => {
         if (navigator.share) {
           // Web Share API is supported
-
-          navigator
-            .share({
+          try {
+            await navigator.share({
               title: "Unify with me!",
               text: `Compare our stats on Unify`,
               url: "",
@@ -153,8 +152,10 @@ function UnifyContent({ user1Data, user2Data }) {
                   type: blob.type,
                 }),
               ],
-            })
-            .catch(); // prevent cancelation of share from being error
+            });
+          } catch (error) {
+            // prevent cancelation of share from being error
+          }
         } else {
           try {
             await navigator.clipboard.write([

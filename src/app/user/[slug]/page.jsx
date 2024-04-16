@@ -108,8 +108,8 @@ export default function UserPage({ params: { slug } }) {
           // Convert canvas to blob
           canvas.toBlob(async (blob) => {
             if (navigator.share) {
-              navigator
-                .share({
+              try {
+                await navigator.share({
                   title: "Unify with me!",
                   text: `Compare our stats on Uni.fy`,
                   url: shareURL,
@@ -118,8 +118,10 @@ export default function UserPage({ params: { slug } }) {
                       type: blob.type,
                     }),
                   ],
-                })
-                .catch(); // prevent cancelation of share from being error
+                });
+              } catch (error) {
+                // prevent cancelation of share from being error
+              }
             } else {
               try {
                 await navigator.clipboard.write([
