@@ -155,7 +155,7 @@ function UnifyContent({ user1Data, user2Data }) {
 
       ctx.font = `20px Koulen`;
       ctx.fillStyle = `${user2personality.colors.cassetteAccent}`;
-      ctx.fillText(`#${user1personality.name}`, canvas.width / 2, 580);
+      ctx.fillText(`#${user2personality.name}`, canvas.width / 2, 580);
 
       ctx.font = `35px Koulen`;
       ctx.fillStyle = "black";
