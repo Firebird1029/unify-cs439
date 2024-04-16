@@ -27,12 +27,21 @@ export default function IndexPage() {
         data: { user },
       } = await supabase.auth.getUser();
 
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
       if (user) {
         // already logged in
         setLoggedIn(true);
+      } else if (session && !user) {
+        // user created an account but did not verify email
+        // TODO
+      } else {
+        // user is not logged in
       }
-    })().catch(() => {
-      router.push("/error");
+    })().catch((err) => {
+      router.push(`/error?message=${err.message}`);
     });
   }, []);
 

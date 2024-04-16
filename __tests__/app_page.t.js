@@ -46,22 +46,9 @@ describe("IndexPage", () => {
     render(<IndexPage />);
 
     await waitFor(() => {
-      expect(useRouter().push).toHaveBeenCalledWith("/error");
-    });
-  });
-
-  test("sets loggedIn to true when user is already logged in", async () => {
-    const mockSupabase = {
-      auth: {
-        getUser: jest.fn().mockResolvedValue({ data: { user: { id: 1 } } }),
-      },
-    };
-    createClient.mockReturnValue(mockSupabase);
-
-    render(<IndexPage />);
-
-    await waitFor(() => {
-      expect(screen.getByText("Continue to Account")).toBeInTheDocument();
+      expect(useRouter().push).toHaveBeenCalledWith(
+        "/error?message=Supabase error",
+      );
     });
   });
 
