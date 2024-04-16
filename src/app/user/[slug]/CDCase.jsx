@@ -1,4 +1,10 @@
-export default function CDCase({ title, ranking, userColors }) {
+export default function CDCase({
+  title,
+  ranking,
+  userColors,
+  xOffset,
+  yOffset,
+}) {
   let titleSize = "text-4xl";
   if (title.length > 14 && title.length < 17) {
     titleSize = "text-3xl";
@@ -6,12 +12,11 @@ export default function CDCase({ title, ranking, userColors }) {
     titleSize = "text-2xl";
   }
   return (
-    <svg
+    <g
+      transform={`translate(${xOffset},${yOffset})`}
       width="100%"
       height="auto"
-      viewBox="0 0 384 73"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
     >
       <rect
         x="24"
@@ -68,6 +73,6 @@ export default function CDCase({ title, ranking, userColors }) {
           {ranking}.
         </div>
       </foreignObject>
-    </svg>
+    </g>
   );
 }

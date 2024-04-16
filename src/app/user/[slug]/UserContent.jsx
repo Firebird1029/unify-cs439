@@ -12,6 +12,8 @@ import Cassette from "@/app/user/[slug]/Cassette";
 import PaperTitle from "@/app/user/[slug]/PaperTitle";
 import CDStack from "@/app/user/[slug]/CDStack";
 import getPersonality from "@/shared/GetPersonality";
+import PhotoMarquee from "@/app/user/[slug]/PhotoMarquee";
+import PhotoGallery from "@/app/user/[slug]/PhotoGallery";
 
 function UserContent({ userData, shareCassette }) {
   // Convert object to array of { id: genre, value: frequency } objects
@@ -21,6 +23,8 @@ function UserContent({ userData, shareCassette }) {
     .map(([id, value]) => ({ id, value })); // Map to { id: genre, value: frequency } objects
 
   const userColors = getPersonality(userData).colors;
+
+  console.log(userData.topSongs);
 
   return (
     <div
@@ -90,7 +94,10 @@ function UserContent({ userData, shareCassette }) {
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  <path d="M40 69L0.162827 0L79.8372 0L40 69Z" fill="#965100" />
+                  <path
+                    d="M40 69L0.162827 0L79.8372 0L40 69Z"
+                    fill={userColors.dark}
+                  />
                 </svg>
               </div>
             </div>
@@ -148,7 +155,7 @@ function UserContent({ userData, shareCassette }) {
                     fill: "#333333",
                     outlineWidth: 10,
                     outlineColor: "transparent",
-                    fontFamily: "Koulen",
+                    fontFamily: "var(--font-koulen)",
                   },
                 }}
                 colors={userColors.dark}
@@ -159,40 +166,83 @@ function UserContent({ userData, shareCassette }) {
           )}
         </div>
         {/* CD Stacks Start Here */}
-        {/* Top Artists CD Stack */}
-        <div className="h-64">
-          <CDStack
-            topArtists={userData.topArtists.slice(0, 8)}
-            userColors={userColors}
-          />
-        </div>
-
-        <div className="bg-gray-100 rounded-lg p-4 mt-4 ml-4 flex">
+        {/* Top Artists CD Stack and Photo Gallery */}
+        <div className="lg:col-span-2">
+          <div className="w-full flex flex-col items-center">
+            <div
+              className="w-80 \
+                            md:w-64"
+            >
+              <PaperTitle>TOP ARTISTS:</PaperTitle>
+            </div>
+          </div>
           <div
-            className="text-black text-l font-koulen"
-            style={{ fontSize: 50 }}
+            className="flex flex-col items-center justify-center \
+                          lg:space-x-12 lg:flex-row"
           >
-            Top Artists:
-            <div className="mt-2" />
-            {userData.topArtists.slice(0, 8).map((artist) => (
-              <div key={artist.id} style={{ fontSize: 35 }}>
-                {artist.name}
-              </div>
-            ))}
+            {/* Photo marquee only shown on mobile, otherwise gallery */}
+            <div className="lg:hidden">
+              <PhotoMarquee
+                imageLinks={userData.topArtists
+                  .slice(0, 8)
+                  .map((artist) => artist.images[1]?.url)}
+              />
+            </div>
+            <div className="h-96 lg:h-full lg:w-1/3 lg:mt-12">
+              <CDStack
+                topList={userData.topArtists
+                  .slice(0, 8)
+                  .map((artist) => artist.name)}
+                userColors={userColors}
+              />
+            </div>
+            <div className="hidden lg:inline-block lg:w-1/2 p-10">
+              <PhotoGallery
+                imageLinks={userData.topArtists
+                  .slice(0, 8)
+                  .map((artist) => artist.images[1]?.url)}
+              />
+            </div>
           </div>
         </div>
-        <div className="bg-gray-100 rounded-lg p-4 mt-4 ml-4 flex">
+        {/* TOP SONGS CD Stack */}
+        <div className="lg:col-span-2">
+          <div className="w-full flex flex-col items-center">
+            <div
+              className="w-80 \
+                            md:w-64"
+            >
+              <PaperTitle>
+                TOP <br />
+                SONGS:
+              </PaperTitle>
+            </div>
+          </div>
           <div
-            className="text-black text-l font-koulen"
-            style={{ fontSize: 50 }}
+            className="flex flex-col items-center justify-center \
+                          lg:space-x-12 lg:flex-row-reverse"
           >
-            Top Songs:
-            <div className="mt-2" />
-            {userData.topSongs.slice(0, 8).map((song) => (
-              <div key={song.id} style={{ fontSize: 35 }}>
-                {song.name}
-              </div>
-            ))}
+            {/* Photo marquee only shown on mobile, otherwise gallery */}
+            <div className="lg:hidden">
+              <PhotoMarquee
+                imageLinks={userData.topSongs
+                  .slice(0, 8)
+                  .map((song) => song.album?.images[1]?.url)}
+              />
+            </div>
+            <div className="h-96 lg:h-full lg:w-1/3 lg:mt-12">
+              <CDStack
+                topList={userData.topSongs.slice(0, 8).map((song) => song.name)}
+                userColors={userColors}
+              />
+            </div>
+            <div className="hidden lg:inline-block lg:w-1/2 p-10">
+              <PhotoGallery
+                imageLinks={userData.topSongs
+                  .slice(0, 8)
+                  .map((song) => song.album?.images[1]?.url)}
+              />
+            </div>
           </div>
         </div>
       </div>
