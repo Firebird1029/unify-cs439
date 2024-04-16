@@ -152,7 +152,7 @@ function UserContent({ userData, shareCassette }) {
                     fill: "#333333",
                     outlineWidth: 10,
                     outlineColor: "transparent",
-                    fontFamily: "Koulen",
+                    fontFamily: "var(--font-koulen)",
                   },
                 }}
                 colors={"#39466B"}
