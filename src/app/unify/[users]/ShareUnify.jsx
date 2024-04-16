@@ -3,6 +3,7 @@ Template svg that gets converted to image when a user wants to unify with someon
 Generated when they click the Unify/Share button on their user page.
 */
 
+import PropTypes from "prop-types";
 import getPersonality from "@/shared/GetPersonality";
 import Cassette from "@/app/user/[slug]/Cassette";
 
@@ -75,3 +76,80 @@ function ShareUnify({ user1Data, user2Data }) {
   );
 }
 export default ShareUnify;
+
+ShareUnify.propTypes = {
+  user1Data: PropTypes.shape({
+    userProfile: PropTypes.shape({
+      display_name: PropTypes.string,
+    }),
+    featuresData: PropTypes.arrayOf(PropTypes.shape()),
+    topGenres: PropTypes.shape({}),
+    topSongs: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+    topSongsMedium: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+    topSongsLong: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+    topArtists: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+    topArtistsMedium: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+    topArtistsLong: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+  }).isRequired,
+  user2Data: PropTypes.shape({
+    userProfile: PropTypes.shape({
+      display_name: PropTypes.string,
+    }),
+    featuresData: PropTypes.arrayOf(PropTypes.shape()),
+    topGenres: PropTypes.shape({}),
+    topSongs: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+    topSongsMedium: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+    topSongsLong: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+    topArtists: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+    topArtistsMedium: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+    topArtistsLong: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+  }).isRequired,
+};

@@ -3,12 +3,11 @@ Template svg that gets converted to image when a user clicks "Share" on the Unif
 Contains a graphic showing a summary of the unified data between two users.
 */
 
+import PropTypes from "prop-types";
 import Cassette from "@/app/user/[slug]/Cassette";
 import getPersonality from "@/shared/GetPersonality";
 
 function ShareCassette({ userData }) {
-  console.log("user data: ", userData);
-
   const userColors = getPersonality(userData).colors;
 
   return (
@@ -76,3 +75,43 @@ function ShareCassette({ userData }) {
   );
 }
 export default ShareCassette;
+
+ShareCassette.propTypes = {
+  userData: PropTypes.shape({
+    userProfile: PropTypes.shape({
+      display_name: PropTypes.string,
+    }),
+    featuresData: PropTypes.arrayOf(PropTypes.shape()),
+    topGenres: PropTypes.shape({}),
+    topSongs: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+    topSongsMedium: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+    topSongsLong: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+    topArtists: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+    topArtistsMedium: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+    topArtistsLong: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    ),
+  }).isRequired,
+};
