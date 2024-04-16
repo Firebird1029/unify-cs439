@@ -88,12 +88,6 @@ function UnifyContent({ user1Data, user2Data }) {
       // Create a canvas element
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
-
-      if (!ctx) {
-        // Unable to obtain 2D context for canvas.
-        return;
-      }
-
       canvas.width = img.width;
       canvas.height = img.height;
 

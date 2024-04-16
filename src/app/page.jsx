@@ -54,10 +54,6 @@ export default function IndexPage() {
       });
   }
 
-  if (loggedIn === undefined) {
-    return <div />;
-  }
-
   return (
     <div
       className={`flex relative ${loading ? "h-screen" : ""}

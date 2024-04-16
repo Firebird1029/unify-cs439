@@ -75,5 +75,25 @@ describe("Spotify API functions", () => {
         "Error fetching data from Spotify API: Failed to fetch audio features",
       );
     });
+
+    test("throws an error when audio_features is undefined", async () => {
+      const token = "testToken";
+      const topSongs = {
+        items: [
+          { id: "id1", popularity: 70 },
+          { id: "id2", popularity: 80 },
+        ],
+      };
+
+      const getAudioFeaturesSpy = jest.spyOn(axios, "get");
+
+      getAudioFeaturesSpy.mockResolvedValueOnce({
+        data: { audio_features: undefined },
+      });
+
+      await expect(getAverageAudioFeatures(token, topSongs)).rejects.toThrow(
+        "Unable to fetch audio features.",
+      );
+    });
   });
 });
