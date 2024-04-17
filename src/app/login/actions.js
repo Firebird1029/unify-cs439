@@ -35,8 +35,10 @@ export default async function loginWithSpotify() {
   });
 
   if (error) {
+    // redirects to error page on error
     redirect(`/error?message=${error.message}`);
   } else {
+    // redirects to url from supabase oauth to continue sign in (goes to spotify)
     redirect(data.url);
   }
 }

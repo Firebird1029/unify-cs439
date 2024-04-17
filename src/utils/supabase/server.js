@@ -15,9 +15,11 @@ export default function createClient() {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY, // get the Supabase anonymous key from environment variables
     {
       cookies: {
+        // define how to get a cookie
         get(name) {
-          return cookieStore.get(name)?.value;
+          return cookieStore.get(name)?.value; // return the cookie's value if it exists
         },
+        // set a cookie with the given options
         set(name, value, options) {
           try {
             cookieStore.set({ name, value, ...options });
@@ -27,6 +29,7 @@ export default function createClient() {
             // user sessions.
           }
         },
+        // define how to remove a cookie
         remove(name, options) {
           try {
             cookieStore.set({ name, value: "", ...options });

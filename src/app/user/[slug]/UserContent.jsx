@@ -22,6 +22,7 @@ function UserContent({ userData, shareCassette }) {
     .slice(0, 5) // Get the top 5 genres
     .map(([id, value]) => ({ id, value })); // Map to { id: genre, value: frequency } objects
 
+  // get colors for user from personality
   const userColors = getPersonality(userData).colors;
 
   return (

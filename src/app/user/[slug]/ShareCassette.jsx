@@ -8,6 +8,7 @@ import Cassette from "@/shared/Cassette";
 import getPersonality from "@/shared/GetPersonality";
 
 function ShareCassette({ userData }) {
+  // get colors for user
   const userColors = getPersonality(userData).colors;
 
   return (

@@ -35,6 +35,7 @@ export default function Ipod({ children }) {
           stroke="black"
           strokeWidth="5"
         />
+        {/* add in children as foreign object */}
         <foreignObject x="99.5" y="87.5" width="444" height="277">
           <div xmlns="http://www.w3.org/1999/xhtml">{children}</div>
         </foreignObject>
@@ -106,6 +107,7 @@ export default function Ipod({ children }) {
           fill="#D3D3D3"
         />
       </g>
+      {/* this next part is just paper texture stuff(?) using feComposite */}
       <defs>
         <filter
           id="filter0_d_157_54"

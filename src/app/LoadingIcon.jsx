@@ -1,6 +1,8 @@
 /*
 General purpose loading icon (simple SVG cassette animation).
+Used when loading from home page to user page on sign in
 */
+
 import React from "react";
 
 export default function LoadingIcon() {

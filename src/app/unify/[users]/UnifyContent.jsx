@@ -134,29 +134,35 @@ function UnifyContent({ user1Data, user2Data }) {
       // Render the text onto the canvas
       ctx.font = "16px HomemadeApple";
       ctx.fillStyle = "black";
+      // add user2 display name to cassette
       ctx.fillText(
         `@${user2Data.userProfile.display_name}`,
         canvas.width / 2,
         300,
       );
+      // add user1 display name to cassette
       ctx.fillText(
         `@${user1Data.userProfile.display_name}`,
         canvas.width / 2,
         502,
       );
 
+      // add personality of user1 to cassette
       ctx.font = `20px Koulen`;
       ctx.fillStyle = `${user1personality.colors.cassetteAccent}`;
       ctx.fillText(`#${user1personality.name}`, canvas.width / 2, 378);
 
+      // add side letter to cassette
       ctx.font = `35px Koulen`;
       ctx.fillStyle = "black";
       ctx.fillText("A", canvas.width / 2 - 97, 318);
 
+      // add personality of user 2 to cassette
       ctx.font = `20px Koulen`;
       ctx.fillStyle = `${user2personality.colors.cassetteAccent}`;
       ctx.fillText(`#${user2personality.name}`, canvas.width / 2, 580);
 
+      // add side letter to cassette
       ctx.font = `35px Koulen`;
       ctx.fillStyle = "black";
       ctx.fillText("B", canvas.width / 2 - 97, 520);
@@ -166,11 +172,13 @@ function UnifyContent({ user1Data, user2Data }) {
       ctx.strokeStyle = "black";
       ctx.lineWidth = 6;
       ctx.miterLimit = 2; // fix miter bug
+      // outline in black
       ctx.strokeText(
         `${percentMatch(user1Data, user2Data)}% Match`,
         canvas.width / 2,
         220,
       );
+      // text in white
       ctx.fillStyle = "white";
       ctx.fillText(
         `${percentMatch(user1Data, user2Data)}% Match`,
@@ -198,6 +206,7 @@ function UnifyContent({ user1Data, user2Data }) {
           }
         } else {
           try {
+            // use clipboard if web share is not supporeted
             await navigator.clipboard.write([
               new ClipboardItem({
                 "image/png": blob,

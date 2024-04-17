@@ -17,6 +17,7 @@ import getPersonality from "@/shared/GetPersonality";
 import "@/app/globals.css";
 
 export default function UserPage({ params: { slug } }) {
+  // create supabase client
   const supabase = createClient();
 
   const [loading, setLoading] = useState(true);
@@ -35,6 +36,7 @@ export default function UserPage({ params: { slug } }) {
     }
   }
 
+  // load the fonts
   loadFonts();
 
   // Function to handle sharing
@@ -46,15 +48,11 @@ export default function UserPage({ params: { slug } }) {
 
     const img = new Image();
 
+    // get personality
     const personality = getPersonality(userData);
 
     // Set the source of the image
     img.src = `data:image/svg+xml;utf8,${encodeURIComponent(svgString)}`;
-
-    // const fontLoadPromise = Promise.all([
-    //   document.fonts.load("20px Koulen"),
-    //   document.fonts.load("16px HomemadeApple"),
-    // ]);
 
     // Wait for the image to load
     img.onload = () => {
@@ -67,6 +65,7 @@ export default function UserPage({ params: { slug } }) {
         return;
       }
 
+      // set width and height of the canvas based on the image
       canvas.width = img.width;
       canvas.height = img.height;
 
@@ -79,6 +78,7 @@ export default function UserPage({ params: { slug } }) {
       // Draw the image on the canvas
       ctx.drawImage(img, 0, 0);
 
+      // align text center
       ctx.textAlign = "center";
 
       ctx.font = `20px Koulen`;
@@ -92,10 +92,12 @@ export default function UserPage({ params: { slug } }) {
         375,
       );
 
+      // add personality name to canvas
       ctx.font = `20px Koulen`;
       ctx.fillStyle = `${personality.colors.cassetteAccent}`;
       ctx.fillText(`#${personality.name}`, canvas.width / 2, 460);
 
+      // add cassette side letter to canvas
       ctx.font = `35px Koulen`;
       ctx.fillStyle = "black";
       ctx.fillText("A", canvas.width / 2 - 110, 393);
@@ -122,6 +124,7 @@ export default function UserPage({ params: { slug } }) {
           }
         } else {
           try {
+            // use navigator.clipboard if navigator.share is not available
             await navigator.clipboard.write([
               new ClipboardItem({
                 "text/plain": new Blob([shareURL], {
@@ -148,15 +151,16 @@ export default function UserPage({ params: { slug } }) {
         if (error) {
           setError("User not found.");
         } else if (data && data.length > 0) {
+          // set the user data with the data from supabase
           setUserData(data[0].spotify_data);
         }
-
         setLoading(false);
       });
   }, [slug]);
 
   return (
     <div>
+      {/* show user content if the user data is available */}
       {!loading && userData && (
         <div>
           <UserContent
@@ -166,6 +170,7 @@ export default function UserPage({ params: { slug } }) {
           />
         </div>
       )}
+      {/* show default error message if there is an error */}
       {!loading && !userData && !errorMessage && (
         <ErrorAlert
           Title="Error: "
@@ -173,6 +178,7 @@ export default function UserPage({ params: { slug } }) {
           RedirectTo="/"
         />
       )}
+      {/* show error message */}
       {errorMessage && loading && (
         <ErrorAlert Title="Error: " Message={errorMessage} RedirectTo="/" />
       )}
