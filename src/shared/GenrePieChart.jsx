@@ -11,12 +11,21 @@ import PropTypes from "prop-types";
 import { ResponsivePie } from "@nivo/pie";
 import "@/app/globals.css";
 
-export function VinylCircle({ centerCircleColor = "#1d40af", width = 0 }) {
-  const newWidth = Math.max(0, Math.min((width - 280) / 2, 160)); // make sure newWidth is not negative
+export function VinylCircle({
+  centerCircleColor = "#1d40af",
+  width = 0,
+  largeScreen,
+}) {
+  let newWidth;
+  if (largeScreen) {
+    newWidth = Math.max(0, Math.min((width - 280) / 2, 160));
+  } else {
+    newWidth = Math.max(0, Math.min((width - 200) / 2, 180));
+  }
   const radii = [];
   if (newWidth > 0) {
     // add a bunch of radii to a list to then turn into circles that make up vinyl graphic
-    for (let i = newWidth - 1; i > 10; i -= 3) {
+    for (let i = newWidth - 1; i > 9; i -= 3) {
       radii.push(i); // add radii to list of radii
     }
   }
@@ -60,6 +69,7 @@ export function VinylCircle({ centerCircleColor = "#1d40af", width = 0 }) {
 VinylCircle.propTypes = {
   centerCircleColor: PropTypes.string,
   width: PropTypes.number,
+  largeScreen: PropTypes.bool,
 };
 
 /* Builds nivo pie chart, and overlays the SVG above on top of it */
@@ -67,6 +77,7 @@ VinylCircle.propTypes = {
 export default function GenrePieChart({ data, centerCircleColor = "#1d40af" }) {
   const [divWidth, setDivWidth] = useState(0);
   const divRef = useRef(null);
+  const [largeScreen, setLargeScreen] = useState(true); // Default font size
 
   // Effect hook for setting and updating div width
   // Allows for the vinyl 'overlay' to dynamically scale
@@ -84,6 +95,11 @@ export default function GenrePieChart({ data, centerCircleColor = "#1d40af" }) {
     return () => window.removeEventListener("resize", updateWidth);
   }, []);
 
+  useEffect(() => {
+    const isLargeScreen = window.matchMedia("(min-width: 992px)").matches;
+    setLargeScreen(isLargeScreen);
+  }, [divWidth]);
+
   return (
     <div
       ref={divRef}
@@ -93,7 +109,12 @@ export default function GenrePieChart({ data, centerCircleColor = "#1d40af" }) {
       {/* Underlying genre pie chart using nivo */}
       <ResponsivePie
         data={data}
-        margin={{ top: 70, right: 140, bottom: 50, left: 140 }}
+        margin={{
+          top: largeScreen ? 70 : 50,
+          right: largeScreen ? 140 : 100,
+          bottom: largeScreen ? 50 : 30,
+          left: largeScreen ? 140 : 100,
+        }}
         innerRadius={0.3}
         keys={["value"]}
         // set gray colors for the background of the pie chart
@@ -108,7 +129,7 @@ export default function GenrePieChart({ data, centerCircleColor = "#1d40af" }) {
         legends={[]}
         theme={{
           text: {
-            fontSize: 20,
+            fontSize: largeScreen ? 20 : 15,
             fill: "#333333",
             outlineWidth: 0,
             outlineColor: "transparent",
@@ -122,7 +143,7 @@ export default function GenrePieChart({ data, centerCircleColor = "#1d40af" }) {
           top: 20,
           right: 0,
           bottom: 0,
-          left: Math.min(0, divWidth - 400),
+          left: 0,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -131,7 +152,11 @@ export default function GenrePieChart({ data, centerCircleColor = "#1d40af" }) {
         }}
       >
         {/* Overlay vinyl circle to turn pie chart into vinyl */}
-        <VinylCircle centerCircleColor={centerCircleColor} width={divWidth} />
+        <VinylCircle
+          centerCircleColor={centerCircleColor}
+          width={divWidth}
+          largeScreen={largeScreen}
+        />
       </div>
     </div>
   );
