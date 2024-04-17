@@ -41,6 +41,19 @@ describe("VinylCircle Component", () => {
 });
 
 describe("GenrePieChart Component", () => {
+  Object.defineProperty(window, "matchMedia", {
+    writable: true,
+    value: jest.fn().mockImplementation((query) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: jest.fn(), // Deprecated
+      removeListener: jest.fn(), // Deprecated
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+      dispatchEvent: jest.fn(),
+    })),
+  });
   const mockData = [
     { id: "pov: indie", value: 21 },
     { id: "modern rock", value: 16 },
@@ -61,6 +74,19 @@ describe("GenrePieChart Component", () => {
 const mockShareCassette = jest.fn();
 
 describe("UnifyContent", () => {
+  Object.defineProperty(window, "matchMedia", {
+    writable: true,
+    value: jest.fn().mockImplementation((query) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: jest.fn(), // Deprecated
+      removeListener: jest.fn(), // Deprecated
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+      dispatchEvent: jest.fn(),
+    })),
+  });
   it("renders UnifyContent correctly with provided data", () => {
     render(
       <UserContent userData={userData} shareCassette={mockShareCassette} />,
