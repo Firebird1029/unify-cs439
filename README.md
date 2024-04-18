@@ -129,6 +129,7 @@ The application is currently deployed via Vercel at [http://unify-cs439.vercel.a
 You can view an example of a User Profile page at [http://unify-cs439.vercel.app/user/testuser](http://unify-cs439.vercel.app/user/testuser). You can view an example of a Unify Results page at [http://unify-cs439.vercel.app/unify/testuser&hoixw](http://unify-cs439.vercel.app/unify/testuser&hoixw).
 
 ## Metrics Milestone
+
 We have chosen to use a multi armed bandit approach to find what text for the "share" button on the user page
 will result in the highest rate of the user sharing their results. 10% of the time, the user will be displayed a random
 choice of the three possible texts, this is the exploration part. The other 90% of the time, the user will be displayed the text that has the highest conversion rate thus far.\
