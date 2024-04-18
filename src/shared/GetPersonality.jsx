@@ -2,6 +2,8 @@
 Function to calculate the personality of a user based on how close the features of their top songs
 are to the 10 reference personalities using euclidean distance
 */
+
+// list of colors that can be used for the personalities
 const colorPresets = {
   red: {
     bg: "#FF5555",
@@ -48,6 +50,8 @@ const colorPresets = {
 };
 
 // the reference personalities
+// each have a score for the main song feature categories which is used
+// to calculate which personality a user matches best
 const personalities = [
   {
     name: "Indie Introvert 🎧",
@@ -183,7 +187,9 @@ const personalities = [
 
 // get the closes personality
 const getPersonality = (userData) => {
+  // set min distance to infinity to start so we always get a closest personality
   let minDistance = Infinity;
+  // variable to store closest personality so far
   let closestPersonality = null;
 
   // process user data object and normalize
@@ -219,13 +225,17 @@ const getPersonality = (userData) => {
 
   // find similarity between personality and user's data
   // uses euclidean distance
+  // loops through personalities
   personalities.forEach((personality) => {
     let distance = 0;
+    // iterate through the features and sum distance between feature for user and personality
     Object.keys(personality.scores).forEach((key) => {
       distance += (personality.scores[key] - userScores[key]) ** 2;
     });
+    // take square root to get euclidean distance
     distance = Math.sqrt(distance);
 
+    // update closestPersonality if the distance for the current personality is the smallest so far
     if (distance < minDistance) {
       minDistance = distance;
       closestPersonality = personality;

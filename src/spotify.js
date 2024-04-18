@@ -22,9 +22,10 @@ async function callSpotifyApi(token, endpoint) {
     if (!response.data) {
       throw new Error("Unable to fetch data from Spotify API.");
     }
-
+    // return the data to the user
     return response.data;
   } catch (error) {
+    // catch error from the spotify api and throws the error
     throw new Error(`Error fetching data from Spotify API: ${error.message}`);
   }
 }
@@ -44,6 +45,7 @@ async function getTopItems(
   timeRange = "short_term",
   limit = "5",
 ) {
+  // calls spotify api with the parameters passed to the function using the /me/top/ route to get the top items
   return callSpotifyApi(
     token,
     `/me/top/${type}?time_range=${timeRange}&limit=${limit}`,
@@ -63,27 +65,32 @@ function getTopGenres(topArtists) {
     genres.forEach((genre) => {
       // Increment genre frequency count
       if (genre in genreFrequencies) {
+        // if the genre is already in the genre frequences, increment it
         genreFrequencies[genre]++;
       } else {
+        // if the genre is not in the genre frequences, set the value to 1
         genreFrequencies[genre] = 1;
       }
     });
   });
-
+  // return the genre frequences as key value pairs
   return genreFrequencies;
 }
 
 // Get the audio features of tracks based on their track IDs.
 async function getAudioFeatures(token, ids) {
+  // throw error if ids are not given
   if (!ids) {
     throw new Error("Ids must be provided.");
   }
-
+  // call spotify api at /audio-feautres/ route passing all of the ids
+  // to get back the audio features for all of the ids at once
   return callSpotifyApi(token, `/audio-features?ids=${ids}`);
 }
 
 // averages the audio features for the user's top songs
 async function getAverageAudioFeatures(token, topSongs) {
+  // topSongs passed as list, join them using , to work with spotify api
   const trackIds = topSongs.items.map((track) => track.id).join(",");
 
   // get audio features for the user's top songs
@@ -94,11 +101,13 @@ async function getAverageAudioFeatures(token, topSongs) {
     throw new Error("Unable to fetch audio features.");
   }
 
+  // extract audio Features from the result
   const audioFeatures = audioFeatureData.audio_features;
 
   // sum the audio features for each song
   const featuresSum = audioFeatures.reduce(
     (acc, feature) => {
+      // these are the 6 audio features given by spotify for each song
       acc.acousticness += feature.acousticness;
       acc.danceability += feature.danceability;
       acc.energy += feature.energy;
@@ -119,15 +128,18 @@ async function getAverageAudioFeatures(token, topSongs) {
 
   // average the audio features
   const featuresAvg = Object.keys(featuresSum).reduce((acc, key) => {
+    // mulitply by 100 to get value between 0 and 100 after dividing by length
     acc[key] = (featuresSum[key] * 100) / audioFeatures.length;
     return acc;
   }, {});
 
   // calculate average song popularity
   featuresAvg.popularity =
+    // sum song popularities (slighly different than an audio feature) and divide by number of songs to get mean
     topSongs.items.reduce((acc, song) => acc + song.popularity, 0) /
     topSongs.items.length;
 
+  // return these features to the user
   return featuresAvg;
 }
 
@@ -181,8 +193,6 @@ async function getSpotifyData(token) {
   );
 
   const topSongs = topSongsShortData.items;
-  // const topSongsMedium = topSongsMediumData.items;
-  // const topSongsLong = topSongsLongData.items.slice(0, 25);
 
   // Audio Features
   const averageAudioFeatures = await getAverageAudioFeatures(
@@ -190,6 +200,7 @@ async function getSpotifyData(token) {
     topSongsLongData,
   );
 
+  // map audio features to feature value pairs
   const featuresData = Object.keys(averageAudioFeatures).map((key) => ({
     feature: key,
     value: averageAudioFeatures[key],

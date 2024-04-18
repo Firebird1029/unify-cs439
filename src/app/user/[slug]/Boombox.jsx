@@ -7,7 +7,7 @@
 import PropTypes from "prop-types";
 import getPersonality from "@/shared/GetPersonality";
 
-export default function Boombox({ userData, shareCassetteFunc }) {
+export default function Boombox({ userData, shareCassetteFunc, mabVersion }) {
   // handle case where user does not have profile pciture
   const profilePictureURL =
     userData?.userProfile?.images[1]?.url ||
@@ -19,6 +19,18 @@ export default function Boombox({ userData, shareCassetteFunc }) {
     "https://upload.wikimedia.org/wikipedia/commons/a/af/Default_avatar_profile.jpg";
 
   const userColors = getPersonality(userData).colors;
+
+  // Function to get the button text based on MAB version
+  const getButtonText = (version) => {
+    switch (version) {
+      case 1:
+        return "Share Cassette";
+      case 2:
+        return "Share Results";
+      default:
+        return "Share with Friends!";
+    }
+  };
 
   return (
     <svg
@@ -112,9 +124,10 @@ export default function Boombox({ userData, shareCassetteFunc }) {
           <button
             type="button"
             onClick={() => shareCassetteFunc(userData)}
-            className="rounded-lg h-full w-full bg-[#ECECEC] font-koulen text-4xl"
+            // use design corresponding to multi arm bandit version
+            className={`rounded-lg h-full w-full bg-[#ECECEC] font-koulen ${mabVersion === 3 ? "text-3xl" : "text-4xl"}`}
           >
-            Share Cassette
+            {getButtonText(mabVersion)}
           </button>
         </foreignObject>
       </g>
@@ -323,4 +336,5 @@ Boombox.propTypes = {
     }),
   }).isRequired,
   shareCassetteFunc: PropTypes.func.isRequired,
+  mabVersion: PropTypes.number.isRequired,
 };

@@ -10,10 +10,10 @@ import PropTypes from "prop-types";
 import GenrePieChart from "@/shared/GenrePieChart";
 import ShareUnify from "@/app/unify/[users]/ShareUnify";
 import "@/app/globals.css";
-import Cassette from "@/app/user/[slug]/Cassette";
+import Cassette from "@/shared/Cassette";
 import getPersonality from "@/shared/GetPersonality";
 import Boombox from "@/app/unify/[users]/Boombox";
-import CDStack from "@/app/user/[slug]/CDStack";
+import CDStack from "@/shared/CDStack";
 
 // Find percent match between two lists
 function calculateGenreSimilarity(list1, list2) {
@@ -134,29 +134,35 @@ function UnifyContent({ user1Data, user2Data }) {
       // Render the text onto the canvas
       ctx.font = "16px HomemadeApple";
       ctx.fillStyle = "black";
+      // add user2 display name to cassette
       ctx.fillText(
         `@${user2Data.userProfile.display_name}`,
         canvas.width / 2,
         300,
       );
+      // add user1 display name to cassette
       ctx.fillText(
         `@${user1Data.userProfile.display_name}`,
         canvas.width / 2,
         502,
       );
 
+      // add personality of user1 to cassette
       ctx.font = `20px Koulen`;
       ctx.fillStyle = `${user1personality.colors.cassetteAccent}`;
       ctx.fillText(`#${user1personality.name}`, canvas.width / 2, 378);
 
+      // add side letter to cassette
       ctx.font = `35px Koulen`;
       ctx.fillStyle = "black";
       ctx.fillText("A", canvas.width / 2 - 97, 318);
 
+      // add personality of user 2 to cassette
       ctx.font = `20px Koulen`;
       ctx.fillStyle = `${user2personality.colors.cassetteAccent}`;
       ctx.fillText(`#${user2personality.name}`, canvas.width / 2, 580);
 
+      // add side letter to cassette
       ctx.font = `35px Koulen`;
       ctx.fillStyle = "black";
       ctx.fillText("B", canvas.width / 2 - 97, 520);
@@ -166,11 +172,13 @@ function UnifyContent({ user1Data, user2Data }) {
       ctx.strokeStyle = "black";
       ctx.lineWidth = 6;
       ctx.miterLimit = 2; // fix miter bug
+      // outline in black
       ctx.strokeText(
         `${percentMatch(user1Data, user2Data)}% Match`,
         canvas.width / 2,
         220,
       );
+      // text in white
       ctx.fillStyle = "white";
       ctx.fillText(
         `${percentMatch(user1Data, user2Data)}% Match`,
@@ -198,6 +206,7 @@ function UnifyContent({ user1Data, user2Data }) {
           }
         } else {
           try {
+            // use clipboard if web share is not supporeted
             await navigator.clipboard.write([
               new ClipboardItem({
                 "image/png": blob,
@@ -330,9 +339,7 @@ function UnifyContent({ user1Data, user2Data }) {
           <div className="mt-2" />
           <div className="w-2/3  mx-auto">
             <CDStack
-              topList={user1Data.topArtists
-                .slice(0, 8)
-                .map((artist) => artist.name)}
+              topList={user1Data.topArtists.slice(0, 8)}
               userColors={user1personality.colors}
             />
           </div>
@@ -349,9 +356,7 @@ function UnifyContent({ user1Data, user2Data }) {
           <div className="mt-2" />
           <div className="w-2/3  mx-auto">
             <CDStack
-              topList={user2Data.topArtists
-                .slice(0, 8)
-                .map((artist) => artist.name)}
+              topList={user2Data.topArtists.slice(0, 8)}
               userColors={user2personality.colors}
             />
           </div>
@@ -390,7 +395,7 @@ function UnifyContent({ user1Data, user2Data }) {
           <div className="mt-2" />
           <div className="w-2/3  mx-auto">
             <CDStack
-              topList={user1Data.topSongs.slice(0, 8).map((song) => song.name)}
+              topList={user1Data.topSongs.slice(0, 8)}
               userColors={user1personality.colors}
             />
           </div>
@@ -407,7 +412,7 @@ function UnifyContent({ user1Data, user2Data }) {
           <div className="mt-2" />
           <div className="w-2/3  mx-auto">
             <CDStack
-              topList={user2Data.topSongs.slice(0, 8).map((song) => song.name)}
+              topList={user2Data.topSongs.slice(0, 8)}
               userColors={user2personality.colors}
             />
           </div>
@@ -428,8 +433,8 @@ function UnifyContent({ user1Data, user2Data }) {
                 valueFormat=">-.1f"
                 maxValue="100"
                 colors={[
-                  user2personality.colors.dark,
-                  user1personality.colors.dark,
+                  user2personality.colors.cassetteAccent,
+                  user1personality.colors.cassetteBody,
                 ]}
                 margin={{ top: 40, right: 60, bottom: 40, left: 60 }}
                 gridLabelOffset={25}

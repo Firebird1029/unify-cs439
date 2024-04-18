@@ -82,6 +82,19 @@ describe("featureDataSimilarity", () => {
 });
 
 describe("VinylCircle Component", () => {
+  Object.defineProperty(window, "matchMedia", {
+    writable: true,
+    value: jest.fn().mockImplementation((query) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: jest.fn(), // Deprecated
+      removeListener: jest.fn(), // Deprecated
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+      dispatchEvent: jest.fn(),
+    })),
+  });
   test("renders correctly with given props", () => {
     const { getByTestId } = render(
       <VinylCircle centerCircleColor="black" width={300} />,
@@ -110,6 +123,19 @@ describe("GenrePieChart Component", () => {
 });
 
 describe("UnifyContent", () => {
+  Object.defineProperty(window, "matchMedia", {
+    writable: true,
+    value: jest.fn().mockImplementation((query) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: jest.fn(), // Deprecated
+      removeListener: jest.fn(), // Deprecated
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+      dispatchEvent: jest.fn(),
+    })),
+  });
   it("renders UnifyContent correctly with provided data", () => {
     render(<UnifyContent user1Data={userData} user2Data={userData} />);
   });

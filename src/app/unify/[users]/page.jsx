@@ -119,11 +119,13 @@ export default function UnifyPage({ params: { users } }) {
   return (
     <>
       <div>
+        {/* display unify content if not loading and have both users' data */}
         {!loading && user1Data && user2Data && (
           <div>
             <UnifyContent user1Data={user1Data} user2Data={user2Data} />
           </div>
         )}
+        {/* display error message */}
       </div>
       {errorMessage && loading && (
         <ErrorAlert Title="Error: " Message={errorMessage} RedirectTo="/" />

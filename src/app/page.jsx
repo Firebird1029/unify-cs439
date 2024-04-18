@@ -13,8 +13,11 @@ import LeftPanel from "@/app/LeftPanel";
 import LoadingIcon from "@/app/LoadingIcon";
 import createClient from "@/utils/supabase/client";
 
+// index page function
 export default function IndexPage() {
+  // use react router for page navigation
   const router = useRouter();
+  // create supabase client
   const supabase = createClient();
 
   const [loggedIn, setLoggedIn] = useState(false);
@@ -97,9 +100,11 @@ export default function IndexPage() {
                   loginWithSpotify();
                 }}
               >
+                {/* Show Continue to Account if logged in, else, show log in with Spotify */}
                 {loggedIn ? "Continue to Account" : "Log in with Spotify"}
               </button>
               <div className={`${loggedIn ? "" : "hidden"}`}>
+                {/* if logged in show sign out button which calls handleSignOut when clicked */}
                 <button
                   className="border rounded-full bg-white px-5 py-3 text-3xl"
                   type="button"

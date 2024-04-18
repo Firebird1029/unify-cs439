@@ -8,20 +8,21 @@ import PropTypes from "prop-types";
 import "@/app/globals.css";
 import GenrePieChart from "@/shared/GenrePieChart";
 import Boombox from "@/app/user/[slug]/Boombox";
-import Cassette from "@/app/user/[slug]/Cassette";
+import Cassette from "@/shared/Cassette";
 import PaperTitle from "@/app/user/[slug]/PaperTitle";
-import CDStack from "@/app/user/[slug]/CDStack";
+import CDStack from "@/shared/CDStack";
 import getPersonality from "@/shared/GetPersonality";
 import PhotoMarquee from "@/app/user/[slug]/PhotoMarquee";
 import PhotoGallery from "@/app/user/[slug]/PhotoGallery";
 
-function UserContent({ userData, shareCassette }) {
+function UserContent({ userData, shareCassette, mabVersion }) {
   // Convert object to array of { id: genre, value: frequency } objects
   const top5Genres = Object.entries(userData.topGenres)
     .sort((a, b) => b[1] - a[1]) // Sort genres by frequency in descending order
     .slice(0, 5) // Get the top 5 genres
     .map(([id, value]) => ({ id, value })); // Map to { id: genre, value: frequency } objects
 
+  // get colors for user from personality
   const userColors = getPersonality(userData).colors;
 
   return (
@@ -46,7 +47,11 @@ function UserContent({ userData, shareCassette }) {
                           md:w-[80%] md:mt-16 \
                           xl:w-[60%]"
           >
-            <Boombox userData={userData} shareCassetteFunc={shareCassette} />
+            <Boombox
+              userData={userData}
+              shareCassetteFunc={shareCassette}
+              mabVersion={mabVersion}
+            />
           </div>
         </div>
         {/* Spotlight transition, takes on light color + holds cassette */}
@@ -188,9 +193,7 @@ function UserContent({ userData, shareCassette }) {
             </div>
             <div className="h-96 lg:h-full lg:w-1/3 lg:mt-12">
               <CDStack
-                topList={userData.topArtists
-                  .slice(0, 8)
-                  .map((artist) => artist.name)}
+                topList={userData.topArtists.slice(0, 8)}
                 userColors={userColors}
               />
             </div>
@@ -227,7 +230,7 @@ function UserContent({ userData, shareCassette }) {
             </div>
             <div className="h-96 lg:h-full lg:w-1/3 lg:mt-12">
               <CDStack
-                topList={userData.topSongs.slice(0, 8).map((song) => song.name)}
+                topList={userData.topSongs.slice(0, 8)}
                 userColors={userColors}
               />
             </div>
@@ -285,4 +288,5 @@ UserContent.propTypes = {
     ),
   }).isRequired,
   shareCassette: PropTypes.func.isRequired,
+  mabVersion: PropTypes.number.isRequired,
 };

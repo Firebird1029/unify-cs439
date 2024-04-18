@@ -5,7 +5,7 @@ Params:
 - userColors: color scheme
  */
 import PropTypes from "prop-types";
-import CDCase from "@/app/user/[slug]/CDCase";
+import CDCase from "@/shared/CDCase";
 
 export default function CDStack({ topList, userColors }) {
   return (
@@ -13,15 +13,17 @@ export default function CDStack({ topList, userColors }) {
     // of CDs in the stack
     <svg width="100%" height="100%" viewBox={`0 0 500 ${80 * topList.length}`}>
       {topList.map((val, rank) => {
+        // have random x offset for cd case to give stacking effect
         const xOffset = Math.floor(Math.random() * 80);
         const yOffset = rank * 80;
         return (
           <CDCase
-            title={val}
+            title={val.name}
             ranking={rank + 1}
             userColors={userColors}
             yOffset={yOffset}
             xOffset={xOffset}
+            key={val.id}
           />
         );
       })}
@@ -31,8 +33,13 @@ export default function CDStack({ topList, userColors }) {
 
 CDStack.propTypes = {
   userColors: PropTypes.shape({
-    dark: PropTypes.string,
-    light: PropTypes.string,
-  }),
-  topList: PropTypes.arrayOf(PropTypes.string).isRequired,
+    dark: PropTypes.string.isRequired,
+    light: PropTypes.string.isRequired,
+  }).isRequired,
+  topList: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
 };

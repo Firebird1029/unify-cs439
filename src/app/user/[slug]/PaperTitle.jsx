@@ -1,3 +1,7 @@
+/*
+Svg element to give paper effect behind text, used in user content
+*/
+
 import PropTypes from "prop-types";
 
 export default function PaperTitle({ children }) {

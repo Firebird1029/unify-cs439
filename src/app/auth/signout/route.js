@@ -9,6 +9,7 @@ import { NextResponse } from "next/server";
 import createClient from "@/utils/supabase/server";
 
 export async function POST(req) {
+  // create supabase client
   const supabase = createClient();
 
   // Check if a user's logged in
@@ -21,6 +22,7 @@ export async function POST(req) {
     await supabase.auth.signOut();
   }
 
+  // redirect to home page
   revalidatePath("/", "layout");
   return NextResponse.redirect(new URL("/", req.url), {
     status: 302,

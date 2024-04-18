@@ -1,12 +1,18 @@
+/*
+CD case graphic containing name and ranking which is stacked in CDStack.jsx
+and displayed on the user page and unify page to show top songs or top artists
+*/
+
 import PropTypes from "prop-types";
 
 export default function CDCase({
-  title,
-  ranking,
-  userColors,
-  xOffset,
+  title, // title is displayed on side of cd case
+  ranking, // ranking is displayed in text on left of cd case
+  userColors, // colors of user are used to style cd case
+  xOffset, // accepts xOffset and yOffest for stacking
   yOffset,
 }) {
+  // make title reasonable size
   let titleSize = "text-4xl";
   if (title.length > 14 && title.length < 17) {
     titleSize = "text-3xl";

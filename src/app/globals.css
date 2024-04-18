@@ -43,10 +43,10 @@ ol li {
 
 @font-face {
   font-family: "Koulen";
-  src: url("https://github.com/danhhong/Koulen/raw/master/Release/ttf/Koulen-Regular.ttf");
+  src: url("/fonts/Koulen-Regular.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "HomemadeApple";
-  src: url("https://github.com/d3y4n/fonterator/raw/master/static/fonts/Homemade%20Apple.ttf");
+  src: url("/fonts/HomemadeApple.ttf") format("truetype");
 }

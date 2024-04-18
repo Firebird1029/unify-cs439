@@ -9,6 +9,9 @@ jest.mock("../src/utils/supabase/client", () => {
   return jest.fn(() => ({
     from: jest.fn().mockReturnThis(),
     select: jest.fn().mockReturnThis(),
+    update: jest.fn().mockReturnThis(),
+    then: jest.fn().mockReturnThis(),
+    catch: jest.fn().mockReturnThis(),
     eq: jest.fn().mockResolvedValue({
       data: [
         {
@@ -69,12 +72,25 @@ afterEach(() => {
 });
 
 describe("shareCassette", () => {
+  Object.defineProperty(window, "matchMedia", {
+    writable: true,
+    value: jest.fn().mockImplementation((query) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: jest.fn(), // Deprecated
+      removeListener: jest.fn(), // Deprecated
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+      dispatchEvent: jest.fn(),
+    })),
+  });
   it("should attempt to share using navigator.share when image is ready", async () => {
     render(<UserPage params={{ slug: "testslug" }} />);
 
     // Wait for the button with specific text and style to appear in the document
     const shareButton = await screen.findByRole("button", {
-      name: /share cassette/i,
+      name: /share/i,
     });
 
     fireEvent.click(shareButton);

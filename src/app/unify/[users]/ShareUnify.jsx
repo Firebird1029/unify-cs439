@@ -5,7 +5,7 @@ Generated when they click the Unify/Share button on their user page.
 
 import PropTypes from "prop-types";
 import getPersonality from "@/shared/GetPersonality";
-import Cassette from "@/app/user/[slug]/Cassette";
+import Cassette from "@/shared/Cassette";
 
 function ShareUnify({ user1Data, user2Data }) {
   const user1Personality = getPersonality(user1Data); // get personality for user 1
@@ -42,6 +42,7 @@ function ShareUnify({ user1Data, user2Data }) {
         mask="url(#path-59-outside-2_1_623)"
       />
       <defs>
+        {/* Make linear gradient between the two colors of the users */}
         <linearGradient
           id="paint0_linear_1_623"
           x1="196.5"
@@ -50,14 +51,18 @@ function ShareUnify({ user1Data, user2Data }) {
           y2="852"
           gradientUnits="userSpaceOnUse"
         >
+          {/* top of gradient is first user's color */}
           <stop stopColor={user1Personality.colors.cassetteBody} />
+          {/* middle of gradient is light gray */}
           <stop offset="0.325" stopColor="#EEEEEE" />
+          {/* bottom of gradient is second user's color */}
           <stop
             offset="0.95"
             stopColor={user2Personality.colors.cassetteBody}
           />
         </linearGradient>
       </defs>
+      {/* add cassette for first user */}
       <foreignObject x="41" y="195" width="310" height="300">
         <Cassette
           userData={user1Data}
@@ -65,6 +70,7 @@ function ShareUnify({ user1Data, user2Data }) {
           side={"A"}
         />
       </foreignObject>
+      {/* add cassette for second user */}
       <foreignObject x="41" y="395" width="310" height="300">
         <Cassette
           userData={user2Data}

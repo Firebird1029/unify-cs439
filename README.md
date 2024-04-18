@@ -67,6 +67,7 @@ To start the application, simply run `npm run dev`. You can access the applicati
 | `.all-contributorsrc` | See <https://allcontributors.org>.              |
 | `.env`                | Non-secret environment variables.               |
 | `jsconfig.json`       | VS Code IntelliSense support file.              |
+| `public/`             | Public assets (fonts)                           |
 
 Other supporting files in the root directory include configuration files for linting (ESLint + Prettier), testing (Jest), Next.js, and others.
 
@@ -126,6 +127,18 @@ The application is currently deployed via Vercel at [http://unify-cs439.vercel.a
 > NOTE: To create an account in the existing deployment, you must be a registered user in our Spotify API application, as the application is currently in development mode (on Spotify's end). Contact <david.crair@yale.edu> to be added as a user.
 
 You can view an example of a User Profile page at [http://unify-cs439.vercel.app/user/testuser](http://unify-cs439.vercel.app/user/testuser). You can view an example of a Unify Results page at [http://unify-cs439.vercel.app/unify/testuser&hoixw](http://unify-cs439.vercel.app/unify/testuser&hoixw).
+
+## Metrics Milestone
+
+We have chosen to use a multi armed bandit approach to find what text for the "share" button on the user page
+will result in the highest rate of the user sharing their results. 10% of the time, the user will be displayed a random
+choice of the three possible texts, this is the exploration part. The other 90% of the time, the user will be displayed the text that has the highest conversion rate thus far.\
+The three button texts that the user could be shown are:\
+Share Results\
+Share Cassette\
+Share with Friends!\
+We believe that this button is an appropriate element to implement the multi armed bandit procedure, as it is what drives growth of our application. New users will click this button to unify with their friends, and be prompted to create an account, increasing the reach of our application.
+The code for calculating which option to use can be found in /src/app/user/[slug]/page.jsx. It is a react effect that pulls the data from the supabase database to find the best version of the design, or randomly chooses one. This gets passed to /src/app/user/[slug]/Boombox.jsx, where the text of the button is changed depending on the design selected.
 
 ## Contributors
 

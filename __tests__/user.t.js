@@ -46,6 +46,8 @@ beforeEach(() => {
   createClient.mockImplementation(() => ({
     from: jest.fn().mockReturnThis(),
     select: jest.fn().mockReturnThis(),
+    then: jest.fn().mockReturnThis(),
+    catch: jest.fn().mockReturnThis(),
     eq: jest.fn().mockResolvedValue({
       data: [{ spotify_data: { username: "user1" } }],
       error: null,
