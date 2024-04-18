@@ -137,8 +137,7 @@ Share Results\
 Share Cassette\
 Share with Friends!\
 We believe that this button is an appropriate element to implement the multi armed bandit procedure, as it is what drives growth of our application. New users will click this button to unify with their friends, and be prompted to create an account, increasing the reach of our application.
-
-
+The code for calculating which option to use can be found in /src/app/user/[slug]/page.jsx. It is a react effect that pulls the data from the supabase database to find the best version of the design, or randomly chooses one. This gets passed to /src/app/user/[slug]/Boombox.jsx, where the text of the button is changed depending on the design selected.
 
 ## Contributors
 
