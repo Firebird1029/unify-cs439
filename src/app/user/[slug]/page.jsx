@@ -23,7 +23,7 @@ export default function UserPage({ params: { slug } }) {
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState(null);
   const [errorMessage, setError] = useState(null);
-  const [mabVersion, setMABVersion] = useState(null);
+  const [mabVersion, setMABVersion] = useState(1);
   const [clickedShare, setClickedShare] = useState(false);
 
   // preload fonts to fix bug

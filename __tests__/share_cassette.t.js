@@ -9,6 +9,9 @@ jest.mock("../src/utils/supabase/client", () => {
   return jest.fn(() => ({
     from: jest.fn().mockReturnThis(),
     select: jest.fn().mockReturnThis(),
+    update: jest.fn().mockReturnThis(),
+    then: jest.fn().mockReturnThis(),
+    catch: jest.fn().mockReturnThis(),
     eq: jest.fn().mockResolvedValue({
       data: [
         {
@@ -87,7 +90,7 @@ describe("shareCassette", () => {
 
     // Wait for the button with specific text and style to appear in the document
     const shareButton = await screen.findByRole("button", {
-      name: /share cassette/i,
+      name: /share/i,
     });
 
     fireEvent.click(shareButton);
