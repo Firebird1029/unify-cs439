@@ -288,4 +288,5 @@ UserContent.propTypes = {
     ),
   }).isRequired,
   shareCassette: PropTypes.func.isRequired,
+  mabVersion: PropTypes.number.isRequired,
 };

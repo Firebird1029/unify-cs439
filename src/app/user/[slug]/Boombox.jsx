@@ -336,4 +336,5 @@ Boombox.propTypes = {
     }),
   }).isRequired,
   shareCassetteFunc: PropTypes.func.isRequired,
+  mabVersion: PropTypes.number.isRequired,
 };
