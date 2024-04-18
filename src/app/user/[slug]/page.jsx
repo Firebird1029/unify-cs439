@@ -23,6 +23,8 @@ export default function UserPage({ params: { slug } }) {
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState(null);
   const [errorMessage, setError] = useState(null);
+  const [mabVersion, setMABVersion] = useState(null);
+  const [clickedShare, setClickedShare] = useState(false);
 
   // preload fonts to fix bug
   async function loadFonts() {
@@ -41,6 +43,26 @@ export default function UserPage({ params: { slug } }) {
 
   // Function to handle sharing
   const shareCassette = async () => {
+    // if the user has not clicked share already
+    if (!clickedShare) {
+      // update multi armed bandit clicks value
+      supabase
+        .from("mab")
+        .select("clicks")
+        .eq("id", mabVersion)
+        .then(({ data }) => {
+          supabase
+            .from("mab")
+            .update({ clicks: data[0].clicks + 1 }) // increment clicks
+            .eq("id", mabVersion)
+            .then(() => {
+              setError("mab error"); // set error if mab update returned error
+            });
+        });
+    }
+    // set that user has clicked share to prevent updating clicked value multiple times
+    setClickedShare(true);
+
     // Use Web Share API to share the default image
     const svgString = ReactDOMServer.renderToString(
       <ShareCassette userData={userData} />,
@@ -158,15 +180,67 @@ export default function UserPage({ params: { slug } }) {
       });
   }, [slug]);
 
+  // use multi arm bandit approach to pick which version of "share cassette" button to use
+  // uses epsilon-greedy algorithm pulling data from supabase
+  useEffect(() => {
+    let mabValue = null;
+    // get data on the designs from supabase
+    supabase
+      .from("mab")
+      .select()
+      .then(({ data, error }) => {
+        if (error) {
+          setError("MAB data not found.");
+        } else if (data) {
+          const epsilon = 0.1; // 10% of the time, explore
+          if (Math.random() < epsilon) {
+            // Exploration: Select a random ID
+            const randomIndex = Math.floor(Math.random() * data.length);
+            setMABVersion(data[randomIndex].id);
+            mabValue = data[randomIndex].visits + 1;
+            // increase number of visits for selected deisign by 1
+            supabase
+              .from("mab")
+              .update({ visits: mabValue })
+              .eq("id", data[randomIndex].id)
+              .then(() => {
+                setError("mab error"); // set error if mab update returned error
+              });
+          } else {
+            // Exploitation: Select the ID with the highest clicks-to-visits ratio
+            const bestOption = data.reduce((best, current) => {
+              const bestCtr = best.clicks / best.visits;
+              const currentCtr = current.clicks / current.visits;
+              return currentCtr > bestCtr ? current : best;
+            });
+            setMABVersion(bestOption.id);
+            mabValue = bestOption.visits + 1;
+            // increase number of visits for selected deisign by 1
+            supabase
+              .from("mab")
+              .update({ visits: mabValue })
+              .eq("id", bestOption.id)
+              .then(() => {
+                setError("mab error"); // set error if mab update returned error
+              });
+          }
+        }
+      })
+      .catch((err) => {
+        setError(`Error fetching MAB data. Error: ${err.message}`);
+      });
+  }, []);
+
   return (
     <div>
       {/* show user content if the user data is available */}
-      {!loading && userData && (
+      {!loading && userData && mabVersion && (
         <div>
           <UserContent
             userData={userData}
             shareCassette={shareCassette}
             unify={null}
+            mabVersion={mabVersion}
           />
         </div>
       )}

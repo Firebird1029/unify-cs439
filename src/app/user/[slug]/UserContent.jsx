@@ -15,7 +15,7 @@ import getPersonality from "@/shared/GetPersonality";
 import PhotoMarquee from "@/app/user/[slug]/PhotoMarquee";
 import PhotoGallery from "@/app/user/[slug]/PhotoGallery";
 
-function UserContent({ userData, shareCassette }) {
+function UserContent({ userData, shareCassette, mabVersion }) {
   // Convert object to array of { id: genre, value: frequency } objects
   const top5Genres = Object.entries(userData.topGenres)
     .sort((a, b) => b[1] - a[1]) // Sort genres by frequency in descending order
@@ -47,7 +47,11 @@ function UserContent({ userData, shareCassette }) {
                           md:w-[80%] md:mt-16 \
                           xl:w-[60%]"
           >
-            <Boombox userData={userData} shareCassetteFunc={shareCassette} />
+            <Boombox
+              userData={userData}
+              shareCassetteFunc={shareCassette}
+              mabVersion={mabVersion}
+            />
           </div>
         </div>
         {/* Spotlight transition, takes on light color + holds cassette */}
