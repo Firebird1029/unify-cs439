@@ -5,7 +5,7 @@ are to the 10 reference personalities using euclidean distance
 const colorPresets = {
   red: {
     bg: "#FF5555",
-    light: "FFC8AA",
+    light: "#FFC8AA",
     dark: "#AD3D00",
     cassetteBody: "#FF5555",
     cassetteAccent: "#FFC8AA",
