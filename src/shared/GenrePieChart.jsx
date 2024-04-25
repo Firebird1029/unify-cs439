@@ -9,6 +9,7 @@ and the third a thicker barrier between the color portion and the chart itself.
 import { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { ResponsivePie } from "@nivo/pie";
+import { animated } from "@react-spring/web";
 import "@/app/globals.css";
 
 export function VinylCircle({
@@ -74,6 +75,57 @@ VinylCircle.propTypes = {
 
 /* Builds nivo pie chart, and overlays the SVG above on top of it */
 
+function splitLabel(label) {
+  const separators = [" ", "-"];
+  const characters = Array.from(label);
+
+  const words = characters.reduce((acc, char) => {
+    const currentWord = acc.pop() || "";
+    const updatedWord = currentWord + char;
+
+    if (updatedWord.length > 8 && separators.includes(char)) {
+      acc.push(currentWord, char);
+    } else {
+      acc.push(updatedWord);
+    }
+
+    return acc;
+  }, []);
+
+  return words.filter((word) => word !== "");
+}
+
+function ArcLinkLabelComponent({ style, label }) {
+  const splitLabelWords = splitLabel(label);
+
+  return (
+    <animated.g opacity={style.opacity}>
+      <animated.path
+        fill="none"
+        stroke={style.linkColor}
+        strokeWidth={style.thickness}
+        d={style.path}
+      />
+      {splitLabelWords.map((segment, i) => (
+        <animated.text
+          y={i * 14}
+          key={`arcLinkLabel_segment_closurereasons_${segment}`}
+          transform={style.textPosition}
+          textAnchor={style.textAnchor}
+          dominantBaseline="central"
+          style={{
+            fill: style.textColor,
+            font: "inherit",
+            fontSize: 16,
+          }}
+        >
+          {segment}
+        </animated.text>
+      ))}
+    </animated.g>
+  );
+}
+
 export default function GenrePieChart({ data, centerCircleColor = "#1d40af" }) {
   const [divWidth, setDivWidth] = useState(0);
   const divRef = useRef(null);
@@ -119,19 +171,16 @@ export default function GenrePieChart({ data, centerCircleColor = "#1d40af" }) {
         keys={["value"]}
         // set gray colors for the background of the pie chart
         colors={["#444444", "#888888", "#cccccc", "#444444", "#cccccc"]}
-        arcLinkLabelsTextColor="#333333"
-        arcLinkLabelsThickness={2}
-        arcLinkLabelsColor={{ from: "color" }}
         enableArcLabels={false}
-        arcLabelsTextColor={{ from: "color", modifiers: [["darker", 2]] }}
         isInteractive={false}
+        arcLinkLabelComponent={ArcLinkLabelComponent}
+        arcLinkLabelsDiagonalLength={4}
         animate={false}
-        legends={[]}
         theme={{
           text: {
-            fontSize: largeScreen ? 20 : 15,
+            fontSize: 20,
             fill: "#333333",
-            outlineWidth: 0,
+            outlineWidth: 10,
             outlineColor: "transparent",
             fontFamily: "var(--font-koulen)",
           },
@@ -170,4 +219,17 @@ GenrePieChart.propTypes = {
     }),
   ).isRequired,
   centerCircleColor: PropTypes.string,
+};
+
+ArcLinkLabelComponent.propTypes = {
+  style: PropTypes.shape({
+    opacity: PropTypes.isRequired,
+    linkColor: PropTypes.string.isRequired,
+    thickness: PropTypes.isRequired,
+    path: PropTypes.string.isRequired,
+    textPosition: PropTypes.string.isRequired,
+    textAnchor: PropTypes.string.isRequired,
+    textColor: PropTypes.string.isRequired,
+  }).isRequired,
+  label: PropTypes.string.isRequired,
 };
