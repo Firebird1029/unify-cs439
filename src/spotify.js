@@ -195,16 +195,16 @@ async function getSpotifyData(token) {
   const topSongs = topSongsShortData.items;
 
   // Audio Features
-  const averageAudioFeatures = await getAverageAudioFeatures(
-    token,
-    topSongsLongData,
-  );
+  // const averageAudioFeatures = await getAverageAudioFeatures(
+  //   token,
+  //   topSongsLongData,
+  // );
 
   // map audio features to feature value pairs
-  const featuresData = Object.keys(averageAudioFeatures).map((key) => ({
-    feature: key,
-    value: averageAudioFeatures[key],
-  }));
+  // const featuresData = Object.keys(averageAudioFeatures).map((key) => ({
+  //   feature: key,
+  //   value: averageAudioFeatures[key],
+  // }));
 
   // Top Genres (across all terms)
   const combinedArtists = [
@@ -217,7 +217,7 @@ async function getSpotifyData(token) {
   // Constructing the user data JSON
   const userData = {
     userProfile,
-    featuresData,
+    // featuresData,
     topArtists,
     topSongs,
     topGenres,

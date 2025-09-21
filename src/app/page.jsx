@@ -1,4 +1,4 @@
-/* 
+/*
 Home/Index page of application, contains buttons to log in in with Spotify and sign out.
 */
 
@@ -22,6 +22,7 @@ export default function IndexPage() {
 
   const [loggedIn, setLoggedIn] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showSpotifyBlocked, setShowSpotifyBlocked] = useState(false);
 
   // check if user is already logged in
   useEffect(() => {
@@ -67,15 +68,30 @@ export default function IndexPage() {
   }
 
   return (
-    <div
-      className={`flex relative ${loading ? "h-screen" : ""}
-                    lg:h-screen`}
-    >
+    <div className={`flex relative ${loading ? "h-screen" : ""} lg:h-screen`}>
+      {/* Spotify API Blocked Banner */}
+      {showSpotifyBlocked && (
+        <div className="w-full bg-yellow-200 border-b-2 border-yellow-500 text-yellow-900 text-center py-4 px-6 fixed top-0 left-0 z-50 shadow-lg">
+          <span className="font-bold">
+            Unfortunately, as of May 15, 2025, Spotify has restricted its Web
+            API to approved commercial use only. Spotify APIs are now limited to
+            sandbox mode, which prevents new Unify registrations.{" "}
+          </span>
+          <a
+            href="https://developer.spotify.com/documentation/web-api/concepts/quota-modes#quota-extension-request-for-new-potential-partners"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline text-blue-700"
+          >
+            You can learn more here.
+          </a>
+        </div>
+      )}
       <div
         className={`w-full flex flex-col justify-center items-center text-center ${
           loading ? "" : "hidden"
         }`}
-        style={{ height: "100vh" }} // Ensure the div takes full viewport height
+        style={{ height: "100vh" }}
       >
         <LoadingIcon />
         <p className="mt-3 text-2xl">Getting things set up...</p>
@@ -96,8 +112,9 @@ export default function IndexPage() {
                 className="border rounded-full bg-white px-5 py-3 text-3xl"
                 type="button"
                 onClick={() => {
-                  setLoading(true);
-                  loginWithSpotify();
+                  // setLoading(true);
+                  // loginWithSpotify();
+                  setShowSpotifyBlocked(true);
                 }}
               >
                 {/* Show Continue to Account if logged in, else, show log in with Spotify */}
