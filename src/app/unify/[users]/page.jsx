@@ -15,6 +15,18 @@ import { UnifyContent } from "./UnifyContent";
 import ErrorAlert from "@/app/error/error";
 
 export default function UnifyPage({ params: { users } }) {
+  const [showMobileWarning, setShowMobileWarning] = useState(false);
+  // Responsive check for screen size
+  useEffect(() => {
+    function handleResize() {
+      // Desktop breakpoint: 1024px (Tailwind's lg)
+      setShowMobileWarning(window.innerWidth < 1024);
+    }
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   // split the slug (users) on & (gets replaced as %26 automatically) to get user1 and user2 usernames
   const [user1, user2] = users.split("%26");
 
@@ -118,7 +130,17 @@ export default function UnifyPage({ params: { users } }) {
   // content of page with UnifyContent or error message
   return (
     <>
-      <div>
+      {/* Mobile/Tablet warning banner */}
+      {showMobileWarning && (
+        <div className="w-full bg-yellow-200 border-b-2 border-yellow-500 text-yellow-900 text-center py-4 px-6 fixed top-0 left-0 z-50 shadow-lg">
+          <span className="font-bold">
+            Please note: This page is not optimized for smaller screens. For the
+            best experience, view this Unify page on a desktop or larger device.
+          </span>
+        </div>
+      )}
+
+      <div style={{ paddingTop: showMobileWarning ? 72 : 0 }}>
         {/* display unify content if not loading and have both users' data */}
         {!loading && user1Data && user2Data && (
           <div>
