@@ -16,6 +16,7 @@
   "dependencies": {
     "@nivo/pie": "^0.85.1",
     "@nivo/radar": "^0.85.1",
+    "@react-spring/web": "^10.0.3",
     "@supabase/ssr": "^0.1.0",
     "@supabase/supabase-js": "^2.39.8",
     "axios": "^1.6.7",
